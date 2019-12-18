@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>grf on Philipp Schmalen</title>
-    <link>https://www.philippschmalen.github.io/tags/grf/</link>
+    <link>https://philippschmalen.github.io/tags/grf/</link>
     <description>Recent content in grf on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Tue, 17 Dec 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.philippschmalen.github.io/tags/grf/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://philippschmalen.github.io/tags/grf/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Causal Forest for Heterogeneity Analyses</title>
-      <link>https://www.philippschmalen.github.io/posts/working_on_causal_forest/</link>
+      <link>https://philippschmalen.github.io/posts/working_on_causal_forest/</link>
       <pubDate>Tue, 17 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.philippschmalen.github.io/posts/working_on_causal_forest/</guid>
+      <guid>https://philippschmalen.github.io/posts/working_on_causal_forest/</guid>
       <description>A step-by-step guide for practitioners Estimate conditional average treatment effects (CATE) with causal forest by Athey et al. (2019)[1].
 With emphasis on
  replicability and consistent models parameter tuning out-of-bag prediction visualized heterogeneity  To be published January 2020.
