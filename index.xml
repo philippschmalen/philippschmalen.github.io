@@ -23,5 +23,14 @@ With emphasis on
 Some visualizations may look like: References [1] Athey, S., Tibshirani, J., &amp;amp; Wager, S. (2019). Generalized random forests. The Annals of Statistics, 47(2), 1148-1178.</description>
     </item>
     
+    <item>
+      <title>Design Recommender Systems with Recommenderlab</title>
+      <link>https://philippschmalen.github.io/posts/recommenderlab_customized/</link>
+      <pubDate>Sun, 15 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/recommenderlab_customized/</guid>
+      <description>Build your own recommender system with Recommenderlab I show Recommenderlab&#39;s scope to customize recommender algorithms and discuss how to compare different recommender techniques.</description>
+    </item>
+    
   </channel>
 </rss>
