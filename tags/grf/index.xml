@@ -6,7 +6,7 @@
     <description>Recent content in grf on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 17 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 15 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://philippschmalen.github.io/tags/grf/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,13 +14,13 @@
     <item>
       <title>Causal Forest for Heterogeneity Analyses</title>
       <link>https://philippschmalen.github.io/posts/working_on_causal_forest/</link>
-      <pubDate>Tue, 17 Dec 2019 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 15 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://philippschmalen.github.io/posts/working_on_causal_forest/</guid>
-      <description>A step-by-step guide for practitioners Estimate conditional average treatment effects (CATE) with causal forest by Athey et al. (2019)[1].
+      <description>A step-by-step guide for practitioners Estimate conditional average treatment effects (CATE) with causal forest (Athey et al., 2019)[1] using replicaiton data from an educational randomized intervention on grit (Alan et al., 2019).
 With emphasis on
- replicability and consistent models parameter tuning out-of-bag prediction visualized heterogeneity  To be published January 2020.
-References [1] Athey, S., Tibshirani, J., &amp;amp; Wager, S. (2019). Generalized random forests. The Annals of Statistics, 47(2), 1148-1178.</description>
+ replicability and consistent models parameter tuning out-of-bag prediction visualized heterogeneity  To be published March 2020.
+Some visualizations may look like: References [1] Athey, S., Tibshirani, J., &amp;amp; Wager, S. (2019). Generalized random forests. The Annals of Statistics, 47(2), 1148-1178.</description>
     </item>
     
   </channel>
