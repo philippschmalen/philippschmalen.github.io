@@ -1,5 +1,6 @@
 	<!DOCTYPE html>
 <html lang="en">
+
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -24,6 +25,7 @@
 		
 	</head>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css" integrity="sha256-uXNHy6FK52Pb83SmU45mVAg7YECmr9Lwwu1zOz31j5c=" crossorigin="anonymous" />
 	<body>
     <nav class="main-nav">
 	
@@ -55,11 +57,15 @@
     
     
         <li>
-            <a href="/posts/working_on_causal_forest/">Causal Forest for Heterogeneity Analyses<aside class="dates">Mar 15 2020</aside></a>
+            <a href="/posts/working_on_causal_forest/">A comprehensive guide to Causal Forest<aside class="dates">Apr 25 2020</aside></a>
         </li>
     
         <li>
             <a href="/posts/recommenderlab_customized/">Design Recommender Systems with Recommenderlab<aside class="dates">Mar 15 2020</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/working_on_causal_forest/"><aside class="dates">Jan 1 0001</aside></a>
         </li>
     
 </ul>
@@ -95,12 +101,42 @@
     
     <p class="small">
     
-       © Copyright 2020 <i class="fa fa-heart" aria-hidden="true"></i> Philipp Schmalen
+       © Copyright 2020 Philipp Schmalen
     
     </p>
 
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js" integrity="sha256-34ADEQM6cIZ7chSRA07lN4aD5JM9IQoeIr2VamKDcT0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/contrib/auto-render.min.js" integrity="sha256-HkMrKMLKQk4t1R2ofMAcLz72fWM2sshnx6215U+LgU0=" crossorigin="anonymous"></script>
+<script>
+  renderMathInElement(document.body,
+    {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+        ]
+    }
+  );
+
+  var inlineMathArray = document.querySelectorAll("script[type='math/tex']");
+  for (var i = 0; i < inlineMathArray.length; i++) {
+    var inlineMath = inlineMathArray[i];
+    var tex = inlineMath.innerText || inlineMath.textContent;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex, {displayMode: false});
+    inlineMath.parentNode.replaceChild(replaced, inlineMath);
+  }
+
+  var displayMathArray = document.querySelectorAll("script[type='math/tex; mode=display']");
+  for (var i = 0; i < displayMathArray.length; i++) {
+    var displayMath = displayMathArray[i];
+    var tex = displayMath.innerHTML;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+    displayMath.parentNode.replaceChild(replaced, displayMath);
+  }
+</script>
     </section>
     </body>
 </html>

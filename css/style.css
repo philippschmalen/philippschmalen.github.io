@@ -863,7 +863,7 @@ a.symbol:hover {
  */
 #toc {
   line-height: 1em;
-  font-size: .7em;
+  font-size: 1em;
   word-wrap: break-word;
   padding: 8px;
   padding-left: 16px;
@@ -903,7 +903,7 @@ a.symbol:hover {
 #TableOfContents a code{
   font-family: Menlo, Monaco, Courier;
   background-color: #fff;
-  font-size: 11px;
+  font-size: 12px;
   padding: 2px 3px;
   font-weight: 100;
 }
