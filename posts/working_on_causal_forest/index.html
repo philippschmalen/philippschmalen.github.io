@@ -52,7 +52,7 @@
                     <h2 class="headline">
                     25 Apr 2020
                     
-                    · 20 minute read
+                    · 21 minute read
                       <span class="tags">
                       
                       </span>
@@ -369,88 +369,52 @@ cluster <span style="color:#f92672">&lt;-</span> df_nomiss<span style="color:#f9
 <tr>
 <th>Parameter</th>
 <th>controls</th>
-<th></th>
-<th></th>
-<th></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>num.trees</td>
 <td>number of trees grown in the   forest      more trees increases prediction accuracy, default is 2000</td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>sample.fraction</td>
 <td>Share of the data used to train   a tree (determine splits)      higher fraction assigns more observations to training (within bag)</td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>honesty</td>
 <td>enable honesty (TRUE, FALSE),   where the training sample (data x sample.fraction) is further split to have   one sample</td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>honesty.fraction</td>
 <td>Subsample (= honesty.fraction x   (data x sample.fraction)) that is used to choose splits for a tree.   Increasing honesty.fraction assigns more data to the task of finding splits.</td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>honesty.prune.leaves</td>
 <td>whether or not leaves will be   removed that are empty when the data from the honesty sample is applied to a   tree</td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>mtry</td>
 <td>Number of variables from   covariates (X) that are candidates for a split. When mtry = Number of   variables, all variables are tested for a given split</td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>min.node.size</td>
-<td>minimum number of observations   for a leaf node. Increasing min.node.size likely leads to fewer splits since   resulting child nodes have to meet a stricter requirement</td>
-<td></td>
-<td></td>
-<td></td>
+<td>minimum number of observations   for a leaf node. Increasing min.node.size likely leads to fewer splits since   resulting child nodes have to meet a stricter requirement. A node must   contain at least min.node.size treated samples (W=1), and also at   least that many control samples (W=0).</td>
 </tr>
 <tr>
 <td>alpha</td>
-<td>the maximum imbalance of a split   relative to the parent node. Observation count for each child node has to be   greater than that of (parent node* alpha).</td>
-<td></td>
-<td></td>
-<td></td>
+<td>the maximum imbalance of a split   relative to the parent node. Observation count for each child node has to be   greater than that of (parent node* alpha). Causal forests rely on a modified   measure of node size that tries to capture how much &lsquo;information content&rsquo; it   contains, with $\sum_{i in node} (W_i - \bar{W})^2$</td>
 </tr>
 <tr>
 <td>imbalance.penalty</td>
 <td>the imbalance of a split between   resulting child nodes. Observation count for each child node has to be   greater than that of (parent node* alpha).</td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>ci.group.size</td>
 <td>To calculate confidence   intervals, minimum = 2</td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>stabilize.splits</td>
 <td>Whether or not the treatment   should be taken into account when determining splits</td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -490,8 +454,8 @@ To inspect the model's characteristics, <code>names(cf_default)</code> lists cal
 <span style="color:#ae81ff">5</span> honesty.prune.leaves  <span style="color:#ae81ff">1</span>   
 <span style="color:#ae81ff">6</span> alpha                 <span style="color:#ae81ff">0.05</span>
 <span style="color:#ae81ff">7</span> imbalance.penalty     <span style="color:#ae81ff">0</span>  
-</code></pre></div><p>25% of the data was sampled to choose splits (<code>sample.fraction</code>$\times$<code>honesty.fraction</code>$J$), 25% was used for prediction and the remaining 50% held out for out-of-bag prediction in the following step.</p>
-<p>Computes the best linear fit of the target estimand using the forest prediction (on held-out data) as well as the mean forest prediction as</p>
+</code></pre></div><p>To get a feeling for the model specification, I explain the parameters as in the above table: 25% of the data was sampled to choose splits (<code>sample.fraction</code>$\times$<code>honesty.fraction</code>, $=J$ in the figure above), 25% was used for estimating treatment effects and the remaining 50% held out for out-of-bag prediction. All 9 variables were considered for splits (<code>mtry</code>), where splits are discarded that lead to leaves with less than 5 observations (<code>min.node.size</code>). Honesty will also discard splits, when no observations of the honesty sample (<code>sample.fraction</code> $\times (1-$ <code>honesty.fraction</code>$)$) fall into a leaf. Lastly, <code>alpha</code> discards splits that likely have few information content, as approximated by $\sum_{i in node} (W_i - \bar{W})^2$. <code>imbalance.penalty</code> is not applied.</p>
+<!-- raw HTML omitted -->
 <h3 id="replicate-results-alan-et-al-table-3">Replicate results (Alan et al., Table 3)</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e">#&#39; Loop to train 5 CF on 5 outcomes (choicer1-5)</span>
 	<span style="color:#75715e">#&#39; 	(i)	drop missings for each outcome Y (choicer1-5)</span>
