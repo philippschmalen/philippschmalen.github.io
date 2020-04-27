@@ -17,12 +17,7 @@
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0200</pubDate>
       
       <guid>https://philippschmalen.github.io/posts/working_on_causal_forest/</guid>
-      <description>Causal forest gains attention as a powerful tool to add a machine learning perspective to empirical studies.
-This article sheds light on the method by answering
- How does causal forest work and how to apply it?
- The implementation in R from Athey et al. (2019) will be applied to data from an educational randomized intervention on grit by Alan et al. (2019).
-Emphasis is on
- procedures and fundamentals of causal forest understand model parameters how to apply it to data interpreting its output  Further posts will follow on heterogeneity analyses, parameter tuning, another proposal for replicable models and how model parameters such as honesty and num.</description>
+      <description>Disclaimer This guide aims to be a great resource for practitioners of causal forest and wants to empower researchers with this awesome method. I found myself diving into its R source code, published papers on its theory and referring to its algorithm reference. I want to combine all these resources in one article, so you do not need to check every resource in-detail and dig deep. Still, you are welcome to do so and I refer everything under references.</description>
     </item>
     
     <item>

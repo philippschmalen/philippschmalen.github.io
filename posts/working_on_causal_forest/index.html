@@ -52,8 +52,18 @@
                     <h2 class="headline">
                     26 Apr 2020
                     
-                    · 21 minute read
+                    · 23 minute read
                       <span class="tags">
+                      
+                      
+                          
+                              <a href="https://philippschmalen.github.io/tags/causal-forest">causal forest</a>
+                          
+                              <a href="https://philippschmalen.github.io/tags/grf">grf</a>
+                          
+                              <a href="https://philippschmalen.github.io/tags/tutorial">tutorial</a>
+                          
+                      
                       
                       </span>
                     </h2>
@@ -82,11 +92,11 @@
       <ul>
         <li><a href="#assign-data">Assign data</a></li>
         <li><a href="#parameters-for-the-causal-forest-function">Parameters for the causal_forest() function</a></li>
-        <li><a href="#replicate-results-alan-et-al-table-3">Replicate results (Alan et al., Table 3)</a></li>
+        <li><a href="#applying-cf-to-the-data">Applying CF to the data</a></li>
+        <li><a href="#ouf-of-bag-prediction">Ouf-of-bag prediction</a></li>
       </ul>
     </li>
     <li><a href="#references">References</a></li>
-    <li><a href="#additional-resources">Additional Resources</a></li>
     <li><a href="#appendix">Appendix</a>
       <ul>
         <li><a href="#orthogonalization">Orthogonalization</a></li>
@@ -95,6 +105,7 @@
         <li><a href="#variance-across-causal-forests">Variance across Causal Forests</a></li>
         <li><a href="#remarks-on-study-design">Remarks on Study Design</a></li>
         <li><a href="#results-without-mean-imputation">Results without mean imputation</a></li>
+        <li><a href="#replicate-results-with-cf-alan-et-al-table-3">Replicate results with CF (Alan et al., Table 3)</a></li>
       </ul>
     </li>
   </ul>
@@ -105,8 +116,11 @@
                 <section id="post-body">
                     <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<hr>
+<h1 id="disclaimer">Disclaimer</h1>
+<p><em>This guide aims to be a great resource for practitioners of causal forest and wants to empower researchers with this awesome method. I found myself diving into its R source code, published papers on its theory and referring to its algorithm reference. I want to combine all these resources in one article, so you do not need to check every resource in-detail and dig deep. Still, you are welcome to do so and I refer everything under references. Whether you are a researcher keen to throw your data on causal forest or just want to have a glance for the next study, this article is for you.<br>
+But, until writing today, Monday, 27th April 2020, this guide is in an early stage. I am grateful and appreciate your input! If you discover inconsistencies, have comments or questions, I am always happy to discuss them with you and revise content. For example, the scheme of data partitions includes formal error and will be revised this week.</em></p>
+<hr>
 <p>Causal forest gains attention as a powerful tool to add a machine learning perspective to empirical studies.</p>
 <p>This article sheds light on the method by answering</p>
 <blockquote>
@@ -124,8 +138,7 @@
 <h2 id="prerequisites---before-you-start">Prerequisites - Before you start</h2>
 <ol>
 <li>For this exercise I use <code>R 3.6.3</code> and <code>GRF 1.1.0</code>. Ensure to have the same versions to replicate the findings. You can check the version with: <code>R.Version()</code> and <code>packageVersion(&quot;grf&quot;)</code>. If you need to update a package, unload them first with <code>unloadNamespace(&quot;any_package&quot;)</code> and run <code>install.packages(&quot;any_package&quot;)</code></li>
-<li>Data can be downloaded on the Harvard Dataverse [INSERT LINK TO DATAVERSE]</li>
-<li>Find the code used in this example on GitHub: [INSERT LINK TO MY GITHUB]</li>
+<li>Data can be downloaded on the Harvard Dataverse <a href="https://doi.org/10.7910/DVN/SAVGAL">https://doi.org/10.7910/DVN/SAVGAL</a></li>
 <li>Knowledge about tree-based methods. I find these resources useful:
 <ol>
 <li><a href="https://canvas.harvard.edu/courses/12656/files/3105061/download?verifier=epfLpoaq22ZWswpJlkcleMaMdS1DFs9QeyS8Sfsd&amp;wrap=1">Data Science Lecture 16 (Protopapas, Rader, Pan, 2016)</a></li>
@@ -133,6 +146,7 @@
 </ol>
 </li>
 </ol>
+<!-- raw HTML omitted -->
 <h2 id="causal-forest-to-estimate-treatment-effects">Causal Forest to estimate treatment effects</h2>
 <p>Athey et al. modified Random Forest by Breiman et al. (2001) to estimate treatment effects. Furthermore, they derive its asymptotic properties and show that it yields unbiased estimators. I briefly explain Causal Trees as its core component and how they form a Causal Forest to estimate conditional average treatment effects. Ultimately, I outline variable importance as a key metric for heterogeneity analyses and mention parameter tuning to obtain data-driven model specifications.</p>
 <p>Assume a binary treatment $W_i \in {0,1}$, randomly assigned to treatment ($W_i=1$) and control group ($W_i=0$). Furthermore, assume unconfoundedness following Rosenbaum et al. (1983), where treatment assignment $W_i$ is independent from potential outcomes $Y_i$, conditional on covariates $X_i$ :</p>
@@ -261,8 +275,7 @@ if variable <em>m</em> used for a split at level <em>l</em> in tree <em>t</em> a
 <p>Treatment is randomly assigned across 16 schools (8 treatment + 8 control schools, 1499 pupils of 42 classrooms, where 1360 (91%) were present and consented). Treated schools solely received the grit curriculum. The sample of this intervention is <em>Sample 2</em> and resolved some design issues of a first intervention, stored in <em>Sample 1</em>. <em>Sample 2's</em> baseline information was collected in spring 2015, implemented in fall 2015 and tested in January 2016 shortly after the curriculum. Also long-term follow-up was done in June 2017, when students advanced to 5th grade, circa 1.5 years after the intervention (60% could be tracked). The follow-up pupils had slightly different verbal scores at baseline compared to the original intervention sample.</p>
 <p><strong>Control group (CG)</strong>: Several placebo treatments were in place for the control group, including projects on environment sensitivity, health and hygiene.</p>
 <h3 id="data">Data</h3>
-<p><strong>Outcomes</strong> were derived from two incentivized experimental tasks about grit. The first showed a grid with numbers and thed pupils had to find number pairs adding up to 100. Rewards depend on a minimum score (performance target), which was 3 pairs per 1.5 minutes. Before each round, the children decided between a difficult grid and get (i) four gifts or a simpler grid to get (ii) one gift in case of success. Experimenters give feedback after each round if they succeeded or failed to meet the target. Students decided between (i) and (ii) except for the first round, where they got randomly either (i) or (ii) to get a subsample free of selection into the tasks.</p>
-<p><strong>Covariates</strong></p>
+<p><strong>Outcomes</strong> were derived from two incentivized experimental tasks about grit. The first showed a grid with numbers and thed pupils had to find number pairs adding up to 100. Rewards depend on a minimum score (performance target), which was 3 pairs per 1.5 minutes. Before each round, the children decided between a difficult grid and get (i) four gifts or a simpler grid to get (ii) one gift in case of success. Experimenters give feedback after each round if they succeeded or failed to meet the target. Students decided between (i) and (ii) except for the first round, where they got randomly either (i) or (ii) to get a subsample free of selection into the tasks. The following table gives an overview of relevant covariates that are later assigned to <code>causal_forest()</code>.</p>
 <table>
 <thead>
 <tr>
@@ -293,7 +306,6 @@ if variable <em>m</em> used for a split at level <em>l</em> in tree <em>t</em> a
 </tr>
 </tbody>
 </table>
-<p>Variables are standardized with mean=0, standard deviation=1 where appropriate.</p>
 <h4 id="data-preparation">Data Preparation</h4>
 <p>The quality and preparation of collected data determines the informative value of a study. With many missing entries, researchers have to drop substantial amounts of observations, if they rely on methods requiring data without gaps, such as ordinary least squares (OLS). Alan et al. deal with missings using the simple approach of replacing missings with the average across all other non-missings of each variable. 
 For the analysis here, I focus on the outcome where pupils choose the difficult in all five rounds. The data preparation can be summarized with the following code. Note, that I drop all missings of the outcome $Y (alldiff)$ and replace all missings in $X$ with their average.</p>
@@ -302,8 +314,8 @@ For the analysis here, I focus on the outcome where pupils choose the difficult 
 	<span style="color:#a6e22e">mutate_at</span>(<span style="color:#a6e22e">vars</span>(<span style="color:#f92672">-</span>alldiff),<span style="color:#f92672">~</span><span style="color:#a6e22e">ifelse</span>(<span style="color:#a6e22e">is.na</span>(.), <span style="color:#ae81ff">0</span>, .)) 
 </code></pre></div><p>In contrast, tree-based methods like Random Forest can handle missing data. Causal Forest has been <a href="https://github.com/grf-labs/grf/pull/612">recently extended</a> to handle missing data in the upcoming release of Version 1.1.0. However, right now we have to replace missings as done by the authors using <a href="https://www.iriseekhout.com/missing-data/missing-data-methods/imputation-methods/">mean imputation</a>. This approach reduces data variability and may introduce biases such as underestimating variance, and thereby, leading to more precise estimates than actually observed. To check for robustness, I replicate their main results (Table III - Treatment effect of choice of difficult task) with and without mean imputation. The results indicate no substantial impact on standard errors through mean imputation.</p>
 <h3 id="replicate-results-with-ordinary-least-squares-ols">Replicate results with Ordinary Least Squares (OLS)</h3>
-<p>Before I replicate the results of Table III to verify data loading and preparation steps. If estimates are within the ballpark of theirs, I can be confident to obtain valid estimates with Causal Forest. To keep it simple, I choose a linear probability model (ordinary least squares) instead of the logit model, since the latter needs some workarounds for obtaining average marginal effects with clustered standard errors (a combination of the mfx and miceadds package solves it). Therefore, estimates should differ slightly from theirs, but would have similar magnitudes.</p>
-<p>Below you find the estimated treatment treatment effects with linear probability models (OLS) instead of logit.</p>
+<p>Before going further, I want to verify data loading and preparation. If estimates are within ballpark of Alan et al.s&rsquo;, I can be confident to obtain valid estimates with Causal Forest later on. To keep it simple, I choose ordinary least squares instead of logit as in their paper, since the latter needs some workarounds for obtaining average marginal effects with clustered standard errors (a combination of the <code>mfx</code> and <code>miceadds</code> package solves this). Therefore, estimates should differ slightly from theirs, but would have similar magnitudes.</p>
+<p>Below you find the estimated treatment treatment effects employing ordinary least squares.</p>
 <table>
 <thead>
 <tr>
@@ -350,7 +362,7 @@ For the analysis here, I focus on the outcome where pupils choose the difficult 
 </tr>
 </tbody>
 </table>
-<p>The estimates correspond to those in Table A.8 of their online appendix (Alan et al., 2019). This is reassuring for the data preparation and causal forest can be applied issues arising from errors in variable coding. The next section guides through a hands-on example, where</p>
+<p>The estimates correspond to those in Table A.8 of their online appendix (Alan et al., 2019) and differ slightly from those in Table III. This is reassuring for the steps so far and avoids any issues arising from coarse errors in variable coding. The next section guides through a hands-on example of applying causal forest to the data.</p>
 <h2 id="apply-causal-forest-to-the-data">Apply Causal Forest to the data</h2>
 <h3 id="assign-data">Assign data</h3>
 <p>Data provided to the <code>causal_forest</code> function has to have a certain format. First of all, the full dataset is divided into covariates $X$, treatment assignment $W$ and outcome $Y$. The latter two, $W$ and $Y$ have to be a numeric vector, where $W$ can be either $0$ or $1$. The covariate matrix, $X$, can include several variable types, such as categorical, continuous or binary variables. Additionally, it can contain missing values with a caveat for categorical values, that might be hand-coded NA values a new factor (see <a href="https://github.com/grf-labs/grf/issues/632">#632</a>, <a href="https://github.com/grf-labs/grf/issues/457">#475</a>). Beyond this, clusters can be assigned to obtain clustered standard errors for the estimates.</p>
@@ -398,11 +410,11 @@ cluster <span style="color:#f92672">&lt;-</span> df_nomiss<span style="color:#f9
 </tr>
 <tr>
 <td>min.node.size</td>
-<td>minimum number of observations   for a leaf node. Increasing min.node.size likely leads to fewer splits since   resulting child nodes have to meet a stricter requirement. A node must   contain at least min.node.size treated samples (W=1), and also at   least that many control samples (W=0).</td>
+<td>minimum number of treated and   control group observations for a leaf node. Increasing min.node.size likely   leads to fewer splits since child nodes have to meet a stricter condition. A   node must contain at least min.node.size treated samples (W=1), and   also at least that many control samples (W=0).</td>
 </tr>
 <tr>
 <td>alpha</td>
-<td>the maximum imbalance of a split   relative to the parent node. Observation count for each child node has to be   greater than that of (parent node* alpha). Causal forests rely on a modified   measure of node size that tries to capture how much &lsquo;information content&rsquo; it   contains, with $\sum_{i in node} (W_i - \bar{W})^2$</td>
+<td>the maximum imbalance of a split relative to the size of the parent node. Causal forests rely on a measure that tries to capture &lsquo;information content&rsquo;  $IC_N$ of a node $N$: $IC_N = \sum\limits_{i \in N} (W_i - \bar{W})^2$. Each child node, $C_{j \in {1,2}}$ has to fulfill $IC(C_j) \geq \alpha \cdot IC(N_{parent}) $</td>
 </tr>
 <tr>
 <td>imbalance.penalty</td>
@@ -416,13 +428,25 @@ cluster <span style="color:#f92672">&lt;-</span> df_nomiss<span style="color:#f9
 <td>stabilize.splits</td>
 <td>Whether or not the treatment   should be taken into account when determining splits</td>
 </tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <p>As the table shows, there are many ways to specify a model through these parameters. Choosing default parameters may not yield the most optimal model, but is a shortcut to spare computing time and obtain a trained forest right away. Another option is to rely on causal forest's internal parameter tuning that approximates optimal parameters through cross-validation. Even though it is computationally more expensive, approximate optimal values for  <code>min.node.size</code>, <code>sample.fraction</code>, <code>mtry</code>, <code>honesty.fraction</code> and <code>honesty.prune.leaves</code>, <code>alpha</code> and <code>imbalance.penalty</code> decreases bias and is easily available by setting <code>tune.parameters='all'</code> in the function. The section in the appendix describes the procedure in more detail.</p>
 <p>Nevertheless, parameter tuning throws an error that says instructs to increase the number of trained trees (<code>tune.num.trees</code>) within cross-validation. However, values of up to 50000 could not avoid the error while runtime of the algorithm substantially increased to several minutes. Thus, default model parameters are used.</p>
+<h3 id="applying-cf-to-the-data">Applying CF to the data</h3>
+<p><em>Orthogonalization.</em> Before assigning the data to <code>causal_forest()</code>, Athey et al. (2019) recommend to fit separate regression trees to estimate $\hat{Y}_i$ and $\hat{W}_i$. Even though, the CF algorithm would do this by default when neither <code>Y.hat</code> nor <code>W.hat</code> are assigned, calling <code>regression_forest()</code> separately sets <code>num.trees=2000</code> instead of 500 with CF's default parameters.  It ensures more precise estimates for treatment propensity and marginal outcomes to compute residual treatment and outcome.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">seed <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">42</span>
 <span style="color:#a6e22e">set.seed</span>(seed)
+Y.hat <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">regression_forest</span>(X<span style="color:#f92672">=</span>X, Y<span style="color:#f92672">=</span>Y, seed<span style="color:#f92672">=</span>seed, clusters<span style="color:#f92672">=</span>cluster)<span style="color:#f92672">$</span>predictions
+W.hat <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">regression_forest</span>(X<span style="color:#f92672">=</span>X, Y<span style="color:#f92672">=</span>W, seed<span style="color:#f92672">=</span>seed, clusters<span style="color:#f92672">=</span>cluster)<span style="color:#f92672">$</span>predictions
+</code></pre></div><p>Thereafter, a CF with default parameters is initialized. How to retrieve and interpret these default parameters is explained in the following.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">set.seed</span>(seed)
 cf_default <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">causal_forest</span>(X<span style="color:#f92672">=</span>X, Y<span style="color:#f92672">=</span>Y, W<span style="color:#f92672">=</span>W, 
+	Y.hat<span style="color:#f92672">=</span>Y.hat,
+	W.hat<span style="color:#f92672">=</span>W.hat,
 	clusters<span style="color:#f92672">=</span>cluster, 
 	seed<span style="color:#f92672">=</span>seed)
 </code></pre></div><p><em>Default parameters.</em>
@@ -454,15 +478,98 @@ To inspect the model's characteristics, <code>names(cf_default)</code> lists cal
 <span style="color:#ae81ff">5</span> honesty.prune.leaves  <span style="color:#ae81ff">1</span>   
 <span style="color:#ae81ff">6</span> alpha                 <span style="color:#ae81ff">0.05</span>
 <span style="color:#ae81ff">7</span> imbalance.penalty     <span style="color:#ae81ff">0</span>  
-</code></pre></div><p>To get a feeling for the model specification, I explain the parameters as in the above table: 25% of the data was sampled to choose splits (<code>sample.fraction</code>$\times$<code>honesty.fraction</code>, $=J$ in the figure above), 25% was used for estimating treatment effects and the remaining 50% held out for out-of-bag prediction. All 9 variables were considered for splits (<code>mtry</code>), where splits are discarded that lead to leaves with less than 5 observations (<code>min.node.size</code>). Honesty will also discard splits, when no observations of the honesty sample (<code>sample.fraction</code> $\times (1-$ <code>honesty.fraction</code>$)$) fall into a leaf. Lastly, <code>alpha</code> discards splits that likely have few information content, as approximated by $\sum_{i \in node} (W_i - \bar{W})^2$. <code>imbalance.penalty</code> is not applied.</p>
-<!-- raw HTML omitted -->
-<h3 id="replicate-results-alan-et-al-table-3">Replicate results (Alan et al., Table 3)</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#75715e">#&#39; Loop to train 5 CF on 5 outcomes (choicer1-5)</span>
-	<span style="color:#75715e">#&#39; 	(i)	drop missings for each outcome Y (choicer1-5)</span>
-	<span style="color:#75715e">#&#39;	(ii) Select and assign X, Y, W and cluster</span>
-	<span style="color:#75715e">#&#39; (iii) train CF model on that data</span>
-
-	cf_choicer <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">choicer&#34;</span>, <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">5</span>), <span style="color:#a6e22e">function</span>(x){
+</code></pre></div><p>To get a feeling for the model specification, I explain the parameters. 25% of the data was sampled to choose splits (<code>sample.fraction</code>$\times$<code>honesty.fraction</code>, $=J$ in the figure above), 25% was used for estimating treatment effects and the remaining 50% held out for out-of-bag prediction. All 9 variables were considered as candidates for a split (<code>mtry</code>). Splits are discarded where leaves contain less than 5 treated or less than 5 non-treated individuals (<code>min.node.size</code>). Honesty will also discard splits, when no observations of the honesty sample (<code>sample.fraction</code> $\times (1-$ <code>honesty.fraction</code>$)$) fall into a leaf. Furthermore, <code>alpha</code> discards splits that likely have nodes with low information content, as approximated by the function $IC_N =\sum\limits_{i \in N} (W_i - \bar{W})^2$, where $N$ is a node. Any child node, $C_{j\in {1,2}}$, must fulfill $IC_{C_j} \geq \alpha * IC_{parent}$. Lastly, <code>imbalance.penalty</code> does not apply, which would favor splits with balanced count of treated and control observation.</p>
+<h3 id="ouf-of-bag-prediction">Ouf-of-bag prediction</h3>
+<p>DISCLAIMER
+I hope you enjoyed the guide so far! Corona-life is keeping me somehow busy and further parts of the tutorial are soon completed and reviewed. If you discover any inconsistencies in my description and coding of the method, I appreciate your feedback. Just hit me on [](<a href="mailto:philippschmalen@gmail.com">philippschmalen@gmail.com</a>).</p>
+<hr>
+<h2 id="references">References</h2>
+<p>Alan, S., Boneva, T., &amp; Ertac, S. (2019). Ever failed, try again, succeed better: Results from a randomized educational intervention on grit. The Quarterly Journal of Economics, 134(3), 1121-1162.</p>
+<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Replication Data for: &lsquo;Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rsquo;&quot;. <a href="https://doi.org/10.7910/DVN/SAVGAL">https://doi.org/10.7910/DVN/SAVGAL</a>. Harvard Dataverse, V1, UNF:6:d2Hfm4IAxljvu95OYqXGOQ== [fileUNF].</p>
+<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Online Appendix Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rdquo;, <a href="https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf">https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf</a>.</p>
+<p>Athey, S., Tibshirani, J., &amp; Wager, S. (2019). Generalized random forests. The Annals of Statistics, 47(2), 1148-1178.</p>
+<p>Athey, S., &amp; Wager, S. (2019). Estimating treatment effects with causal forests: An application. arXiv preprint arXiv:1902.07409.</p>
+<p>Breiman, L. (2001). Random forests. Machine learning, 45(1), 5-32.</p>
+<p>Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). The elements of statistical learning: data mining, inference, and prediction. Springer Science &amp; Business Media.</p>
+<p>Rosenbaum, P. R., &amp; Rubin, D. B. (1983). The central role of the propensity score in observational studies for causal effects. Biometrika, 70(1), 41-55.</p>
+<p>Wager, S., &amp; Athey, S. (2018). Estimation and inference of heterogeneous treatment effects using random forests. Journal of the American Statistical Association, 113(523), 1228-1242.</p>
+<p>GRF-Labs (2020). The GRF Algorithm. <a href="https://github.com/grf-labs/grf/blob/master/REFERENCE.md">https://github.com/grf-labs/grf/blob/master/REFERENCE.md</a>.</p>
+<hr>
+<h2 id="appendix">Appendix</h2>
+<h3 id="orthogonalization">Orthogonalization</h3>
+<p>Causal forest assumes that treatment assignment is independent from potential outcomes conditional on $X$. The feature space $\mathbb{X}$ however contains parts related to estimated treatment effects and parts related to treatment propensities. To shift splits towards estimating treatment effects instead of propensities, orthogonalization employs regression forests to estimate (i) treatment propensities and (ii) marginal outcomes which is used as input to grow a causal forest. Estimates of treatment propensities, $ e(x)=E[W|X=x] $, and marginal outcomes, $m(x) = E[Y|X=x]$, yield residual treatments $W-e(x)$ and outcomes $Y-m(x)$. In that way, causal trees solely split on the parts of the variation that contain information on potential treatment effects.</p>
+<h3 id="model-error-measures">Model error measures</h3>
+<p><em>Debiased error</em>: Estimates of the &lsquo;R-Loss&rsquo; criterion which relates to the mean-squared error (infeasible). It assumes an infinite number of trees. Therefore, it is complemented by the excess error estimate which captures model induced estimate variance.</p>
+<p><em>Excess error</em>: Jackknife estimates of the Monte-carlo error which relates to estimate variance induced by the trees themselves. The error decreases with more trees and becomes negligible with large forests. To test this, grow forests with different sizes and observe their excess error. The sum of these errors yields the overall error of the forest.</p>
+<h3 id="finding-model-parameters-with-parameter-tuning">Finding model parameters with parameter tuning</h3>
+<p>Another feature included for Causal Forest is its automated search for suitable model parameters. The procedure determines close-to optimal parameters for the provided data with cross-validation. However, instead of relying on precise error measures, they are approximated to trade off complexity with lower computational expenses. To enable this for all tunable parameters, set <code>causal_forest(...parameter.tuning='all')</code> and the algorithm looks for determines values for: <code>min.node.size</code>, <code>sample.fraction</code>, <code>mtry</code>, <code>honesty.fraction</code> and <code>honesty.prune.leaves</code>, <code>alpha</code> and <code>imbalance.penalty</code>.</p>
+<p>The procedure can be tweaked changing the default values for <code>tune.num.reps</code>, <code>tune.num.trees</code> and <code>tune.num.draws</code>. <code>tune.num.reps</code> is the number of distinct parameter sets that are tested in a mini-forest containing <code>tune.num.trees</code> trees, to obtain a debiased error estimate. Lastly, these error estimates yield a smoothing function to predict the error for another randomly drawn distinct set of <code>tune.num.draws</code> parameters. Those parameter sets that minimize the predicted error are considered optimal.</p>
+<h3 id="variance-across-causal-forests">Variance across Causal Forests</h3>
+<p>The algorithm selects splits that maximize any given differences in estimated treatment effects between child nodes. However, these differences could be almost negligible and a high variable importance does not necessarily imply heterogeneity across treatment. It solely means that the algorithm selected variables which are more associated with any existing treatment effect heterogeneity than others. Additionally, low heterogeneity could imply that variable importances vary across a set of differently seeded Causal Forests. In that case, slightly varying, random initializations can tip the scales for variable selection and cause different splits. Therefore, it makes sense to explore treatment heterogeneity visually by plotting CATE against values of $X_i$</p>
+<p>Especially for lower sample sizes, model parameter have a larger impact on variable importance. Even though, variable importance does not have to be a precise measure, it would be great to obtain robust coefficients.</p>
+<p>One way to ensure variable importance for every variable is to force the algorithm to try all variables for each candidate split. <code>mtry</code> is the parameter that controls the number of tried variables and defaults to $\sqrt(M) + 20$ Hold the <code>mtry</code> parameter constant and insert the maximum number, corresponding to the total number of variables.</p>
+<h3 id="remarks-on-study-design">Remarks on Study Design</h3>
+<ul>
+<li>The authors conducted two interventions on grit and patience. Therefore, the dataset contains a &ldquo;sample&rdquo; variable to indicate sample 1 or 2. The first sample can be disregarded due to design issues.</li>
+<li>Teachers willing to participate were randomly assigned to TG or CG. Due to this selection into the study, average treatment effect on the treated is observed (ATT). However, since a high share of 80% teachers were willing to participate, the authors conjecture strong external validity. But what are the assumptions and how does it relate to ATE again?
+<a href="https://stats.stackexchange.com/questions/308397/why-is-average-treatment-effect-different-from-average-treatment-effect-on-the-t">This post</a> explains it in brief.</li>
+<li>teachers of the TG attended a one-day training seminar to present materials and suggested classroom activities. Pedagogical guidelines focused on task effort and process instead of outcome-based feedback: Praising effort, rewarding perseverant behavior and favor positive attitudes towards learning.</li>
+<li>verbal and math scores were measured before and after treatment</li>
+<li>data was collected in two classroom visits each a week apart</li>
+</ul>
+<h3 id="results-without-mean-imputation">Results without mean imputation</h3>
+<p>I was curious, in which way the mean imputation shaped the results. Therefore, I rerun the estimation without mean imputation and obtain:</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="center">Difficult round 1</th>
+<th align="center">Difficult round 2</th>
+<th align="center">Difficult round 3</th>
+<th align="center">Difficult round 4</th>
+<th align="center">Difficult round 5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Est. treatment effect</td>
+<td align="center">0.10</td>
+<td align="center">0.18</td>
+<td align="center">0.19</td>
+<td align="center">0.18</td>
+<td align="center">0.16</td>
+</tr>
+<tr>
+<td align="left">Std. Error</td>
+<td align="center">0.05</td>
+<td align="center">0.04</td>
+<td align="center">0.04</td>
+<td align="center">0.05</td>
+<td align="center">0.04</td>
+</tr>
+<tr>
+<td align="left">Intercept</td>
+<td align="center">0.55</td>
+<td align="center">0.35</td>
+<td align="center">0.17</td>
+<td align="center">0.09</td>
+<td align="center">0.06</td>
+</tr>
+<tr>
+<td align="left">N</td>
+<td align="center">1058</td>
+<td align="center">1058</td>
+<td align="center">1056</td>
+<td align="center">1056</td>
+<td align="center">1057</td>
+</tr>
+</tbody>
+</table>
+<p>Mean imputation often leads to more precise estimates and could remove selection issues, when missing values occur in patterns across individuals. Nevertheless, the above table indicates robust estimates in both dimensions with coefficients differing slightly. It looks as if the mean imputation neither changed standard errors nor treatment estimates. Additionally, the estimation method with OLS did not impact coefficients compared to logit as used in the study.</p>
+<h3 id="replicate-results-with-cf-alan-et-al-table-3">Replicate results with CF (Alan et al., Table 3)</h3>
+<p>Loop to train 5 causal forests on 5 outcomes (choicer1-5) in the following steps: 
+(i)	drop missings for each outcome Y (choicer1-5), (ii) Select and assign X, Y, W and cluster, (iii) train CF model on that data.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">	cf_choicer <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">lapply</span>(<span style="color:#a6e22e">paste0</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">choicer&#34;</span>, <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">5</span>), <span style="color:#a6e22e">function</span>(x){
 
 	<span style="color:#75715e"># (i) Remove missings in Y (while keeping missings in X)</span>
 		df_nomiss <span style="color:#f92672">&lt;-</span> df <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">drop_na</span>(x) 
@@ -531,94 +638,6 @@ cf_ate <span style="color:#f92672">%&gt;%</span>
 </tbody>
 </table>
 <p>The estimated average treatment effects resemble those before obtained with OLS. Standard errors tend to be slightly higher possibly induced by the method and not having imputed.</p>
-<hr>
-<h2 id="references">References</h2>
-<p>Alan, S., Boneva, T., &amp; Ertac, S. (2019). Ever failed, try again, succeed better: Results from a randomized educational intervention on grit. The Quarterly Journal of Economics, 134(3), 1121-1162.</p>
-<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Replication Data for: &lsquo;Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rsquo;&quot;. <a href="https://doi.org/10.7910/DVN/SAVGAL">https://doi.org/10.7910/DVN/SAVGAL</a>. Harvard Dataverse, V1, UNF:6:d2Hfm4IAxljvu95OYqXGOQ== [fileUNF].</p>
-<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Online Appendix Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rdquo;, <a href="https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf">https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf</a>.</p>
-<p>Athey, S., Tibshirani, J., &amp; Wager, S. (2019). Generalized random forests. The Annals of Statistics, 47(2), 1148-1178.</p>
-<p>Breiman, L. (2001). Random forests. Machine learning, 45(1), 5-32.</p>
-<p>Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). The elements of statistical learning: data mining, inference, and prediction. Springer Science &amp; Business Media.</p>
-<p>Rosenbaum, P. R., &amp; Rubin, D. B. (1983). The central role of the propensity score in observational studies for causal effects. Biometrika, 70(1), 41-55.</p>
-<p>Wager, S., &amp; Athey, S. (2018). Estimation and inference of heterogeneous treatment effects using random forests. Journal of the American Statistical Association, 113(523), 1228-1242.</p>
-<h2 id="additional-resources">Additional Resources</h2>
-<ul>
-<li>GRF algorithm reference on <a href="https://github.com/grf-labs/grf/blob/master/REFERENCE.md#causal-forests">GitHub</a></li>
-<li>less formal tutorial by <a href="https://www.markhw.com/blog/causalforestintro">Mark H. White</a></li>
-</ul>
-<hr>
-<h2 id="appendix">Appendix</h2>
-<h3 id="orthogonalization">Orthogonalization</h3>
-<p>Causal forest assumes that treatment assignment is independent from potential outcomes conditional on $X$. The feature space $\mathbb{X}$ however contains parts related to estimated treatment effects and parts related to treatment propensities. To shift splits towards estimating treatment effects instead of propensities, orthogonalization employs regression forests to estimate (i) treatment propensities and (ii) marginal outcomes which is used as input to grow a causal forest. Estimates of treatment propensities, $ e(x)=E[W|X=x] $, and marginal outcomes, $m(x) = E[Y|X=x]$, yield residual treatments $W-e(x)$ and outcomes $Y-m(x)$. In that way, causal trees solely split on the parts of the variation that contain information on potential treatment effects.</p>
-<h3 id="model-error-measures">Model error measures</h3>
-<p><em>Debiased error</em>: Estimates of the &lsquo;R-Loss&rsquo; criterion which relates to the mean-squared error (infeasible). It assumes an infinite number of trees. Therefore, it is complemented by the excess error estimate which captures model induced estimate variance.</p>
-<p><em>Excess error</em>: Jackknife estimates of the Monte-carlo error which relates to estimate variance induced by the trees themselves. The error decreases with more trees and becomes negligible with large forests. To test this, grow forests with different sizes and observe their excess error.</p>
-<p>The sum of these errors yields the overall error of the forest.</p>
-<h3 id="finding-model-parameters-with-parameter-tuning">Finding model parameters with parameter tuning</h3>
-<p>Another feature included for Causal Forest is its automated search for suitable model parameters. The procedure determines close-to optimal parameters for the provided data with cross-validation. However, instead of relying on precise error measures, they are approximated to trade off complexity with lower computational expenses. To enable this for all tunable parameters, set <code>causal_forest(...parameter.tuning='all')</code> and the algorithm looks for determines values for: <code>min.node.size</code>, <code>sample.fraction</code>, <code>mtry</code>, <code>honesty.fraction</code> and <code>honesty.prune.leaves</code>, <code>alpha</code> and <code>imbalance.penalty</code>.</p>
-<p>The procedure can be tweaked changing the default values for <code>tune.num.reps</code>, <code>tune.num.trees</code> and <code>tune.num.draws</code>. <code>tune.num.reps</code> is the number of distinct parameter sets that are tested in a mini-forest containing <code>tune.num.trees</code> trees, to obtain a debiased error estimate. Lastly, these error estimates yield a smoothing function to predict the error for another randomly drawn distinct set of <code>tune.num.draws</code> parameters. Those parameter sets that minimize the predicted error are considered optimal.</p>
-<h3 id="variance-across-causal-forests">Variance across Causal Forests</h3>
-<p>The algorithm selects splits that maximize any given differences in estimated treatment effects between child nodes. However, these differences could be almost negligible and a high variable importance does not necessarily imply heterogeneity across treatment. It solely means that the algorithm selected variables which are more associated with any existing treatment effect heterogeneity than others. Additionally, low heterogeneity could imply that variable importances vary across a set of differently seeded Causal Forests. In that case, slightly varying, random initializations can tip the scales for variable selection and cause different splits. Therefore, it makes sense to explore treatment heterogeneity visually by plotting CATE against values of $X_i$</p>
-<p>Especially for lower sample sizes, model parameter have a larger impact on variable importance. Even though, variable importance does not have to be a precise measure, it would be great to obtain robust coefficients.</p>
-<p>One way to ensure variable importance for every variable is to force the algorithm to try all variables for each candidate split. <code>mtry</code> is the parameter that controls the number of tried variables and defaults to $\sqrt(M) + 20$ Hold the <code>mtry</code> parameter constant and insert the maximum number, corresponding to the total number of variables.</p>
-<h3 id="remarks-on-study-design">Remarks on Study Design</h3>
-<ul>
-<li>The authors conducted two interventions on grit and patience. Therefore, the dataset contains a &ldquo;sample&rdquo; variable to indicate sample 1 or 2. The first sample can be disregarded due to design issues.</li>
-<li>Teachers willing to participate were randomly assigned to TG or CG. Due to this selection into the study, average treatment effect on the treated is observed (ATT). However, since a high share of 80% teachers were willing to participate, the authors conjecture strong external validity. But what are the assumptions and how does it relate to ATE again?
-<a href="https://stats.stackexchange.com/questions/308397/why-is-average-treatment-effect-different-from-average-treatment-effect-on-the-t">This post</a> explains it in brief.</li>
-<li>teachers of the TG attended a one-day training seminar to present materials and suggested classroom activities. Pedagogical guidelines focused on task effort and process instead of outcome-based feedback: Praising effort, rewarding perseverant behavior and favor positive attitudes towards learning.</li>
-<li>verbal and math scores were measured before and after treatment</li>
-<li>data was collected in two classroom visits each a week apart</li>
-</ul>
-<h3 id="results-without-mean-imputation">Results without mean imputation</h3>
-<p>I was curious, in which way the mean imputation shaped the results. Therefore, I rerun the estimation without mean imputation and obtain:</p>
-<table>
-<thead>
-<tr>
-<th align="left"></th>
-<th align="center">Difficult round 1</th>
-<th align="center">Difficult round 2</th>
-<th align="center">Difficult round 3</th>
-<th align="center">Difficult round 4</th>
-<th align="center">Difficult round 5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">Est. treatment effect</td>
-<td align="center">0.10</td>
-<td align="center">0.18</td>
-<td align="center">0.19</td>
-<td align="center">0.18</td>
-<td align="center">0.16</td>
-</tr>
-<tr>
-<td align="left">Std. Error</td>
-<td align="center">0.05</td>
-<td align="center">0.04</td>
-<td align="center">0.04</td>
-<td align="center">0.05</td>
-<td align="center">0.04</td>
-</tr>
-<tr>
-<td align="left">Intercept</td>
-<td align="center">0.55</td>
-<td align="center">0.35</td>
-<td align="center">0.17</td>
-<td align="center">0.09</td>
-<td align="center">0.06</td>
-</tr>
-<tr>
-<td align="left">N</td>
-<td align="center">1058</td>
-<td align="center">1058</td>
-<td align="center">1056</td>
-<td align="center">1056</td>
-<td align="center">1057</td>
-</tr>
-</tbody>
-</table>
-<p>Mean imputation often leads to more precise estimates and could remove selection issues, when missing values occur in patterns across individuals. Nevertheless, the above table indicates robust estimates in both dimensions with coefficients differing slightly. It looks as if the mean imputation neither changed standard errors nor treatment estimates. Additionally, the estimation method with OLS did not impact coefficients compared to logit as used in the study.</p>
 
                 </section>
             </article>
