@@ -50,7 +50,7 @@
                         A comprehensive guide to Causal Forest - How it works and how to apply it
                     </h1>
                     <h2 class="headline">
-                    26 Apr 2020
+                    28 Apr 2020
                     
                     · 23 minute read
                       <span class="tags">
@@ -119,18 +119,18 @@
 <hr>
 <h1 id="disclaimer">Disclaimer</h1>
 <p><em>This guide aims to be a great resource for practitioners of causal forest and wants to empower researchers with this awesome method. I found myself diving into its R source code, published papers on its theory and referring to its algorithm reference. I want to combine all these resources in one article, so you do not need to check every resource in-detail and dig deep. Still, you are welcome to do so and I refer everything under references. Whether you are a researcher keen to throw your data on causal forest or just want to have a glance for the next study, this article is for you.<br>
-But, until writing today, Monday, 27th April 2020, this guide is in an early stage. I am grateful and appreciate your input! If you discover inconsistencies, have comments or questions, I am always happy to discuss them with you and revise content. For example, the scheme of data partitions includes formal error and will be revised this week.</em></p>
+But, until writing today, Monday, 28th April 2020, this guide is in an early stage. I am grateful and appreciate your input! If you discover inconsistencies, have comments or questions, I am always happy to discuss them with you and revise content. For example, the scheme of data partitions includes formal error and will be revised this week.</em></p>
 <hr>
-<p>Causal forest gains attention as a powerful tool to add a machine learning perspective to empirical studies.</p>
-<p>This article sheds light on the method by answering</p>
+<p>Causal forest gains attention as a powerful tool to add a machine learning perspective to empirical studies. The <code>grf</code> software library in <code>R</code> makes it straightforward and quick to apply. Nevertheless, practitioners that want to go beyond basic understanding and include it in their research face many questions and high upfront costs since it largely differs from traditionally used methods, such as ordinary least squares. This article combines insights on its algorithmic implementation, statistical properties and recommended practices to answer</p>
 <blockquote>
 <p><strong>How does causal forest work and how to apply it?</strong></p>
 </blockquote>
-<p>The implementation in R from Athey et al. (2019) will be applied to data from an educational randomized intervention on grit by Alan et al. (2019).</p>
+<p>I synthesize five resources to provide an overview. These are (1) Athey et al. (2019) as the main work on its statistical properties, sometimes called &ldquo;the GRF paper&rdquo;, (2) Wager &amp; Athey (2018), which propose preliminary procedures for tree-based treatment estimation and honest trees, (3) Athey &amp; Wager (2019) who apply it to an exemplary dataset, (4) the GRF algorithm reference on Github which describes its algorithm, and lastly, (5) R scripts from the Github repository.</p>
+<p>Here, causal forest will be applied to data from an educational randomized intervention on grit by Alan et al. (2019) as a hands-on exercise.</p>
 <p>Emphasis is on</p>
 <ul>
-<li>procedures and fundamentals of causal forest</li>
-<li>understand model parameters</li>
+<li>procedures and concepts of causal forest</li>
+<li>understanding model parameters</li>
 <li>how to apply it to data</li>
 <li>interpreting its output</li>
 </ul>
@@ -270,12 +270,13 @@ if variable <em>m</em> used for a split at level <em>l</em> in tree <em>t</em> a
 <p>Further, a weight is introduced that exponentially favors higher tree levels: $w_l = l^{-2}$. Lastly, apply the weights, $RSF_{ml} \times w_l$, and divide this by the weights&rsquo; total, $\sum\limits^L_{l=1} w_l$ to get rid of the *level* dimension and obtain variable importance:</p>
 <p>$$ VI_m=\frac{\sum\limits^L_{l=1} RSF_{ml} \cdot {w_l}}{\sum\limits^L_{l=1} w_l} $$</p>
 <h2 id="case-study-a-randomized-educational-study-on-grit">Case study: A randomized educational study on grit</h2>
+<!-- raw HTML omitted -->
 <h3 id="study-design">Study Design</h3>
 <p><strong>Treatment group (TG)</strong>: Additional program in elementary and post-elementary schools that features a tailored curriculum for 12 weeks to promote gritty behavior among pupils. To achieve this, teachers inform about (i) growth mindset (&ldquo;plasticity of the brain against notion of innate ability&rdquo;), (ii) the role of effort to enhance skills and achieve goals, (iii) failure coping strategies, and (iv) goal setting. Videos, mini case studies, stories and artworks of famous individuals highlight the importance of grit and perseverance from multiple perspectives.</p>
 <p>Treatment is randomly assigned across 16 schools (8 treatment + 8 control schools, 1499 pupils of 42 classrooms, where 1360 (91%) were present and consented). Treated schools solely received the grit curriculum. The sample of this intervention is <em>Sample 2</em> and resolved some design issues of a first intervention, stored in <em>Sample 1</em>. <em>Sample 2's</em> baseline information was collected in spring 2015, implemented in fall 2015 and tested in January 2016 shortly after the curriculum. Also long-term follow-up was done in June 2017, when students advanced to 5th grade, circa 1.5 years after the intervention (60% could be tracked). The follow-up pupils had slightly different verbal scores at baseline compared to the original intervention sample.</p>
 <p><strong>Control group (CG)</strong>: Several placebo treatments were in place for the control group, including projects on environment sensitivity, health and hygiene.</p>
 <h3 id="data">Data</h3>
-<p><strong>Outcomes</strong> were derived from two incentivized experimental tasks about grit. The first showed a grid with numbers and thed pupils had to find number pairs adding up to 100. Rewards depend on a minimum score (performance target), which was 3 pairs per 1.5 minutes. Before each round, the children decided between a difficult grid and get (i) four gifts or a simpler grid to get (ii) one gift in case of success. Experimenters give feedback after each round if they succeeded or failed to meet the target. Students decided between (i) and (ii) except for the first round, where they got randomly either (i) or (ii) to get a subsample free of selection into the tasks. The following table gives an overview of relevant covariates that are later assigned to <code>causal_forest()</code>.</p>
+<p>Outcomes were derived from two incentivized experimental tasks about grit. The first showed a grid with numbers and thed pupils had to find number pairs adding up to 100. Rewards depend on a minimum score (performance target), which was 3 pairs per 1.5 minutes. Before each round, the children decided between a difficult grid and get (i) four gifts or a simpler grid to get (ii) one gift in case of success. Experimenters give feedback after each round if they succeeded or failed to meet the target. Students decided between (i) and (ii) except for the first round, where they got randomly either (i) or (ii) to get a subsample free of selection into the tasks. The following table gives an overview of relevant covariates that are later assigned to <code>causal_forest()</code>.</p>
 <table>
 <thead>
 <tr>
