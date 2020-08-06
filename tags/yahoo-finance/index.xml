@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yahoo finance on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/yahoo-finance/</link>
+    <description>Recent content in Yahoo finance on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 06 Aug 2020 00:00:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://philippschmalen.github.io/tags/yahoo-finance/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker</title>
+      <link>https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends/</link>
+      <pubDate>Thu, 06 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends/</guid>
+      <description>Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker 0. README I conducted this project as part of the Machine Learning Engineer Nanodegree at Udacity in August 2020.
+Python libraries
+It relies on the following libraries or services
+ Python (3.6) Pytorch (1.4.0) Amazon Sagemaker Pytrends (4.7.3, https://pypi.org/project/pytrends/) Yahooquery (2.2.6, https://pypi.org/project/yahooquery/)  Files
+There are several files
+Running 1_data_collection.ipynb takes approximately 17 hours due to Google&amp;rsquo;s rate limit and a timeout function which avoids server errors.</description>
+    </item>
+    
+  </channel>
+</rss>
