@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>udpate on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/udpate/</link>
+    <description>Recent content in udpate on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 17 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://philippschmalen.github.io/tags/udpate/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About</title>
+      <link>https://philippschmalen.github.io/about/</link>
+      <pubDate>Tue, 17 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/about/</guid>
+      <description>Diving into Job Recommender Systems and Causal Forest by Athey et al. (2019). Currently working on a tutorial on Causal Forest in R which will be published January 2020.
+Graduating December 2019 as MSc Economics from Copenhagen University. Excited to read your message.</description>
+    </item>
+    
+  </channel>
+</rss>
