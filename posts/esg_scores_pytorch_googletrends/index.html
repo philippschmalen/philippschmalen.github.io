@@ -50,9 +50,9 @@
                         Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker
                     </h1>
                     <h2 class="headline">
-                    6 Aug 2020
+                    7 Aug 2020
                     
-                    · 22 minute read
+                    · 19 minute read
                       <span class="tags">
                       
                       
@@ -85,7 +85,6 @@
                     <div id="toc">
                       <nav id="TableOfContents">
   <ul>
-    <li><a href="#0-readme">0. README</a></li>
     <li><a href="#i-definition">I. Definition</a>
       <ul>
         <li><a href="#project-overview">Project Overview</a></li>
@@ -93,18 +92,15 @@
         <li><a href="#metrics">Metrics</a></li>
       </ul>
     </li>
-    <li><a href="#ii-analysis">II. Analysis</a>
+    <li><a href="#ii-data">II. Data</a>
       <ul>
-        <li><a href="#constructing-the-dataset-from-scratch">Constructing the dataset from scratch</a></li>
+        <li><a href="#constructing-the-dataset">Constructing the dataset</a></li>
+        <li><a href="#data-preprocessing-and-feature-engineering">Data preprocessing and feature engineering</a></li>
+        <li><a href="#data-exploration">Data Exploration</a></li>
         <li><a href="#benchmark">Benchmark</a></li>
       </ul>
     </li>
-    <li><a href="#iii-methodology">III. Methodology</a>
-      <ul>
-        <li><a href="#data-preprocessing-and-feature-engineering">Data preprocessing and feature engineering</a></li>
-        <li><a href="#implementation">Implementation</a></li>
-      </ul>
-    </li>
+    <li><a href="#iii-implementation-with-sagemaker">III. Implementation with Sagemaker</a></li>
     <li><a href="#iv-results">IV. Results</a>
       <ul>
         <li><a href="#model-evaluation-and-validation">Model Evaluation and Validation</a></li>
@@ -113,6 +109,8 @@
     <li><a href="#v-conclusion">V. Conclusion</a></li>
     <li><a href="#appendix">Appendix</a>
       <ul>
+        <li><a href="#readme">README</a></li>
+        <li><a href="#disclaimer">Disclaimer</a></li>
         <li><a href="#references">References</a></li>
       </ul>
     </li>
@@ -123,20 +121,6 @@
                 
                 <section id="post-body">
                     <h1 id="predicting-esg-risks-with-pytorch-google-trends-and-amazon-sagemaker">Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker</h1>
-<h2 id="0-readme">0. README</h2>
-<p>I conducted this project as part of the Machine Learning Engineer Nanodegree at Udacity in August 2020.</p>
-<p><strong>Python libraries</strong></p>
-<p>It relies on the following libraries or services</p>
-<ul>
-<li>Python (3.6)</li>
-<li>Pytorch (1.4.0)</li>
-<li>Amazon Sagemaker</li>
-<li>Pytrends (4.7.3, <a href="https://pypi.org/project/pytrends/">https://pypi.org/project/pytrends/</a>)</li>
-<li>Yahooquery (2.2.6, <a href="https://pypi.org/project/yahooquery/">https://pypi.org/project/yahooquery/</a>)</li>
-</ul>
-<p><strong>Files</strong></p>
-<p>There are several files</p>
-<p>Running <code>1_data_collection.ipynb</code> takes approximately 17 hours due to Google&rsquo;s rate limit and a timeout function which avoids server errors. It is therefore recommended to load the provided csv data files for replication.</p>
 <h2 id="i-definition">I. Definition</h2>
 <!-- raw HTML omitted -->
 <h3 id="project-overview">Project Overview</h3>
@@ -145,11 +129,6 @@
 <p>The project deals with a prediction task within finance, and in particular, sustainable investment. Private investors increasingly demand firms that act socially responsible, environmentally friendly and have good governance. The UN and leading asset management firms developed the three pillars of ESG, namely environmental, social and governmental, in a conference in 2005 (International Finance Corporation et al., 2005).</p>
 <p>A few years ago investors were willing to accept lower returns for socially responsible investments, but firms with higher ESG scores closed the gap. Auer &amp; Schuhmacher (2016) do not find lower returns of ESG investing compared to a market portfolio. This gives way to an increased demand by investors to invest according the ESG pillars and favor firms that score higher in ESG ratings. FTSE Russell (2018) finds that more than half of global asset owners are currently implementing or evaluating ESG considerations in their investment strategy.</p>
 <p>ESG becomes increasingly relevant in today&rsquo;s investment decisions, especially in the face of global challenges such as climate change, human rights abuse or gender equality. That is why I want to find out more about ESG scores and how they can be predicted for firms using non-primary data from Google Trends.</p>
-<h4 id="disclaimer">Disclaimer</h4>
-<p>This project is meant to be a pilot for a more rigorous approach to ESG related metrics. I use it to make the error-prone interaction with Google trends accessible, establish work flows with Amazon Sagemaker and identify strengths and weaknesses of the self-collected data. The highly customized data is the major strength of this project. Once established processes to collect data can be easily extended and generalize to other problems, where custom data yields an advantage.</p>
-<p>But it also has its drawbacks regarding extensiveness, quality and high upfront costs. Collecting web data takes disproportionately more time than a ready-to-load dataset which leaves less time to work on equally important aspects, such as feature engineering, data processing, model selection, tuning and testing.</p>
-<p>All in all, the project yields amazing opportunities for follow-up work and great potential to generalize its data gathering process to other fields. This prototype holds valuable insights, especially for fields where data is scarce and customized solutions that rely on Google search data is crucial.</p>
-<p>At the end of this report, I outline a road map for future work and possible extensions. These can be used to further carve out a data science portfolio and discover pathways to untapped data.</p>
 <h3 id="problem-statement">Problem Statement</h3>
 <!-- raw HTML omitted -->
 <p>ESG investing requires individual investors to be disproportionately well informed. A lot of data about a firm has to be collected, processed and interpreted which leads to a high workload and cognitive strain.</p>
@@ -245,14 +224,12 @@
 <p>The main assumption for accuracy is that ESG scores are valid proxies for actual ESG behavior. To recall, the aim should be to support investors in their ESG investing decisions.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<h2 id="ii-analysis">II. Analysis</h2>
+<h2 id="ii-data">II. Data</h2>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<ul>
-<li>analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment).</li>
-</ul>
-<p>The following sections describe how I construct the dataset from scratch. First, Google trends is introduced and how keywords are composed. Second, the Pytrends API is described along with challenges imposed by Google&rsquo;s unknown rate limits as well as the metric of search interest over time. Third,</p>
-<h3 id="constructing-the-dataset-from-scratch">Constructing the dataset from scratch</h3>
+<p>The following sections describe how I construct the dataset from scratch. First, Google trends is introduced and how keywords are composed. Second, the Pytrends API is described along with challenges imposed by Google&rsquo;s unknown rate limits as well as the metric of search interest over time.</p>
+<!-- raw HTML omitted -->
+<h3 id="constructing-the-dataset">Constructing the dataset</h3>
 <p>Google trends (<a href="https://trends.google.com/trends/?geo=US">https://trends.google.com/trends/?geo=US</a>) shows search interest for a given keyword within a specified region. As a starting point, I deal with American firms and thus focus on the US using English keywords. 
 The Google trend indicator quantifies the relative search volume of searches between two or more terms.</p>
 <p>Relative search volume could be interpreted as search interest and ranges from 0 to 100. To be clear, it lacks a defined measurement unit such as an absolute search count, but relates to all other keywords that were part of the query to Google trends.</p>
@@ -353,210 +330,6 @@ make_csv(pd<span style="color:#f92672">.</span>DataFrame(), filename<span style=
 
 </code></pre></div><!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<h4 id="variable-means">Variable means</h4>
-<p>I focus on the most recent period, corresponding to the time window from today to 1 year ago. The variables have suffix $4$ and were not down-weighted by the decay function, which means we see the unprocessed metric for search interest. Looking at top-five highest and lowest variable means yields the following tables.</p>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>mean (5 highest)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>tax_4</td>
-<td>14.731021</td>
-</tr>
-<tr>
-<td>bad_4</td>
-<td>13.299369</td>
-</tr>
-<tr>
-<td>problem_4</td>
-<td>4.437894</td>
-</tr>
-<tr>
-<td>issues_4</td>
-<td>4.334615</td>
-</tr>
-<tr>
-<td>fraud_4</td>
-<td>4.154477</td>
-</tr>
-<tr>
-<td>&mdash;&mdash;&mdash;-</td>
-<td><strong>(5 lowest)</strong></td>
-</tr>
-<tr>
-<td>harassment_4</td>
-<td>0.103090</td>
-</tr>
-<tr>
-<td>bribe_4</td>
-<td>0.001955</td>
-</tr>
-<tr>
-<td>greenwashing_4</td>
-<td>0.000000</td>
-</tr>
-<tr>
-<td>intransparent_4</td>
-<td>0.000000</td>
-</tr>
-<tr>
-<td>arms trade_4</td>
-<td>0.000000</td>
-</tr>
-</tbody>
-</table>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h4 id="feature-correlations">Feature correlations</h4>
-<p><img src="/figures/esg_googletrends/corr_heatmap.png" alt=""></p>
-<p>The correlation heatmap depicts a uniform pattern of rather strong positive correlation around .25. Additionally, it makes variables with zero variance and means salient. Normally, we would like to see more intricate correlations and uniform patterns such as these are uncommon. However, this is due to choice of keywords, which all relate to negative criteria within the ESG setting. Since they share this overarching theme, the uniform pattern becomes explainable and motivate other approaches to include more diverse keywords that also include ESG topics of positive screening.</p>
-<p><strong>Distribution of the outcome variable (without split)</strong></p>
-<p>Below is the distribution of ESG scores on which the median split is based. It shows a few outliers to the right, but seems evenly distributed. It shows that a median split is a rather safe clean way to divide the data.</p>
-<p><img src="/figures/esg_googletrends/ESG_score_y.png" alt=""></p>
-<h4 id="pca-explained-variance">PCA: Explained variance</h4>
-<p>As an additional part of descriptive statistics, I conduct a principle component analysis (PCA). Plotting explained variance of each component indicates how many latent features are present in the data. Both the scree plot and the table below show a sharp decline of explained variance from the first to the second component, where the latter accounts for less than 1/4 explained variance of the first component. This might hint at a latent factor across multiple features and a larger interdependence among them, as similarly indicated by the correlation pattern.</p>
-<p><img src="/figures/esg_googletrends/pca_explained_var.png" alt=""></p>
-<table>
-<thead>
-<tr>
-<th>PC</th>
-<th>explained variance</th>
-<th>cumulative</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>0.386840</td>
-<td>0.386840</td>
-</tr>
-<tr>
-<td>2</td>
-<td>0.091858</td>
-<td>0.478698</td>
-</tr>
-<tr>
-<td>3</td>
-<td>0.066203</td>
-<td>0.544901</td>
-</tr>
-<tr>
-<td>4</td>
-<td>0.056188</td>
-<td>0.601089</td>
-</tr>
-<tr>
-<td>5</td>
-<td>0.048013</td>
-<td>0.649102</td>
-</tr>
-</tbody>
-</table>
-<p>To further pin down the hypothesis about latent factors, factor loadings can be examined. In some cases, factor loadings reveal a common pattern, where in other cases, it cannot be easily interpreted when it does not match into a narrative. Therefore, the next section deals with factor loadings.</p>
-<h4 id="pca-factor-loadings">PCA: Factor loadings</h4>
-<p>Below is a table showing the top-3 highest and lowest factor loadings for the first principle component.</p>
-<table>
-<thead>
-<tr>
-<th>PC 1</th>
-<th>lowest  factor loadings</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>arms trade_0</td>
-<td>-1.110223e-16</td>
-</tr>
-<tr>
-<td>greenwashing_1</td>
-<td>-0.000000e+00</td>
-</tr>
-<tr>
-<td>intransparent_4</td>
-<td>-0.000000e+00</td>
-</tr>
-<tr>
-<td><strong>highest factor loadings</strong></td>
-<td></td>
-</tr>
-<tr>
-<td>conflict_2</td>
-<td>0.122832</td>
-</tr>
-<tr>
-<td>conflict_0</td>
-<td>0.121809</td>
-</tr>
-<tr>
-<td>conflict_1</td>
-<td>0.121395</td>
-</tr>
-<tr>
-<td>conflict_3</td>
-<td>0.120161</td>
-</tr>
-<tr>
-<td>conflict_4</td>
-<td>0.119546</td>
-</tr>
-<tr>
-<td>weapons_2</td>
-<td>0.118173</td>
-</tr>
-<tr>
-<td>weapons_1</td>
-<td>0.117959</td>
-</tr>
-<tr>
-<td>weapons_3</td>
-<td>0.117439</td>
-</tr>
-<tr>
-<td>weapons_0</td>
-<td>0.116779</td>
-</tr>
-<tr>
-<td>weapons_4</td>
-<td>0.115938</td>
-</tr>
-<tr>
-<td>discrimination_2</td>
-<td>0.112915</td>
-</tr>
-<tr>
-<td>discrimination_0</td>
-<td>0.112702</td>
-</tr>
-<tr>
-<td>discrimination_4</td>
-<td>0.112656</td>
-</tr>
-<tr>
-<td>discrimination_1</td>
-<td>0.112234</td>
-</tr>
-<tr>
-<td>discrimination_3</td>
-<td>0.112179</td>
-</tr>
-</tbody>
-</table>
-<p>The lowest coefficients show zero connection to the keywords arms trade, greenwashing and intransparent. Referring to the mean statistics above explains these low values, since these variables do not have any variance, being a constant 0. Inspecting the highest factor loadings uncovers a strong link to keywords of conflict, weapons and discrimination. These factors not only proxy similar firm traits, but are also of similar magnitude, ranging around 0.1. This hints at a strong latent foundation across features, which is by construction from the chosen topics. All ESG topic keywords stem from the idea of negative screening which comprises negative criteria. If there would be a more diverse spectrum of keywords, this likely leads to a less uniform distribution of factor loadings and a less distinct drop of explained variance from one principal component to another. The previous correlation analysis hints at informational uniformity across features, which the PCA confirms. The PCA uncovers that one latent factor accounts for most of the variance, which likely stands for negative associations with a firm. Since the keywords were chosen based on this, it is mostly self-constructed.</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h3 id="benchmark">Benchmark</h3>
-<!-- raw HTML omitted -->
-<p>Two benchmark classifiers are drawn as comparison to the neural network. The first one is a coin flip and the second one a logistic classifier. By design of the outcome variable, its median split serves as naive model, where half of the firms fall into the positive category, even though they perform low on ESG. The naive approach is equivalent to flipping a coin, achieving an accuracy of 50% on average. The second benchmark is a logistic classifier, which is a simple but commonly found classifier.</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="iii-methodology">III. Methodology</h2>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
 <h3 id="data-preprocessing-and-feature-engineering">Data preprocessing and feature engineering</h3>
 <p>To feed the data into the model, it has to meet certain criteria. A simple data format has rows for individuals and columns for an individual&rsquo;s characteristics. In this example, it should be a matrix where one row stands for one firm and where columns contain information about the firm.</p>
 <p>However, Google trends returns a time-series for each keyword spanning the last five years, reported weekly. This amounts to $260$ ($52$ weeks  $\times$ $5$ years  $= 260$) entries for each keyword and yields the so-called &ldquo;long&rdquo; data format for a given firm, A and 30 search keyword:</p>
@@ -647,10 +420,77 @@ Averaging by year, adding the time dimension to keywords variables and thereby c
 </table>
 <p><img src="/figures/esg_googletrends/gtrends_ex1.png" alt="">
 <img src="/figures/esg_googletrends/gtrends_ex2.png" alt=""></p>
-<h4 id="general-description-of-the-dataset">General description of the dataset</h4>
+<h4 id="overview-of-the-final-dataset">Overview of the final dataset</h4>
 <p>The dataset is a $N\times(M+1)$ matrix which contains overall $N=305$ rows, $i$, with $M=145$ features, $X_m$, and one outcome variable, $y$. The $145$ features, $X_m$, indicate year-average search interest for a keyword-firm combination at time $t$, which spans five years, indicated by the variable suffixes $0$ to $4$.</p>
 <p>The outcome variable, $y$, is a firm&rsquo;s overall ESG score. Which is later used to construct the binary ESG score high/low variable through a median split. Besides this binary variable, all other metrics count as a ordinal attribute types. They are ordered, while their relative magnitude has no physical meaning. ESG scores rank firms relatively within sector, so that a one point difference for one firm does not mean the same for another. The same holds for relative search interest for a given keyword-firm pair.</p>
-<h3 id="implementation">Implementation</h3>
+<h3 id="data-exploration">Data Exploration</h3>
+<h4 id="variable-means">Variable means</h4>
+<p>I focus on the most recent period, corresponding to the time window from today to 1 year ago. The variables have suffix $4$ and were not down-weighted by the decay function, which means we see the unprocessed metric for search interest. Looking at top-five highest and lowest variable means yields the following tables.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>mean (5 highest)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tax_4</td>
+<td>14.731021</td>
+</tr>
+<tr>
+<td>bad_4</td>
+<td>13.299369</td>
+</tr>
+<tr>
+<td>problem_4</td>
+<td>4.437894</td>
+</tr>
+<tr>
+<td>issues_4</td>
+<td>4.334615</td>
+</tr>
+<tr>
+<td>fraud_4</td>
+<td>4.154477</td>
+</tr>
+<tr>
+<td>&mdash;&mdash;&mdash;-</td>
+<td><strong>(5 lowest)</strong></td>
+</tr>
+<tr>
+<td>harassment_4</td>
+<td>0.103090</td>
+</tr>
+<tr>
+<td>bribe_4</td>
+<td>0.001955</td>
+</tr>
+<tr>
+<td>greenwashing_4</td>
+<td>0.000000</td>
+</tr>
+<tr>
+<td>intransparent_4</td>
+<td>0.000000</td>
+</tr>
+<tr>
+<td>arms trade_4</td>
+<td>0.000000</td>
+</tr>
+</tbody>
+</table>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h3 id="benchmark">Benchmark</h3>
+<!-- raw HTML omitted -->
+<p>Two benchmark classifiers are drawn as comparison to the neural network. The first one is a coin flip and the second one a logistic classifier. By design of the outcome variable, its median split serves as naive model, where half of the firms fall into the positive category, even though they perform low on ESG. The naive approach is equivalent to flipping a coin, achieving an accuracy of 50% on average. The second benchmark is a logistic classifier, which is a simple but commonly found classifier.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="iii-implementation-with-sagemaker">III. Implementation with Sagemaker</h2>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <p>I implemented the neural network with Pytorch on Amazon Sagemaker, with the necessary scripts <code>train.py</code>, <code>model.py</code> and <code>predict.py</code> in the corresponding <code>source</code> folder. Furthermore, a Sagemaker Pytorch estimator object was trained using a 80%/20% train-test split. Thereafter, I deployed the model for testing purposes and generated the predictions on the test set. Additionally, all classification metrics were retrieved. All implementation steps for Pytorch were repeated for the Sklearn logistic classifier, excluding the <code>model.py</code> and <code>predict.py</code>scripts. For model comparison, the evaluation metrics of both models were merged. 
@@ -746,6 +586,23 @@ estimator<span style="color:#f92672">.</span>fit({<span style="color:#e6db74">&#
 <!-- raw HTML omitted -->
 <hr>
 <h2 id="appendix">Appendix</h2>
+<h3 id="readme">README</h3>
+<p>I conducted this project as part of the Machine Learning Engineer Nanodegree at Udacity in August 2020.</p>
+<p><strong>Python libraries</strong></p>
+<p>It relies on the following libraries or services</p>
+<ul>
+<li>Python (3.6)</li>
+<li>Pytorch (1.4.0)</li>
+<li>Amazon Sagemaker</li>
+<li>Pytrends (4.7.3, <a href="https://pypi.org/project/pytrends/">https://pypi.org/project/pytrends/</a>)</li>
+<li>Yahooquery (2.2.6, <a href="https://pypi.org/project/yahooquery/">https://pypi.org/project/yahooquery/</a>)</li>
+</ul>
+<p>The data collection script (<code>1_data_collection.ipynb</code>) takes approximately 17 hours due to Google&rsquo;s rate limit and a timeout function which avoids server errors. It is therefore recommended to load the provided csv data files for replication.</p>
+<h3 id="disclaimer">Disclaimer</h3>
+<p>This project is meant to be a pilot for a more rigorous approach to ESG related metrics. I use it to make the error-prone interaction with Google trends accessible, establish work flows with Amazon Sagemaker and identify strengths and weaknesses of the self-collected data. The highly customized data is the major strength of this project. Once established processes to collect data can be easily extended and generalize to other problems, where custom data yields an advantage.</p>
+<p>But it also has its drawbacks regarding extensiveness, quality and high upfront costs. Collecting web data takes disproportionately more time than a ready-to-load dataset which leaves less time to work on equally important aspects, such as feature engineering, data processing, model selection, tuning and testing.</p>
+<p>All in all, the project yields amazing opportunities for follow-up work and great potential to generalize its data gathering process to other fields. This prototype holds valuable insights, especially for fields where data is scarce and customized solutions that rely on Google search data is crucial.</p>
+<p>At the end of this report, I outline a road map for future work and possible extensions. These can be used to further carve out a data science portfolio and discover pathways to untapped data.</p>
 <h3 id="references">References</h3>
 <p>Auer, B. R., &amp; Schuhmacher, F. (2016). Do socially (ir) responsible investments pay? New evidence from international ESG data. The Quarterly Review of Economics and Finance, 59, 51-62.
 Bank of America Research (2020). Accessed 28th July 2020,  <a href="https://www.merrilledge.com/article/why-esg-matters#:~:text=Why%20ESG%20matters%20%E2%80%94%20Now%20more%20than%20ever&amp;text=A%20new%20BofA%20Global%20Research,over%20companies%20that%20don't">https://www.merrilledge.com/article/why-esg-matters#:~:text=Why%20ESG%20matters%20%E2%80%94%20Now%20more%20than%20ever&amp;text=A%20new%20BofA%20Global%20Research,over%20companies%20that%20don't</a>.</p>
@@ -783,7 +640,7 @@ Bank of America Research (2020). Accessed 28th July 2020,  <a href="https://www.
     
     
         <li>
-            <a href="/posts/working_on_causal_forest/">A comprehensive guide to Causal Forest - How it works and how to apply it<aside class="dates">Apr 28 2020</aside></a>
+            <a href="/posts/working_on_causal_forest/">A comprehensive guide to Causal Forest<aside class="dates">Apr 28 2020</aside></a>
         </li>
     
         <li>
