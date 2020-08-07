@@ -85,28 +85,28 @@
                     <div id="toc">
                       <nav id="TableOfContents">
   <ul>
-    <li><a href="#i-definition">I. Definition</a>
+    <li><a href="#introduction">Introduction</a>
       <ul>
         <li><a href="#project-overview">Project Overview</a></li>
         <li><a href="#problem-statement">Problem Statement</a></li>
-        <li><a href="#metrics">Metrics</a></li>
+        <li><a href="#model-performance-metrics">Model performance metrics</a></li>
       </ul>
     </li>
-    <li><a href="#ii-data">II. Data</a>
+    <li><a href="#data--methodology">Data &amp; Methodology</a>
       <ul>
         <li><a href="#constructing-the-dataset">Constructing the dataset</a></li>
         <li><a href="#data-preprocessing-and-feature-engineering">Data preprocessing and feature engineering</a></li>
         <li><a href="#data-exploration">Data Exploration</a></li>
         <li><a href="#benchmark">Benchmark</a></li>
+        <li><a href="#implementation-with-sagemaker">Implementation with Sagemaker</a></li>
       </ul>
     </li>
-    <li><a href="#iii-implementation-with-sagemaker">III. Implementation with Sagemaker</a></li>
-    <li><a href="#iv-results">IV. Results</a>
+    <li><a href="#results">Results</a>
       <ul>
         <li><a href="#model-evaluation-and-validation">Model Evaluation and Validation</a></li>
       </ul>
     </li>
-    <li><a href="#v-conclusion">V. Conclusion</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
     <li><a href="#appendix">Appendix</a>
       <ul>
         <li><a href="#readme">README</a></li>
@@ -121,7 +121,7 @@
                 
                 <section id="post-body">
                     <h1 id="predicting-esg-risks-with-pytorch-google-trends-and-amazon-sagemaker">Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker</h1>
-<h2 id="i-definition">I. Definition</h2>
+<h2 id="introduction">Introduction</h2>
 <!-- raw HTML omitted -->
 <h3 id="project-overview">Project Overview</h3>
 <!-- raw HTML omitted -->
@@ -143,7 +143,7 @@
 <hr>
 <p>A more technical version of the problem statement could be: <em>Can machine learning models classify firms in their ESG performance based on Google search frequency?</em></p>
 <p>To find an answer, I implement a detailed implementation plan:</p>
-<h4 id="step-by-step-implementation-plan">Step-by-step implementation plan</h4>
+<h4 id="implementation-roadmap">Implementation roadmap</h4>
 <ol>
 <li>
 <p>Data collection</p>
@@ -209,7 +209,7 @@
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<h3 id="metrics">Metrics</h3>
+<h3 id="model-performance-metrics">Model performance metrics</h3>
 <!-- raw HTML omitted -->
 <p>The prediction task is a classification since the outcome is binary (high/low ESG scores). This leads to the three basic metrics of precision, recall and accuracy. Other metrics that consider both precision and recall are area under the curve (ROC) and F-score. These are calculated based on the counts of four variables: True positives (TP),  true negatives (TN), false positives (FP) and false negatives (FN).</p>
 <p>Accuracy is defined as</p>
@@ -224,7 +224,7 @@
 <p>The main assumption for accuracy is that ESG scores are valid proxies for actual ESG behavior. To recall, the aim should be to support investors in their ESG investing decisions.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<h2 id="ii-data">II. Data</h2>
+<h2 id="data--methodology">Data &amp; Methodology</h2>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <p>The following sections describe how I construct the dataset from scratch. First, Google trends is introduced and how keywords are composed. Second, the Pytrends API is described along with challenges imposed by Google&rsquo;s unknown rate limits as well as the metric of search interest over time.</p>
@@ -487,7 +487,7 @@ Averaging by year, adding the time dimension to keywords variables and thereby c
 <p>Two benchmark classifiers are drawn as comparison to the neural network. The first one is a coin flip and the second one a logistic classifier. By design of the outcome variable, its median split serves as naive model, where half of the firms fall into the positive category, even though they perform low on ESG. The naive approach is equivalent to flipping a coin, achieving an accuracy of 50% on average. The second benchmark is a logistic classifier, which is a simple but commonly found classifier.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<h2 id="iii-implementation-with-sagemaker">III. Implementation with Sagemaker</h2>
+<h3 id="implementation-with-sagemaker">Implementation with Sagemaker</h3>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
@@ -526,7 +526,7 @@ estimator<span style="color:#f92672">.</span>fit({<span style="color:#e6db74">&#
 </code></pre></div><p>The logistic classifier was similarly instantiated using a Sklearn estimator object.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<h2 id="iv-results">IV. Results</h2>
+<h2 id="results">Results</h2>
 <!-- raw HTML omitted -->
 <h3 id="model-evaluation-and-validation">Model Evaluation and Validation</h3>
 <ul>
@@ -576,7 +576,7 @@ estimator<span style="color:#f92672">.</span>fit({<span style="color:#e6db74">&#
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<h2 id="v-conclusion">V. Conclusion</h2>
+<h2 id="conclusion">Conclusion</h2>
 <!-- raw HTML omitted -->
 <p>To conclude, I conceptualized, developed and implemented a data analysis project from scratch which mainly deals with search frequency of keywords from Google. Major challenges were faced while collecting the data which compromised the extensiveness of the data and depth of model analysis.</p>
 <p>The main question: <em>&ldquo;Can Google trends and machine learning inform investors about a firm&rsquo;s ESG performance?&quot;</em> can be answered with a cautious &lsquo;yes&rsquo;. On the one hand, the data lacked observations from firms and additional keywords. On the other hand, there is great potential to re-use procedures to query Google for follow up and an extension of the project.</p>
