@@ -3,6 +3,41 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://philippschmalen.github.io/about/</loc>
+    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/about/</loc>
+    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/</loc>
+    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/philippschmalen/</loc>
+    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/projects/</loc>
+    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/</loc>
+    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/udpate/</loc>
+    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://philippschmalen.github.io/tags/data-exploration/</loc>
     <lastmod>2020-08-13T00:00:00+02:00</lastmod>
   </url>
@@ -28,17 +63,7 @@
   </url>
   
   <url>
-    <loc>https://philippschmalen.github.io/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://philippschmalen.github.io/posts/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/</loc>
     <lastmod>2020-08-13T00:00:00+02:00</lastmod>
   </url>
   
@@ -115,31 +140,6 @@
   <url>
     <loc>https://philippschmalen.github.io/tags/tutorial/</loc>
     <lastmod>2020-04-28T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/about/</loc>
-    <lastmod>2019-12-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/about/</loc>
-    <lastmod>2019-12-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/philippschmalen/</loc>
-    <lastmod>2019-12-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/projects/</loc>
-    <lastmod>2019-12-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/udpate/</loc>
-    <lastmod>2019-12-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
