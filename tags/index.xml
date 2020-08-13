@@ -6,10 +6,55 @@
     <description>Recent content in Tags on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 07 Aug 2020 00:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2020 00:00:00 +0200</lastBuildDate>
     
 	<atom:link href="https://philippschmalen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Data Exploration</title>
+      <link>https://philippschmalen.github.io/tags/data-exploration/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/data-exploration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dimensionality</title>
+      <link>https://philippschmalen.github.io/tags/dimensionality/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/dimensionality/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Latent Factors</title>
+      <link>https://philippschmalen.github.io/tags/latent-factors/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/latent-factors/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PCA</title>
+      <link>https://philippschmalen.github.io/tags/pca/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/pca/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Toolbox</title>
+      <link>https://philippschmalen.github.io/tags/toolbox/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/toolbox/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Amazon SageMaker</title>

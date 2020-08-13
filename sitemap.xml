@@ -3,6 +3,51 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://philippschmalen.github.io/tags/data-exploration/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/data_exploration_pca/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/dimensionality/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/latent-factors/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/pca/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/toolbox/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://philippschmalen.github.io/tags/amazon-sagemaker/</loc>
     <lastmod>2020-08-07T00:00:00+02:00</lastmod>
   </url>
@@ -23,16 +68,6 @@
   </url>
   
   <url>
-    <loc>https://philippschmalen.github.io/</loc>
-    <lastmod>2020-08-07T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/posts/</loc>
-    <lastmod>2020-08-07T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends/</loc>
     <lastmod>2020-08-07T00:00:00+02:00</lastmod>
   </url>
@@ -49,11 +84,6 @@
   
   <url>
     <loc>https://philippschmalen.github.io/tags/sustainable-investment/</loc>
-    <lastmod>2020-08-07T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/</loc>
     <lastmod>2020-08-07T00:00:00+02:00</lastmod>
   </url>
   
