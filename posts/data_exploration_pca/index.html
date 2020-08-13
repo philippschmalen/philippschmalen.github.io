@@ -318,6 +318,7 @@ Mean explained variance: 0.1
 10            0.049050    1.000000
 ----------------------------------------
 </code></pre><p>The first component makes up for around 27% of the explained variance. This is relatively low as compared to other datasets, but no matter of concern. It simply indicates that a major share (73%) of observations distributes across more than one dimension. Another way to approach the explained table is to ask: How much components are required to cover more than X% of the variance? For example, I want to reduce the data&rsquo;s dimensionality while retaining 90% explained variance of the original data. Then I would have to include 9 components to reach at least 90% and even have 95% of explained variance covered in this case. With an overall of 10 variables in the original dataset, the scope to reduce dimensionality is limited. Additionally, this shows that each of the 10 original variables adds somewhat unique patterns and limitedly repeats information from other variables.</p>
+<p><img src="/figures/pca_exploration/wine_cellar.jpg" alt="Wine cellar"></p>
 <p>To give another example, I list explained variance of &ldquo;the&rdquo; <a href="https://archive.ics.uci.edu/ml/datasets/wine">wine dataset</a>:</p>
 <pre><code>PCA Overview: Wine dataset
 ========================================
@@ -398,10 +399,6 @@ plt<span style="color:#f92672">.</span>show()
 <p>Recall, that principle components are a linear combination of features. Thus, factor loadings quantify how important each feature is for a principle component.</p>
 <p>The first component strongly negatively associates with task ability, reasoning score (raven), math score, verbal score and positively links to beliefs about being gritty (grit_survey1). Summarizing this into a common underlying factor is subjective and requires domain knowledge. In my opinion, the first component mainly captures cognitive skills.</p>
 <p>The second component correlates negatively with receiving the treatment (grit), gender (male) and positively relates to being inconsistent. Interpreting this dimension is less clear-cut and much more challenging. Nevertheless, it accounts for 12% of explained variance instead of 27% like the first component, which results in less interpretable dimensions as it spans slightly across several topical areas. All components that follow might be analogously difficult to interpret.</p>
-<p>There is some underlying dimensions about</p>
-<ul>
-<li>2.: gender and non-cognitive skills (grit, male, task ability, inconsistent)</li>
-</ul>
 <p>Evidence that variables capture similar dimensions could be uniformly distributed factor loadings. One example which inspired this article is a project of mine with Google Trends and self-constructed keywords about a firm&rsquo;s sustainability (<a href="https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends/)">https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends/)</a>. A list of the 15th highest factor loadings for the first principle component revealed loadings ranging from 0.12 as the highest value to 0.11 as the lowest loading of all 15. Such a uniform distribution of factor loadings could be an issue. This especially applies when data is self-collected and someone preselected what is being considered for collection. Adjusting this selection might add dimensionality to your data which possibly improves model performance at the end.</p>
 <h4 id="another-reason-why-pca-saves-time-down-the-road">Another reason why PCA saves time down the road</h4>
 <blockquote>
