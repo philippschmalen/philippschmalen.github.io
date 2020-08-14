@@ -61,7 +61,7 @@
                           
                               <a href="https://philippschmalen.github.io/tags/data-exploration">Data Exploration</a>
                           
-                              <a href="https://philippschmalen.github.io/tags/latent-factors">Latent Factors</a>
+                              <a href="https://philippschmalen.github.io/tags/hidden-factors">Hidden Factors</a>
                           
                               <a href="https://philippschmalen.github.io/tags/dimensionality">Dimensionality</a>
                           
@@ -92,7 +92,7 @@
     <li><a href="#appendix">Appendix</a>
       <ul>
         <li><a href="#access-the-jupyter-notebook">Access the Jupyter Notebook</a></li>
-        <li><a href="#note-on-factor-analysis-vs-pca">*Note on factor analysis vs. PCA</a></li>
+        <li><a href="#note-on-factor-analysis-vs-pca">Note on factor analysis vs. PCA</a></li>
         <li><a href="#references">References</a></li>
       </ul>
     </li>
@@ -102,7 +102,7 @@
                   
                 
                 <section id="post-body">
-                    <h1 id="understand-your-data-with-principle-component-analysis-pca-and-discover-underlying-patterns">Understand your data with principle component analysis (PCA) and discover underlying patterns</h1>
+                    <h1 id="understand-your-data-with-principle-component-analysis-pca-and-discover-underlying-patterns---enhanced-data-exploration-that-goes-beyond-descriptives">Understand your data with principle component analysis (PCA) and discover underlying patterns - Enhanced data exploration that goes beyond descriptives</h1>
 <p>Save time, resources and stay healthy with data exploration that goes beyond means, distributions and correlation matrices and leverages PCA to see through the surface of variables. It saves time and resources, because it uncovers data issues <em>before</em> an hour-long model training and is good for a programmer&rsquo;s health, since she trades off data worries with something more enjoyable. For example, a well-proven machine learning model might fail, because of insufficient variance in the data or other underlying issues. Therefore, the common work flow includes an exploration step before proceeding with some model magic.</p>
 <p>This article shows how to leverage PCA to understand key properties of a dataset, saving time and resources down the road which ultimately leads to a happier, more fulfilled coding life. I hope this post helps to apply PCA in a consistent way and understand its results.</p>
 <p><img src="/figures/pca_exploration/gymnastics_yoga.jpg" alt="Photo by Burst on Pexels"></p>
@@ -112,7 +112,7 @@
 <h2 id="tldr">TL;DR</h2>
 <p>PCA provides valuable insights about underlying variance across features. It goes beyond mere averages, distributions or correlations and indicates 1. how many components cover the largest chunk of variance, and 2., which features correlate with the most important components. <strong>Exploring the data with PCA crosschecks the previous steps in the project work flow, such as data collection which can be refined based on insights from PCA.</strong> As a shortcut and ready-to-use tool, I provide the function <code>do_pca()</code> which conducts a PCA for a prepared dataset to inspect its results within seconds in <a href="https://github.com/philippschmalen/Code-snippets/blob/master/PCA_workflow.ipynb">this notebook</a> or <a href="https://github.com/philippschmalen/Code-snippets/blob/master/helper_pca.py">script</a>.</p>
 <h2 id="data-exploration-as-a-last-resort-to-detect-data-issues">Data exploration as a last resort to detect data issues</h2>
-<p>When a project structure resembles the one below, the prepared dataset is under scrutiny by looking at descriptive statistics. Among the most common ones are means, distributions and correlations taken across all observations or certain subgrouping.</p>
+<p>When a project structure resembles the one below, the prepared dataset is under scrutiny by looking at descriptive statistics. Among the most common ones are means, distributions and correlations taken across all observations or certain subgroups.</p>
 <p><strong>Common project structure</strong></p>
 <table>
 <thead>
@@ -155,7 +155,7 @@
 </tr>
 </tbody>
 </table>
-<p>The moment when you have a clean dataset at hand, the eyes of many data scientists glance already towards the next and exciting step of applying your models to the data. At this stage, possibly 80% of the project&rsquo;s workload are done, if the data did not fell out of the sky, cleaned and processed like immaculate conception. Of course, the urge is strong for modeling, but here is why a thorough data exploration saves time down the road:</p>
+<p>The moment when you have a clean dataset at hand, the eyes of many data scientists glance already towards the next and exciting step of applying your models to the data. At this stage, possibly 80% of the project&rsquo;s workload are done, if the data did not fell out of the sky, cleaned and processed, ready to bake. Of course, the urge is strong for modeling, but here are two reasons why a thorough data exploration saves time down the road:</p>
 <ol>
 <li>catch coding errors $\rightarrow$ revise feature engineering (step 3)</li>
 <li>identify underlying issues $\rightarrow$ rethink data collection (step 1), preprocessing (step 2) or feature engineering (step 3)</li>
@@ -169,11 +169,11 @@
 <p>Large datasets often require PCA to reduce dimensionality anyway. The method as such captures the maximum possible variance across features and projects observations onto mutually uncorrelated vectors, called components.</p>
 <p>However, PCA can serve other purposes than dimensionality reduction. It also helps to discover underlying patterns across features.*</p>
 <p>To focus on the implementation in Python instead of methodology, I will skip describing PCA in its workings. There are already so many great resources about PCA, that I refer to those instead:</p>
-<ol>
+<ul>
 <li>Animations showing PCA in action: <a href="https://setosa.io/ev/principal-component-analysis/">https://setosa.io/ev/principal-component-analysis/</a></li>
 <li>PCA explained in a family conversation: <a href="https://stats.stackexchange.com/a/140579">https://stats.stackexchange.com/a/140579</a></li>
 <li>Smith (2002). A tutorial on principal components analysis: <a href="https://ourarchive.otago.ac.nz/bitstream/handle/10523/7534/OUCS-2002-12.pdf">Accessible here</a>.</li>
-</ol>
+</ul>
 <p>Two metrics are crucial to make sense of PCA:</p>
 <blockquote>
 <p><strong>Explained variance</strong> measures how much a model can reflect the variance of the whole data. Principle components try to capture as much of the variance as possible and this measure shows to what extent they can do that. It helps to see  Components are sorted by explained variance, with the first one scoring highest and with a total sum of up to 1 across all components.</p>
@@ -200,7 +200,7 @@ s <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</sp
 df_raw <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(io<span style="color:#f92672">.</span>StringIO(s<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)), sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#39;</span>)
 </code></pre></div><p><img src="/figures/pca_exploration/child_drawing_square.jpg" alt="Child draws PCA"></p>
 <h2 id="preprocessing-and-feature-engineering">Preprocessing and feature engineering</h2>
-<p>For PCA to work, the data needs to be numeric, without missings, and standardized. I put all steps into one function (<code>clean_data</code>) which returns a dataframe with standardized features. and conduct steps 1 to 3 of the project work flow (collecting, processing and engineering). 
+<p>For PCA to work, the data needs to be numeric, without missings, and standardized. I put all steps into one function (<code>clean_data()</code>) which returns a dataframe with standardized features. and conduct steps 1 to 3 of the project work flow (collecting, processing and engineering). 
 To begin with, import necessary modules and packages.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
 <span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
@@ -214,13 +214,6 @@ To begin with, import necessary modules and packages.</p>
 <span style="color:#75715e"># seaborn settings</span>
 sns<span style="color:#f92672">.</span>set_style(<span style="color:#e6db74">&#34;whitegrid&#34;</span>)
 sns<span style="color:#f92672">.</span>set_context(<span style="color:#e6db74">&#34;talk&#34;</span>)
-
-<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;RUNNING ON&#34;</span>)
-<span style="color:#960050;background-color:#1e0010">!</span>python <span style="color:#f92672">--</span>version
-<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Pandas &#39;</span>,pd<span style="color:#f92672">.</span>__version__)
-<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Numpy&#39;</span>, np<span style="color:#f92672">.</span>__version__)
-<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Seaborn &#39;</span>,sns<span style="color:#f92672">.</span>__version__)
-
 
 <span style="color:#75715e"># imports for function</span>
 <span style="color:#f92672">from</span> sklearn.preprocessing <span style="color:#f92672">import</span> StandardScaler
@@ -398,7 +391,7 @@ plt<span style="color:#f92672">.</span>show()
 <p>Evidence that variables capture similar dimensions could be uniformly distributed factor loadings. One example which inspired this article is a project of mine with Google Trends and self-constructed keywords about a firm&rsquo;s sustainability (<a href="https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends">https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends</a> ). A list of the 15th highest factor loadings for the first principle component revealed loadings ranging from 0.12 as the highest value to 0.11 as the lowest loading of all 15. Such a uniform distribution of factor loadings could be an issue. This especially applies when data is self-collected and someone preselected what is being considered for collection. Adjusting this selection might add dimensionality to your data which possibly improves model performance at the end.</p>
 <h4 id="another-reason-why-pca-saves-time-down-the-road">Another reason why PCA saves time down the road</h4>
 <blockquote>
-<p>If the data was self-constructed, the factor loadings show how each feature contributes to an underlying dimension, which helps to come up with additional perspectives on data collection and what features or dimensions could add valuable variance. Rather than blind guessing which features to add, factor loadings lead to informed decisions for data collection. They may even be an inspiration in the search for advanced features.</p>
+<p>If the data was self-constructed, the factor loadings show how each feature contributes to an underlying dimension, which helps to come up with additional perspectives on data collection and what features or dimensions could add valuable variance. Rather than blind guessing which features to add, factor loadings lead to informed decisions for data collection. They may even be an inspiration in the search for more advanced features.</p>
 </blockquote>
 <h2 id="conclusion">Conclusion</h2>
 <p>All in all, PCA is a flexible instrument in the toolbox for data exploration. Its main purpose is to reduce complexity of large datasets. But it also serves well to see through the surface of variables, discover latent dimensions and relate variables to these dimensions, making it interpretable.</p>
@@ -409,16 +402,13 @@ plt<span style="color:#f92672">.</span>show()
 <h2 id="appendix">Appendix</h2>
 <h3 id="access-the-jupyter-notebook">Access the Jupyter Notebook</h3>
 <p>I applied PCA to even more exemplary datasets like Boston housing market, wine and iris using <code>do_pca()</code>. It illustrates how PCA output looks like for small datasets. Feel free to download <a href="https://github.com/philippschmalen/Code-snippets/blob/master/PCA_workflow.ipynb">my notebook</a> or <a href="https://github.com/philippschmalen/Code-snippets/blob/master/helper_pca.py">script</a>.</p>
-<h3 id="note-on-factor-analysis-vs-pca">*Note on factor analysis vs. PCA</h3>
-<p>Some argue to apply factor analysis which closely relates to PCA. For those interested about the differences between factor analysis and PCA, refer to <a href="https://stats.stackexchange.com/questions/123063/is-there-any-good-reason-to-use-pca-instead-of-efa-also-can-pca-be-a-substitut">stats.stackexchange.com</a>.</p>
-<p>A <a href="https://stats.stackexchange.com/a/1579">rule of thumb</a> says: Use PCA if you want to reduce your correlated observed variables to a smaller set of uncorrelated variables and use factor analysis to test a model of latent factors causing observed variables. 
-(from here: <a href="https://stats.stackexchange.com/questions/1576/what-are-the-differences-between-factor-analysis-and-principal-component-analysi/1579#1579">https://stats.stackexchange.com/questions/1576/what-are-the-differences-between-factor-analysis-and-principal-component-analysi/1579#1579</a>) 
-(amoeba answer <a href="https://stats.stackexchange.com/a/133806">https://stats.stackexchange.com/a/133806</a>)</p>
+<h3 id="note-on-factor-analysis-vs-pca">Note on factor analysis vs. PCA</h3>
+<p>A rule of thumb formulated <a href="https://stats.stackexchange.com/a/1579">here</a> states: Use PCA if you want to reduce your correlated observed variables to a smaller set of uncorrelated variables and use factor analysis to test a model of latent factors on observed variables.</p>
+<p>Even though, this distinction is scientifically correct, it becomes less relevant in an applied context. PCA relates closely to factor analysis which often leads to similar conclusions about data properties which is what we care about. Therefore, the distinction can relaxed for data exploration. <a href="https://stats.stackexchange.com/a/133806">This post</a> gives an example in an applied context and another example with hands-on code for factor analysis is attached in the <a href="https://github.com/philippschmalen/Code-snippets/blob/master/PCA_workflow.ipynb">notebook</a>.</p>
+<p>Finally, for those interested about the differences between factor analysis and PCA refer to <a href="https://stats.stackexchange.com/questions/123063/is-there-any-good-reason-to-use-pca-instead-of-efa-also-can-pca-be-a-substitut">this post</a>.</p>
 <h3 id="references">References</h3>
-<p>Alan, S., Boneva, T., &amp; Ertac, S. (2019). Ever failed, try again, succeed better: Results from a randomized educational intervention on grit. The Quarterly Journal of Economics, 134(3), 1121-1162.</p>
-<p>Dempsey, K. (2017). Test Driven Development is essential for good data science. Here’s why. Accessed 10th August 2020, <a href="https://bit.ly/3adMzXa">https://bit.ly/3adMzXa</a>.</p>
-<p>Smith, L. I. (2002). A tutorial on principal components analysis.</p>
-<p>Török, A. (2019). Step-by-step TDD in a data science task. Jupyter notebook. Accessed 10th August 2020, <a href="https://bit.ly/3fLrSD1">https://bit.ly/3fLrSD1</a>.</p>
+<p>[1] Alan, S., Boneva, T., &amp; Ertac, S. (2019). Ever failed, try again, succeed better: Results from a randomized educational intervention on grit. The Quarterly Journal of Economics, 134(3), 1121-1162.</p>
+<p>[2] Smith, L. I. (2002). A tutorial on principal components analysis.</p>
 
                 </section>
             </article>
