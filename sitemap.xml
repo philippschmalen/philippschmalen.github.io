@@ -43,11 +43,6 @@
   </url>
   
   <url>
-    <loc>https://philippschmalen.github.io/posts/data_exploration_pca/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://philippschmalen.github.io/tags/dimensionality/</loc>
     <lastmod>2020-08-13T00:00:00+02:00</lastmod>
   </url>
@@ -69,6 +64,11 @@
   
   <url>
     <loc>https://philippschmalen.github.io/tags/toolbox/</loc>
+    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/data_exploration_pca/</loc>
     <lastmod>2020-08-13T00:00:00+02:00</lastmod>
   </url>
   

@@ -9,7 +9,7 @@
 		<meta name="author" content="Philipp Schmalen">
 		<meta name="description" content="Machine Learning, Data Science &amp; Empirics">
 		<meta name="generator" content="Hugo 0.73.0" />
-		<title>Data exploration with principle component analysis (PCA) &middot; Philipp Schmalen</title>
+		<title>Understand your data with principle component analysis (PCA) and discover underlying patterns &middot; Philipp Schmalen</title>
 		<link rel="shortcut icon" href="https://philippschmalen.github.io/images/favicon.ico">
 		<link rel="stylesheet" href="https://philippschmalen.github.io/css/style.css">
 		<link rel="stylesheet" href="https://philippschmalen.github.io/css/highlight.css">
@@ -47,7 +47,7 @@
             <article>
                 <header>
                     <h1>
-                        Data exploration with principle component analysis (PCA)
+                        Understand your data with principle component analysis (PCA) and discover underlying patterns
                     </h1>
                     <h2 class="headline">
                     13 Aug 2020
@@ -102,19 +102,18 @@
                   
                 
                 <section id="post-body">
-                    <h1 id="data-exploration-with-principle-component-analysis-pca---a-shortcut-to-look-beneath-the-surface-of-variables-and-discover-hidden-dimensions">Data exploration with principle component analysis (PCA) - A shortcut to look beneath the surface of variables and discover hidden dimensions</h1>
-<p>Save time, resources and stay healthy with data exploration that goes beyond means, distributions and correlation matrices and leverages PCA to see through the surface of variables. It saves time and resources, because it uncovers data issues <em>before</em> an hour-long model training and is good for a programmer&rsquo;s health, since she trades off data worries with something more enjoyable. For example, a well-proven machine learning model might fail, because of insufficient variance in the data or other underlying issues. Therefore, the common workflow includes an exploration step before proceeding with some model magic.</p>
+                    <h1 id="understand-your-data-with-principle-component-analysis-pca-and-discover-underlying-patterns">Understand your data with principle component analysis (PCA) and discover underlying patterns</h1>
+<p>Save time, resources and stay healthy with data exploration that goes beyond means, distributions and correlation matrices and leverages PCA to see through the surface of variables. It saves time and resources, because it uncovers data issues <em>before</em> an hour-long model training and is good for a programmer&rsquo;s health, since she trades off data worries with something more enjoyable. For example, a well-proven machine learning model might fail, because of insufficient variance in the data or other underlying issues. Therefore, the common work flow includes an exploration step before proceeding with some model magic.</p>
 <p>This article shows how to leverage PCA to understand key properties of a dataset, saving time and resources down the road which ultimately leads to a happier, more fulfilled coding life. I hope this post helps to apply PCA in a consistent way and understand its results.</p>
-<p><img src="/figures/pca_exploration/gymnastics_yoga.jpg" alt="image.png"></p>
+<p><img src="/figures/pca_exploration/gymnastics_yoga.jpg" alt="Photo by Burst on Pexels"></p>
 <blockquote>
-<p><em>Beauty and health require not only education and knowledge, but also throrough data exploration. (~Plato)</em></p>
+<p>&ldquo;Beauty and health require not only education and knowledge, but also thorough data exploration.&rdquo; (~Plato)</p>
 </blockquote>
 <h2 id="tldr">TL;DR</h2>
-<p>PCA provides valuable insights about underlying variance across features. It goes beyond mere averages, distributions or correlations and indicates 1. how many components cover the largest chunk of variance, and 2., which features correlate with the most important components. Exploring the data with PCA crosschecks the previous steps in the project work flow, such as data collection which can be refined based on insights from PCA. As a shortcut and ready-to-use tool, I provide the function <code>do_pca()</code> which conducts a PCA for a prepared dataset to inspect its results within seconds in <a href="https://github.com/philippschmalen/Code-snippets/blob/master/PCA_workflow.ipynb">this notebook</a> or <a href="https://github.com/philippschmalen/Code-snippets/blob/master/helper_pca.py">script</a>.</p>
+<p>PCA provides valuable insights about underlying variance across features. It goes beyond mere averages, distributions or correlations and indicates 1. how many components cover the largest chunk of variance, and 2., which features correlate with the most important components. <strong>Exploring the data with PCA crosschecks the previous steps in the project work flow, such as data collection which can be refined based on insights from PCA.</strong> As a shortcut and ready-to-use tool, I provide the function <code>do_pca()</code> which conducts a PCA for a prepared dataset to inspect its results within seconds in <a href="https://github.com/philippschmalen/Code-snippets/blob/master/PCA_workflow.ipynb">this notebook</a> or <a href="https://github.com/philippschmalen/Code-snippets/blob/master/helper_pca.py">script</a>.</p>
 <h2 id="data-exploration-as-a-last-resort-to-detect-data-issues">Data exploration as a last resort to detect data issues</h2>
-<p>When a project structure resembles the one below, the prepared dataset is under scrutiny by looking at descriptive statistics. Among the most common ones are means, distributions and correlations taken across all observations or certain subgroupings.</p>
+<p>When a project structure resembles the one below, the prepared dataset is under scrutiny by looking at descriptive statistics. Among the most common ones are means, distributions and correlations taken across all observations or certain subgrouping.</p>
 <p><strong>Common project structure</strong></p>
-<blockquote>
 <table>
 <thead>
 <tr>
@@ -156,15 +155,14 @@
 </tr>
 </tbody>
 </table>
-</blockquote>
-<p>The moment when you have a clean dataset at hand, the eyes of many data scientists glance already towards the next and exciting step of applying your models to the data. At this stage, possibly 80% of the project&rsquo;s workload are done, if the data did not fell out of the sky, cleaned and processed like immaculate conception. Of course, the urge is strong for modelling, but here is why a thorough data exploration saves time down the road:</p>
+<p>The moment when you have a clean dataset at hand, the eyes of many data scientists glance already towards the next and exciting step of applying your models to the data. At this stage, possibly 80% of the project&rsquo;s workload are done, if the data did not fell out of the sky, cleaned and processed like immaculate conception. Of course, the urge is strong for modeling, but here is why a thorough data exploration saves time down the road:</p>
 <ol>
 <li>catch coding errors $\rightarrow$ revise feature engineering (step 3)</li>
 <li>identify underlying issues $\rightarrow$ rethink data collection (step 1), preprocessing (step 2) or feature engineering (step 3)</li>
 </ol>
 <p>Wondering about underperforming models due to underlying data issues after a few hours into training, validating and testing is like a photographer on the set, not knowing how their models might look like. Therefore, the key message is to see data exploration as an opportunity to get to know your data, understanding its strength and weaknesses.</p>
-<p><img src="/figures/pca_exploration/photographer_set.jpg" alt="Photographer on set"></p>
 <p>Descriptive statistics often reveal coding errors. When it comes to detecting underlying issues of the data likely requires more than that. Decomposition methods such as PCA help to identify these and enable to revise previous steps. This ensures a smooth transition to model building.</p>
+<p><img src="/figures/pca_exploration/photographer_set.jpg" alt="Photographer on set"></p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <h2 id="look-beneath-the-surface-with-pca">Look beneath the surface with PCA</h2>
@@ -183,11 +181,11 @@
 <blockquote>
 <p><strong>Factor loading</strong> indicates how much a variable correlates with a component. Each component is made of a linear combination of variables, where some might have more weight than others. Factor loadings indicate this as correlation coefficients, ranging from -1 to 1, and make components interpretable.</p>
 </blockquote>
-<p>With this in mind, the article continues</p>
+<p>The upcoming sections apply PCA to exciting data from a behavioral field experiment and guide through using these metrics to enhance data exploration.</p>
 <h2 id="load-data-a-randomized-educational-intervention-on-grit-alan-et-al-2019">Load data: A Randomized Educational Intervention on Grit (Alan et al. 2019)</h2>
 <p>The iris dataset served well as a canonical example, being the fate of several PCA examples. In an effort to be diverse and giving an example from a field study, I rely on replication data from Alan et al. (2019) instead. I hope this is appreciated.<br>
-It comprises outcomes of a field study at Turkish schools, where children ages X to Y year old took part in a curiculum to improve the non-cognitive skill of grit, i.e. perseverance to pursue a task. The authors sampled individual characteristics and conducted behavioral experiments to measure a potential treatment effect between those receiving the program (<code>grit == 1</code>) and those taking part in a control treatment (<code>grit == 0</code>). (Interested in causal inference using a modified random forest? Check out my preliminary blog post on <a href="https://philippschmalen.github.io/posts/working_on_causal_forest/">https://philippschmalen.github.io/posts/working_on_causal_forest/</a> ).</p>
-<p>I selected features according to their replication scripts, accessible on <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/SAVGAL">Harvard Dataverse</a> and solely used sample 2 (sample B in the pbulicly accessible <a href="https://www.povertyactionlab.org/sites/default/files/research-paper/5555_Ever-Falied-Try-Again--Succeed-Better_Alan-Ertac-Boneva_March2016.pdf">working paper</a>). To be concise, refer to the paper for relevant descriptives.</p>
+It comprises outcomes of a field study at Turkish schools, where children ages X to Y year old took part in a curriculum to improve the non-cognitive skill of grit, i.e. perseverance to pursue a task. The authors sampled individual characteristics and conducted behavioral experiments to measure a potential treatment effect between those receiving the program (<code>grit == 1</code>) and those taking part in a control treatment (<code>grit == 0</code>). (Interested in causal inference using a modified random forest? Check out my preliminary blog post on <a href="https://philippschmalen.github.io/posts/working_on_causal_forest/">https://philippschmalen.github.io/posts/working_on_causal_forest/</a> ).</p>
+<p>I selected features according to their replication scripts, accessible on <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/SAVGAL">Harvard Dataverse</a> and solely used sample 2 (sample B in the publicly accessible <a href="https://www.povertyactionlab.org/sites/default/files/research-paper/5555_Ever-Falied-Try-Again--Succeed-Better_Alan-Ertac-Boneva_March2016.pdf">working paper</a>). To be concise, refer to the paper for relevant descriptives.</p>
 <p>The following loads the data from an URL and stores it as a pandas dataframe.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
 <span style="color:#75715e"># To load data from Harvard Dataverse</span>
@@ -202,7 +200,7 @@ s <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</sp
 df_raw <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>read_csv(io<span style="color:#f92672">.</span>StringIO(s<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>)), sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#39;</span>)
 </code></pre></div><p><img src="/figures/pca_exploration/child_drawing_square.jpg" alt="Child draws PCA"></p>
 <h2 id="preprocessing-and-feature-engineering">Preprocessing and feature engineering</h2>
-<p>For PCA to work, the data needs to be numeric, without missings, and standardized. I put all steps into one function (<code>clean_data</code>) which returns a dataframe with standardized features. and concuct steps 1 to 3 of the project workflow (collecting, processing and engineering). 
+<p>For PCA to work, the data needs to be numeric, without missings, and standardized. I put all steps into one function (<code>clean_data</code>) which returns a dataframe with standardized features. and conduct steps 1 to 3 of the project work flow (collecting, processing and engineering). 
 To begin with, import necessary modules and packages.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> pandas <span style="color:#f92672">as</span> pd
 <span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
@@ -426,7 +424,7 @@ plt<span style="color:#f92672">.</span>show()
             </article>
 
             
-                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fphilippschmalen.github.io%2fposts%2fdata_exploration_pca%2f - Data%20exploration%20with%20principle%20component%20analysis%20%28PCA%29 "><span class="icon-twitter"> tweet</span></a>
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fphilippschmalen.github.io%2fposts%2fdata_exploration_pca%2f - Understand%20your%20data%20with%20principle%20component%20analysis%20%28PCA%29%20and%20discover%20underlying%20patterns "><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
