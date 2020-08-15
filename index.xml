@@ -6,18 +6,28 @@
     <description>Recent content on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://philippschmalen.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Machine Learning in Python: Main developments and technology trends</title>
+      <link>https://philippschmalen.github.io/posts/thoughts_nolet_2020/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/thoughts_nolet_2020/</guid>
+      <description>Machine Learning in Python: Main developments and technology trends - Some thoughts on Nolet et al. (2020) Here, I briefly talk about the paper by Nolet, Patterson and Raschka (2020) &amp;ldquo;Machine Learning in Python: Main developments and technology trends in data science, machine learning, and artificial intelligence.&amp;rdquo;
+If you are interested in Python and machine learning, the paper is a good read. It gives an historical account of why Python became a go-to language for ML and is here to stay.</description>
+    </item>
+    
+    <item>
       <title>Understand your data with principle component analysis (PCA) and discover underlying patterns</title>
       <link>https://philippschmalen.github.io/posts/data_exploration_pca/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0200</pubDate>
       
       <guid>https://philippschmalen.github.io/posts/data_exploration_pca/</guid>
-      <description>Understand your data with principle component analysis (PCA) and discover underlying patterns - Enhanced data exploration that goes beyond descriptives Save time, resources and stay healthy with data exploration that goes beyond means, distributions and correlation matrices and leverages PCA to see through the surface of variables. It saves time and resources, because it uncovers data issues before an hour-long model training and is good for a programmer&amp;rsquo;s health, since she trades off data worries with something more enjoyable.</description>
+      <description>Understand your data with principle component analysis (PCA) and discover underlying patterns - Enhanced data exploration that goes beyond descriptives Save time, resources and stay healthy with data exploration that goes beyond means, distributions and correlations: Leverage PCA to see through the surface of variables. It saves time and resources, because it uncovers data issues before an hour-long model training and is good for a programmer&amp;rsquo;s health, since she trades off data worries with something more enjoyable.</description>
     </item>
     
     <item>

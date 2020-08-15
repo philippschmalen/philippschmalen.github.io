@@ -3,17 +3,97 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://philippschmalen.github.io/tags/data-science/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/machine-learning/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/thoughts_nolet_2020/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/nolet/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/patterson/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/python/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/raschka/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/technological-progress/</loc>
+    <lastmod>2020-08-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/data-exploration/</loc>
+    <lastmod>2020-08-15T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/dimensionality/</loc>
+    <lastmod>2020-08-15T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/hidden-factors/</loc>
+    <lastmod>2020-08-15T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/pca/</loc>
+    <lastmod>2020-08-15T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/toolbox/</loc>
+    <lastmod>2020-08-15T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/data_exploration_pca/</loc>
+    <lastmod>2020-08-15T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://philippschmalen.github.io/about/</loc>
     <lastmod>2020-08-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://philippschmalen.github.io/tags/about/</loc>
-    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/</loc>
     <lastmod>2020-08-13T00:00:00+00:00</lastmod>
   </url>
   
@@ -28,48 +108,8 @@
   </url>
   
   <url>
-    <loc>https://philippschmalen.github.io/tags/</loc>
-    <lastmod>2020-08-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://philippschmalen.github.io/tags/udpate/</loc>
     <lastmod>2020-08-13T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/data-exploration/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/dimensionality/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/hidden-factors/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/pca/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/posts/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/toolbox/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/posts/data_exploration_pca/</loc>
-    <lastmod>2020-08-13T00:00:00+02:00</lastmod>
   </url>
   
   <url>

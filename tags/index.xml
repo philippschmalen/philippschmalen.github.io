@@ -6,10 +6,118 @@
     <description>Recent content in Tags on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 13 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://philippschmalen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Data science</title>
+      <link>https://philippschmalen.github.io/tags/data-science/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/data-science/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machine learning</title>
+      <link>https://philippschmalen.github.io/tags/machine-learning/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nolet</title>
+      <link>https://philippschmalen.github.io/tags/nolet/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/nolet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Patterson</title>
+      <link>https://philippschmalen.github.io/tags/patterson/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/patterson/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>https://philippschmalen.github.io/tags/python/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Raschka</title>
+      <link>https://philippschmalen.github.io/tags/raschka/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/raschka/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>technological progress</title>
+      <link>https://philippschmalen.github.io/tags/technological-progress/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/technological-progress/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data Exploration</title>
+      <link>https://philippschmalen.github.io/tags/data-exploration/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/data-exploration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dimensionality</title>
+      <link>https://philippschmalen.github.io/tags/dimensionality/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/dimensionality/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hidden Factors</title>
+      <link>https://philippschmalen.github.io/tags/hidden-factors/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/hidden-factors/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PCA</title>
+      <link>https://philippschmalen.github.io/tags/pca/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/pca/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Toolbox</title>
+      <link>https://philippschmalen.github.io/tags/toolbox/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/toolbox/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>about</title>
@@ -44,51 +152,6 @@
       <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://philippschmalen.github.io/tags/udpate/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Data Exploration</title>
-      <link>https://philippschmalen.github.io/tags/data-exploration/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/data-exploration/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Dimensionality</title>
-      <link>https://philippschmalen.github.io/tags/dimensionality/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/dimensionality/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Hidden Factors</title>
-      <link>https://philippschmalen.github.io/tags/hidden-factors/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/hidden-factors/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>PCA</title>
-      <link>https://philippschmalen.github.io/tags/pca/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/pca/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Toolbox</title>
-      <link>https://philippschmalen.github.io/tags/toolbox/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0200</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/toolbox/</guid>
       <description></description>
     </item>
     

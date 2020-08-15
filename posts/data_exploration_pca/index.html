@@ -50,7 +50,7 @@
                         Understand your data with principle component analysis (PCA) and discover underlying patterns
                     </h1>
                     <h2 class="headline">
-                    13 Aug 2020
+                    15 Aug 2020
                     
                     · 15 minute read
                       <span class="tags">
@@ -78,11 +78,11 @@
                       <nav id="TableOfContents">
   <ul>
     <li><a href="#tldr">TL;DR</a></li>
-    <li><a href="#data-exploration-as-a-last-resort-to-detect-data-issues">Data exploration as a last resort to detect data issues</a></li>
+    <li><a href="#data-exploration-as-a-safety-net">Data exploration as a safety net</a></li>
     <li><a href="#look-beneath-the-surface-with-pca">Look beneath the surface with PCA</a></li>
     <li><a href="#load-data-a-randomized-educational-intervention-on-grit-alan-et-al-2019">Load data: A Randomized Educational Intervention on Grit (Alan et al. 2019)</a></li>
     <li><a href="#preprocessing-and-feature-engineering">Preprocessing and feature engineering</a></li>
-    <li><a href="#understand-the-data-with-scree-plots-and-factor-loadings-interpret-pca-results">Understand the data with scree plots and factor loadings: Interpret PCA results</a>
+    <li><a href="#scree-plots-and-factor-loadings-interpret-pca-results">Scree plots and factor loadings: Interpret PCA results</a>
       <ul>
         <li><a href="#explained-variance-shows-the-number-of-dimensions-across-variables">Explained variance shows the number of dimensions across variables</a></li>
         <li><a href="#discover-underlying-factors-with-correlations-between-features-and-components">Discover underlying factors with correlations between features and components</a></li>
@@ -103,16 +103,16 @@
                 
                 <section id="post-body">
                     <h1 id="understand-your-data-with-principle-component-analysis-pca-and-discover-underlying-patterns---enhanced-data-exploration-that-goes-beyond-descriptives">Understand your data with principle component analysis (PCA) and discover underlying patterns - Enhanced data exploration that goes beyond descriptives</h1>
-<p>Save time, resources and stay healthy with data exploration that goes beyond means, distributions and correlation matrices and leverages PCA to see through the surface of variables. It saves time and resources, because it uncovers data issues <em>before</em> an hour-long model training and is good for a programmer&rsquo;s health, since she trades off data worries with something more enjoyable. For example, a well-proven machine learning model might fail, because of insufficient variance in the data or other underlying issues. Therefore, the common work flow includes an exploration step before proceeding with some model magic.</p>
+<p>Save time, resources and stay healthy with data exploration that goes beyond means, distributions and correlations: Leverage PCA to see through the surface of variables. It saves time and resources, because it uncovers data issues <em>before</em> an hour-long model training and is good for a programmer&rsquo;s health, since she trades off data worries with something more enjoyable. For example, a well-proven machine learning model might fail, because of one-dimensional data with insufficient variance or other related issues. PCA offers valuable insights that make you confident about data properties and its hidden dimensions. </p>
 <p>This article shows how to leverage PCA to understand key properties of a dataset, saving time and resources down the road which ultimately leads to a happier, more fulfilled coding life. I hope this post helps to apply PCA in a consistent way and understand its results.</p>
 <p><img src="/figures/pca_exploration/gymnastics_yoga.jpg" alt="Photo by Burst on Pexels"></p>
 <blockquote>
 <p>&ldquo;Beauty and health require not only education and knowledge, but also thorough data exploration.&rdquo; (~Plato)</p>
 </blockquote>
 <h2 id="tldr">TL;DR</h2>
-<p>PCA provides valuable insights about underlying variance across features. It goes beyond mere averages, distributions or correlations and indicates 1. how many components cover the largest chunk of variance, and 2., which features correlate with the most important components. <strong>Exploring the data with PCA crosschecks the previous steps in the project work flow, such as data collection which can be refined based on insights from PCA.</strong> As a shortcut and ready-to-use tool, I provide the function <code>do_pca()</code> which conducts a PCA for a prepared dataset to inspect its results within seconds in <a href="https://github.com/philippschmalen/Code-snippets/blob/master/PCA_workflow.ipynb">this notebook</a> or <a href="https://github.com/philippschmalen/Code-snippets/blob/master/helper_pca.py">script</a>.</p>
-<h2 id="data-exploration-as-a-last-resort-to-detect-data-issues">Data exploration as a last resort to detect data issues</h2>
-<p>When a project structure resembles the one below, the prepared dataset is under scrutiny by looking at descriptive statistics. Among the most common ones are means, distributions and correlations taken across all observations or certain subgroups.</p>
+<p>PCA provides valuable insights that reach beyond descriptive statistics and help to discover underlying patterns. Two PCA metrics indicate 1. how many components capture the largest share of variance (explained variance), and 2., which features correlate with the most important components (factor loading). <strong>These metrics crosscheck previous steps in the project work flow</strong>, such as data collection which then can be adjusted . As a shortcut and ready-to-use tool, I provide the function <code>do_pca()</code> which conducts a PCA for a prepared dataset to inspect its results within seconds in <a href="https://github.com/philippschmalen/Code-snippets/blob/master/PCA_workflow.ipynb">this notebook</a> or <a href="https://github.com/philippschmalen/Code-snippets/blob/master/helper_pca.py">this script</a>.</p>
+<h2 id="data-exploration-as-a-safety-net">Data exploration as a safety net</h2>
+<p>When a project structure resembles the one below, the prepared dataset is under scrutiny in the 4. step by looking at descriptive statistics. Among the most common ones are means, distributions and correlations taken across all observations or certain subgroups.</p>
 <p><strong>Common project structure</strong></p>
 <table>
 <thead>
@@ -155,20 +155,19 @@
 </tr>
 </tbody>
 </table>
-<p>The moment when you have a clean dataset at hand, the eyes of many data scientists glance already towards the next and exciting step of applying your models to the data. At this stage, possibly 80% of the project&rsquo;s workload are done, if the data did not fell out of the sky, cleaned and processed, ready to bake. Of course, the urge is strong for modeling, but here are two reasons why a thorough data exploration saves time down the road:</p>
+<p>When the moment arrives of having a clean dataset after hours of work, makes many glance already towards the exciting step of applying models to the data. At this stage, possibly 80% of the project&rsquo;s workload is done, if the data did not fell out of the sky, cleaned and processed. Of course, the urge is strong for modeling, but here are two reasons why a thorough data exploration saves time down the road:</p>
 <ol>
 <li>catch coding errors $\rightarrow$ revise feature engineering (step 3)</li>
-<li>identify underlying issues $\rightarrow$ rethink data collection (step 1), preprocessing (step 2) or feature engineering (step 3)</li>
+<li>identify underlying properties $\rightarrow$ rethink data collection (step 1), preprocessing (step 2) or feature engineering (step 3)</li>
 </ol>
 <p>Wondering about underperforming models due to underlying data issues after a few hours into training, validating and testing is like a photographer on the set, not knowing how their models might look like. Therefore, the key message is to see data exploration as an opportunity to get to know your data, understanding its strength and weaknesses.</p>
-<p>Descriptive statistics often reveal coding errors. When it comes to detecting underlying issues of the data likely requires more than that. Decomposition methods such as PCA help to identify these and enable to revise previous steps. This ensures a smooth transition to model building.</p>
+<p>Descriptive statistics often reveal coding errors. However, detecting underlying issues likely requires more than that. Decomposition methods such as PCA help to identify these and enable to revise previous steps. This ensures a smooth transition to model building.</p>
 <p><img src="/figures/pca_exploration/photographer_set.jpg" alt="Photographer on set"></p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <h2 id="look-beneath-the-surface-with-pca">Look beneath the surface with PCA</h2>
-<p>Large datasets often require PCA to reduce dimensionality anyway. The method as such captures the maximum possible variance across features and projects observations onto mutually uncorrelated vectors, called components.</p>
-<p>However, PCA can serve other purposes than dimensionality reduction. It also helps to discover underlying patterns across features.*</p>
-<p>To focus on the implementation in Python instead of methodology, I will skip describing PCA in its workings. There are already so many great resources about PCA, that I refer to those instead:</p>
+<p>Large datasets often require PCA to reduce dimensionality anyway. The method as such captures the maximum possible variance across features and projects observations onto mutually uncorrelated vectors, called components. Still, PCA serves other purposes than dimensionality reduction. It also helps to discover underlying patterns across features.</p>
+<p>To focus on the implementation in Python instead of methodology, I will skip describing PCA in its workings. There exist many great resources about it that I refer to those instead:</p>
 <ul>
 <li>Animations showing PCA in action: <a href="https://setosa.io/ev/principal-component-analysis/">https://setosa.io/ev/principal-component-analysis/</a></li>
 <li>PCA explained in a family conversation: <a href="https://stats.stackexchange.com/a/140579">https://stats.stackexchange.com/a/140579</a></li>
@@ -183,9 +182,10 @@
 </blockquote>
 <p>The upcoming sections apply PCA to exciting data from a behavioral field experiment and guide through using these metrics to enhance data exploration.</p>
 <h2 id="load-data-a-randomized-educational-intervention-on-grit-alan-et-al-2019">Load data: A Randomized Educational Intervention on Grit (Alan et al. 2019)</h2>
-<p>The iris dataset served well as a canonical example, being the fate of several PCA examples. In an effort to be diverse and giving an example from a field study, I rely on replication data from Alan et al. (2019) instead. I hope this is appreciated.<br>
-It comprises outcomes of a field study at Turkish schools, where children ages X to Y year old took part in a curriculum to improve the non-cognitive skill of grit, i.e. perseverance to pursue a task. The authors sampled individual characteristics and conducted behavioral experiments to measure a potential treatment effect between those receiving the program (<code>grit == 1</code>) and those taking part in a control treatment (<code>grit == 0</code>). (Interested in causal inference using a modified random forest? Check out my preliminary blog post on <a href="https://philippschmalen.github.io/posts/working_on_causal_forest/">https://philippschmalen.github.io/posts/working_on_causal_forest/</a> ).</p>
-<p>I selected features according to their replication scripts, accessible on <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/SAVGAL">Harvard Dataverse</a> and solely used sample 2 (sample B in the publicly accessible <a href="https://www.povertyactionlab.org/sites/default/files/research-paper/5555_Ever-Falied-Try-Again--Succeed-Better_Alan-Ertac-Boneva_March2016.pdf">working paper</a>). To be concise, refer to the paper for relevant descriptives.</p>
+<p>The iris dataset served well as a canonical example of several PCA. In an effort to be diverse and using novel data from a field study, I rely on replication data from Alan et al. [1]. I hope this is appreciated.</p>
+<p>It comprises data from behavioral experiments at Turkish schools, where 10 year olds took part in a curriculum to improve a non-cognitive skill called grit which defines as perseverance to pursue a task. The authors sampled individual characteristics and conducted behavioral experiments to measure a potential treatment effect between those receiving the program (<code>grit == 1</code>) and those taking part in a control treatment (<code>grit == 0</code>).</p>
+<p>(Interested in causal inference using a modified random forest? Check out my preliminary blog post on <a href="https://philippschmalen.github.io/posts/working_on_causal_forest/">https://philippschmalen.github.io/posts/working_on_causal_forest/</a> ).</p>
+<p>I selected features according to their replication scripts, accessible on <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/SAVGAL">Harvard Dataverse</a> and solely used sample 2 (&ldquo;sample B&rdquo; in the publicly accessible <a href="https://www.povertyactionlab.org/sites/default/files/research-paper/5555_Ever-Falied-Try-Again--Succeed-Better_Alan-Ertac-Boneva_March2016.pdf">working paper</a>). To be concise, refer to the paper for relevant descriptives.</p>
 <p>The following loads the data from an URL and stores it as a pandas dataframe.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
 <span style="color:#75715e"># To load data from Harvard Dataverse</span>
@@ -255,14 +255,20 @@ sns<span style="color:#f92672">.</span>set_context(<span style="color:#e6db74">&
     <span style="color:#66d9ef">return</span> pd<span style="color:#f92672">.</span>DataFrame(data, columns<span style="color:#f92672">=</span>select_X)
 
 
+<span style="color:#75715e"># select relevant features in line with Alan et al. (2019)</span>
+selected_features <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;grit&#39;</span>, <span style="color:#e6db74">&#39;male&#39;</span>, <span style="color:#e6db74">&#39;task_ability&#39;</span>, <span style="color:#e6db74">&#39;raven&#39;</span>, <span style="color:#e6db74">&#39;grit_survey1&#39;</span> 
+ <span style="color:#e6db74">&#39;belief_survey1&#39;</span>, <span style="color:#e6db74">&#39;mathscore1&#39;</span>, <span style="color:#e6db74">&#39;verbalscore1&#39;</span>, <span style="color:#e6db74">&#39;risk&#39;</span>, <span style="color:#e6db74">&#39;inconsistent&#39;</span>]
+
+
 <span style="color:#75715e"># (iv.) select features, impute missings and standardize</span>
 X_std <span style="color:#f92672">=</span> clean_data(df_raw, selected_features, impute<span style="color:#f92672">=</span>True, std<span style="color:#f92672">=</span>True)
-</code></pre></div><h2 id="understand-the-data-with-scree-plots-and-factor-loadings-interpret-pca-results">Understand the data with scree plots and factor loadings: Interpret PCA results</h2>
-<p>A PCA yields two metrics that provide insights on the data: Firstly, how much variance each component captures (explained variance), and secondly how much a variable correlates with a component (factor loading). The following sections provide a practical example and guide through the PCA output with a scree plot for explained variance and a heatmap on factor loadings.</p>
+</code></pre></div><p>Now, the data is ready for exploration.</p>
+<h2 id="scree-plots-and-factor-loadings-interpret-pca-results">Scree plots and factor loadings: Interpret PCA results</h2>
+<p>A PCA yields two metrics that are relevant for data exploration: Firstly, how much variance each component explains (scree plot), and secondly how much a variable correlates with a component (factor loading). The following sections provide a practical example and guide through the PCA output with a scree plot for explained variance and a heatmap on factor loadings.</p>
 <h3 id="explained-variance-shows-the-number-of-dimensions-across-variables">Explained variance shows the number of dimensions across variables</h3>
-<p>Nowadays, data is abundant and the size of datasets continues to grow. Data scientists routinely deal with hundreds of variables. However, are these variables worth the memory they use? more technically put: Does a variable capture unique patterns or does it measure similar properties already captured by other variables?</p>
-<p>PCA might answer this through the metric of explained variance per component. It details the number of underlying dimensions on which most of the data&rsquo;s variance is observed and thereby can save a lot of time down the road since the model has to find it out while training.</p>
-<p>The code below (i.) initializes a PCA object from sklearn and transforms the original data along the calculated components. Thereafter, (ii.) information on explained variance is retrieved and (iii.) printed as plain text.</p>
+<p>Nowadays, data is abundant and the size of datasets continues to grow. Data scientists routinely deal with hundreds of variables. However, are these variables worth their memory? Put differently: Does a variable capture unique patterns or does it measure similar properties already reflected by other variables?</p>
+<p>PCA might answer this through the metric of explained variance per component. It details the number of underlying dimensions on which most of the variance is observed.</p>
+<p>The code below initializes a PCA object from sklearn and transforms the original data along the calculated components (i.).  Thereafter, information on explained variance is retrieved (ii.) and printed (iii.).</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># (i.) initialize and compute pca</span>
 pca <span style="color:#f92672">=</span> PCA()
 X_pca <span style="color:#f92672">=</span> pca<span style="color:#f92672">.</span>fit_transform(X_std)
@@ -306,7 +312,8 @@ Mean explained variance: 0.1
 9             0.052588    0.950950
 10            0.049050    1.000000
 ----------------------------------------
-</code></pre><p>The first component makes up for around 27% of the explained variance. This is relatively low as compared to other datasets, but no matter of concern. It simply indicates that a major share (73%) of observations distributes across more than one dimension. Another way to approach the explained table is to ask: How much components are required to cover more than X% of the variance? For example, I want to reduce the data&rsquo;s dimensionality while retaining 90% explained variance of the original data. Then I would have to include 9 components to reach at least 90% and even have 95% of explained variance covered in this case. With an overall of 10 variables in the original dataset, the scope to reduce dimensionality is limited. Additionally, this shows that each of the 10 original variables adds somewhat unique patterns and limitedly repeats information from other variables.</p>
+</code></pre><p><strong>Interpretation:</strong> The first component makes up for around 27% of the explained variance. This is relatively low as compared to other datasets, but no matter of concern. It simply indicates that a major share (100%-27%=73%) of observations distributes across more than one dimension.</p>
+<p>Another way to approach the output is to ask: How much components are required to cover more than X% of the variance? For example, I want to reduce the data&rsquo;s dimensionality retain at least 90% variance of the original data. Then I would have to include 9 components to reach at least 90% and even have 95% of explained variance covered in this case. With an overall of 10 variables in the original dataset, the scope to reduce dimensionality is limited. Additionally, this shows that each of the 10 original variables adds somewhat unique patterns and limitedly repeats information from other variables.</p>
 <p><img src="/figures/pca_exploration/wine_cellar.jpg" alt="Wine cellar"></p>
 <p>To give another example, I list explained variance of &ldquo;the&rdquo; <a href="https://archive.ics.uci.edu/ml/datasets/wine">wine dataset</a>:</p>
 <pre><code>PCA Overview: Wine dataset
@@ -330,8 +337,8 @@ Mean explained variance: 0.077
 12            0.012982    0.992048
 13            0.007952    1.000000
 ----------------------------------------
-</code></pre><p>Here, 8 components suffice to capture at least 90% of the original variance. Thus, there is more scope to reduce dimensionality. Furthermore it indicates that some variables do not contribute much to variance in the data.</p>
-<p>Instead of plain text, a scree plot visualized explained variance across components and informs about individual and cumulative explained variance for each component. The next code chunk creates such a scree plot and includes an option to focus on the first X components to be manageable when dealing with hundreds of components for larger datasets.</p>
+</code></pre><p>Here, 8 out of 13 components suffice to capture at least 90% of the original variance. Thus, there is more scope to reduce dimensionality. Furthermore it indicates that some variables do not contribute much to variance in the data.</p>
+<p>Instead of plain text, a <strong>scree plot</strong> visualizes explained variance across components and informs about individual and cumulative explained variance for each component. The next code chunk creates such a scree plot and includes an option to focus on the first X components to be manageable when dealing with hundreds of components for larger datasets (<code>limit</code>).</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#limit plot to x PC</span>
 limit <span style="color:#f92672">=</span> int(input(<span style="color:#e6db74">&#34;Limit scree plot to nth component (0 for all) &gt; &#34;</span>))
 <span style="color:#66d9ef">if</span> limit <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
@@ -366,6 +373,8 @@ ax2<span style="color:#f92672">.</span>set(ylim<span style="color:#f92672">=</sp
 plt<span style="color:#f92672">.</span>show()
 </code></pre></div><p><img src="/figures/pca_exploration/scree_plot.png" alt="Scree plot - Explained variance across components"></p>
 <p>A scree plot might show distinct jumps from one component to another. For example, when the first component captures disproportionately more variance than others, it could be a sign that variables inform about the same underlying factor or do not add additional dimensions, but say the same thing from a marginally different angle.</p>
+<p>To give a direct example and to get a feeling for how distinct jumps might look like, I provide the scree plot of the <a href="https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html">Boston house prices dataset</a>:</p>
+<p><img src="/figures/pca_exploration/scree_plot_boston.png" alt="Scree plot Boston housing prices dataset"></p>
 <h4 id="reasons-why-pca-saves-time-down-the-road">Reasons why PCA saves time down the road</h4>
 <blockquote>
 <p>Assume you have hundreds of variables, apply PCA and discover that over much of the explained variance is captured by the first few components. This might hint at a much lower number of underlying dimensions than the number of variables. Most likely, dropping some hundred variables leads to performance gains for training, validation and testing. There will be more time left to select a suitable model and refine it than to wait for the model itself to discover lack of variance behind several variables.</p>
@@ -374,7 +383,7 @@ plt<span style="color:#f92672">.</span>show()
 <p>In addition to this, imagine that the data was constructed by oneself, e.g. through web scraping, and the scraper extracted pre-specified information from a web page. In that case, the retrieved information could be one-dimensional, when the developer of the scraper had only few relevant items in mind, but forgot to include items that shed light on further aspects of the problem setting. At this stage, it might be worthwhile to go back to the first step of the work flow and adjust data collection.</p>
 </blockquote>
 <h3 id="discover-underlying-factors-with-correlations-between-features-and-components">Discover underlying factors with correlations between features and components</h3>
-<p>PCA offers another valuable statistic besides explained variance: The correlation between each principle component and a variable, also called factor loading. This statistic facilitates to uncover the dimension that lies behind a component. For example, a dataset includes information about individuals such as math score, reaction time and retention span. The overarching dimension would be cognitive skills and a component that strongly correlates with these variables can be interpreted as the cognitive skill dimension. Similarly, another dimension could be non-cognitive skills and personality, when the data has features such as self-confidence, patience or conscientiousness. A component that captures this area highly correlates with those features.</p>
+<p>PCA offers another valuable statistic besides explained variance: The correlation between each principle component and a variable, also called factor loading. This statistic facilitates to grasp the dimension that lies behind a component. For example, a dataset includes information about individuals such as math score, reaction time and retention span. The overarching dimension would be cognitive skills and a component that strongly correlates with these variables can be interpreted as the cognitive skill dimension. Similarly, another dimension could be non-cognitive skills and personality, when the data has features such as self-confidence, patience or conscientiousness. A component that captures this area highly correlates with those features.</p>
 <p>The following code creates a heatmap to inspect these correlations, also called factor loading matrix.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># adjust y-axis size dynamically</span>
 size_yaxis <span style="color:#f92672">=</span> round(X_std<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.5</span>)
@@ -385,7 +394,6 @@ top_pc <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
 sns<span style="color:#f92672">.</span>heatmap(df_c<span style="color:#f92672">.</span>iloc[:,:top_pc], annot<span style="color:#f92672">=</span>True, cmap<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;YlGnBu&#34;</span>, ax<span style="color:#f92672">=</span>ax)
 plt<span style="color:#f92672">.</span>show()
 </code></pre></div><p><img src="/figures/pca_exploration/heatmap.png" alt="Factor loadings - Correlations of variables and components"></p>
-<p>Recall, that principle components are a linear combination of features. Thus, factor loadings quantify how important each feature is for a principle component.</p>
 <p>The first component strongly negatively associates with task ability, reasoning score (raven), math score, verbal score and positively links to beliefs about being gritty (grit_survey1). Summarizing this into a common underlying factor is subjective and requires domain knowledge. In my opinion, the first component mainly captures cognitive skills.</p>
 <p>The second component correlates negatively with receiving the treatment (grit), gender (male) and positively relates to being inconsistent. Interpreting this dimension is less clear-cut and much more challenging. Nevertheless, it accounts for 12% of explained variance instead of 27% like the first component, which results in less interpretable dimensions as it spans slightly across several topical areas. All components that follow might be analogously difficult to interpret.</p>
 <p>Evidence that variables capture similar dimensions could be uniformly distributed factor loadings. One example which inspired this article is a project of mine with Google Trends and self-constructed keywords about a firm&rsquo;s sustainability (<a href="https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends">https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends</a> ). A list of the 15th highest factor loadings for the first principle component revealed loadings ranging from 0.12 as the highest value to 0.11 as the lowest loading of all 15. Such a uniform distribution of factor loadings could be an issue. This especially applies when data is self-collected and someone preselected what is being considered for collection. Adjusting this selection might add dimensionality to your data which possibly improves model performance at the end.</p>
@@ -394,8 +402,8 @@ plt<span style="color:#f92672">.</span>show()
 <p>If the data was self-constructed, the factor loadings show how each feature contributes to an underlying dimension, which helps to come up with additional perspectives on data collection and what features or dimensions could add valuable variance. Rather than blind guessing which features to add, factor loadings lead to informed decisions for data collection. They may even be an inspiration in the search for more advanced features.</p>
 </blockquote>
 <h2 id="conclusion">Conclusion</h2>
-<p>All in all, PCA is a flexible instrument in the toolbox for data exploration. Its main purpose is to reduce complexity of large datasets. But it also serves well to see through the surface of variables, discover latent dimensions and relate variables to these dimensions, making it interpretable.</p>
-<p>This article shows how to leverage PCA for data exploration that goes beyond averages, distributions and correlations and build an understanding underlying properties of the data. Identifying patterns across variables that hint at latent factors is valuable to rethink previous steps in the project work flow, such as data collection, processing or feature engineering.</p>
+<p>All in all, PCA is a flexible instrument in the toolbox for data exploration. Its main purpose is to reduce complexity of large datasets. But it also serves well to look beneath the surface of variables, discover latent dimensions and relate variables to these dimensions, making them interpretable. Key metrics to inspect are <strong>explained variance</strong> and <strong>factor loading</strong>.</p>
+<p>This article shows how to leverage these metrics for data exploration that goes beyond averages, distributions and correlations and build an understanding underlying properties of the data. Identifying patterns across variables is valuable to rethink previous steps in the project work flow, such as data collection, processing or feature engineering.</p>
 <blockquote>
 <p>Thanks for reading! I hope you find it as useful as I had fun to write this guide. I am curious of your thoughts on this matter. If you have any feedback I highly appreciate your feedback and look forward receiving your message.</p>
 </blockquote>
@@ -434,6 +442,10 @@ plt<span style="color:#f92672">.</span>show()
 
     
     
+    
+        <li>
+            <a href="/posts/thoughts_nolet_2020/">Machine Learning in Python: Main developments and technology trends<aside class="dates">Aug 15 2020</aside></a>
+        </li>
     
         <li>
             <a href="/posts/esg_scores_pytorch_googletrends/">Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker<aside class="dates">Aug 7 2020</aside></a>
