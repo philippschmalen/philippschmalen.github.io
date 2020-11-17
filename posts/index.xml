@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 15 Aug 2020 00:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://philippschmalen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Machine Learning in Python: Main developments and technology trends</title>
+      <link>https://philippschmalen.github.io/posts/thoughts_nolet_2020/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/thoughts_nolet_2020/</guid>
+      <description>Machine Learning in Python: Main developments and technology trends - Some thoughts on Nolet et al. (2020) Here, I briefly talk about the paper by Nolet, Patterson and Raschka (2020) &amp;ldquo;Machine Learning in Python: Main developments and technology trends in data science, machine learning, and artificial intelligence.&amp;rdquo;
+If you are interested in Python and machine learning, the paper is a good read. It gives an historical account of why Python became a go-to language for ML and is here to stay.</description>
+    </item>
     
     <item>
       <title>Understand your data with principle component analysis (PCA) and discover underlying patterns</title>
@@ -37,6 +47,25 @@ A few years ago investors were willing to accept lower returns for socially resp
       
       <guid>https://philippschmalen.github.io/posts/working_on_causal_forest/</guid>
       <description>Disclaimer This guide aims to be a great resource for practitioners of causal forest and wants to empower researchers with this awesome method. I found myself diving into its R source code, published papers on its theory and referring to its algorithm reference. I want to combine all these resources in one article, so you do not need to check every resource in-detail and dig deep. Still, you are welcome to do so and I refer everything under references.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://philippschmalen.github.io/posts/data_inspection/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/data_inspection/</guid>
+      <description>Missings, duplicates and descriptives - quickly inspect data with Python pandas </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://philippschmalen.github.io/posts/install_airflow_windows10/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/install_airflow_windows10/</guid>
+      <description>Running Apache Airflow on Windows 10 Apache Airflow is a great tool to manage and schedule all steps of a data pipeline. Getting it to work properly on Windows 10 can be challenging. The official quick start tutorial in Airflow&amp;rsquo;s docs guides Linux users to install it. Windows 10 users need a workaround and some additional steps to Airflow. After getting many errors due to incorrect configuration
+I managed to make it work with a Windows substystem for Linux (WSL) which was recommended on blogs or Stack overflow.</description>
     </item>
     
   </channel>

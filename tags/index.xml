@@ -6,10 +6,73 @@
     <description>Recent content in Tags on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 15 Aug 2020 00:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://philippschmalen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Data science</title>
+      <link>https://philippschmalen.github.io/tags/data-science/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/data-science/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machine learning</title>
+      <link>https://philippschmalen.github.io/tags/machine-learning/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nolet</title>
+      <link>https://philippschmalen.github.io/tags/nolet/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/nolet/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Patterson</title>
+      <link>https://philippschmalen.github.io/tags/patterson/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/patterson/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>https://philippschmalen.github.io/tags/python/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Raschka</title>
+      <link>https://philippschmalen.github.io/tags/raschka/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/raschka/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>technological progress</title>
+      <link>https://philippschmalen.github.io/tags/technological-progress/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/technological-progress/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Data Exploration</title>
