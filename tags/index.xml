@@ -6,10 +6,64 @@
     <description>Recent content in Tags on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 20 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 17 Nov 2020 00:00:00 +0100</lastBuildDate>
     
 	<atom:link href="https://philippschmalen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Airflow</title>
+      <link>https://philippschmalen.github.io/tags/airflow/</link>
+      <pubDate>Tue, 17 Nov 2020 00:00:00 +0100</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/airflow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EMR</title>
+      <link>https://philippschmalen.github.io/tags/emr/</link>
+      <pubDate>Tue, 17 Nov 2020 00:00:00 +0100</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/emr/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ETL</title>
+      <link>https://philippschmalen.github.io/tags/etl/</link>
+      <pubDate>Tue, 17 Nov 2020 00:00:00 +0100</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/etl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Google Trends</title>
+      <link>https://philippschmalen.github.io/tags/google-trends/</link>
+      <pubDate>Tue, 17 Nov 2020 00:00:00 +0100</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/google-trends/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Spark</title>
+      <link>https://philippschmalen.github.io/tags/spark/</link>
+      <pubDate>Tue, 17 Nov 2020 00:00:00 +0100</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/spark/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Yahoo! Finance</title>
+      <link>https://philippschmalen.github.io/tags/yahoo-finance/</link>
+      <pubDate>Tue, 17 Nov 2020 00:00:00 +0100</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/yahoo-finance/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Data science</title>
@@ -174,15 +228,6 @@
     </item>
     
     <item>
-      <title>Google trends</title>
-      <link>https://philippschmalen.github.io/tags/google-trends/</link>
-      <pubDate>Fri, 07 Aug 2020 00:00:00 +0200</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/google-trends/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>model deployment</title>
       <link>https://philippschmalen.github.io/tags/model-deployment/</link>
       <pubDate>Fri, 07 Aug 2020 00:00:00 +0200</pubDate>
@@ -215,15 +260,6 @@
       <pubDate>Fri, 07 Aug 2020 00:00:00 +0200</pubDate>
       
       <guid>https://philippschmalen.github.io/tags/sustainable-investment/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Yahoo finance</title>
-      <link>https://philippschmalen.github.io/tags/yahoo-finance/</link>
-      <pubDate>Fri, 07 Aug 2020 00:00:00 +0200</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/yahoo-finance/</guid>
       <description></description>
     </item>
     
