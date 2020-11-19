@@ -52,7 +52,7 @@
                     <h2 class="headline">
                     17 Nov 2020
                     
-                    · 14 minute read
+                    · 15 minute read
                       <span class="tags">
                       
                       
@@ -102,6 +102,7 @@
     <li><a href="#airflow-dag">Airflow DAG</a>
       <ul>
         <li><a href="#entity-relationship-diagram-erd">Entity relationship diagram (ERD)</a></li>
+        <li><a href="#data-dictionary">Data dictionary</a></li>
       </ul>
     </li>
     <li><a href="#testing-and-data-quality-checks-with-great-expectations">Testing and data quality checks with Great Expectations</a>
@@ -324,6 +325,153 @@ There are several reasons to use Airflow:</p>
 <p><strong>Putting it all together into one dataset for analysis</strong></p>
 <p>To merge all data to a single analysis dataset, requires some aggregations since we want one row for each firm. First, <em>gtrends</em> needs to be collapsed on the keyword level by taking the average, maximum or median search interest to remove the time dimension. Next, merge <em>gtrends</em> with <em>gtrends_meta</em> and reshape the dataframe to a wide format with one firm for each row. Second, <em>yahoofinance</em> needs to be reshaped into wide format to also get one row for each firm. Lastly, every</p>
 <p><em>Note:</em> I only outline this road map towards data analysis in favor of focusing on Airflow and Spark.</p>
+<h3 id="data-dictionary">Data dictionary</h3>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Variable</th>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gtrends</td>
+<td>keyword</td>
+<td>varchar</td>
+<td>a combination of firm name without legal prefix or suffix and an ESG   topic</td>
+<td>3M CO2</td>
+</tr>
+<tr>
+<td></td>
+<td>date</td>
+<td>date</td>
+<td></td>
+<td>10/11/2020</td>
+</tr>
+<tr>
+<td></td>
+<td>search_interest</td>
+<td>int</td>
+<td>normalized search volume for a specific point   in time</td>
+<td>42</td>
+</tr>
+<tr>
+<td>gtrends_meta</td>
+<td>keyword</td>
+<td>varchar</td>
+<td>a combination of firm name without legal prefix or suffix and an ESG   topic</td>
+<td>3M CO2</td>
+</tr>
+<tr>
+<td></td>
+<td>topic</td>
+<td>varchar</td>
+<td>ESG topic</td>
+<td>CO2</td>
+</tr>
+<tr>
+<td></td>
+<td>positive</td>
+<td>int</td>
+<td>whether an ESG topic classifies as positive or negative, e.g. scandal   (=0)</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td>date_define_topic</td>
+<td>date</td>
+<td>timestamp when the ESG topic has been defined</td>
+<td>10/11/2020</td>
+</tr>
+<tr>
+<td></td>
+<td>ticker</td>
+<td>varchar</td>
+<td>acronym at the stock exchange for a publicly listed firm</td>
+<td>GOOG</td>
+</tr>
+<tr>
+<td></td>
+<td>firm_name_raw</td>
+<td>varchar</td>
+<td>unprocessed firm name with legal suffixes</td>
+<td>Alphabet Inc. (Class A)</td>
+</tr>
+<tr>
+<td></td>
+<td>sector</td>
+<td>varchar</td>
+<td>classification according GCIS</td>
+<td>Health Care</td>
+</tr>
+<tr>
+<td></td>
+<td>firm_name_processed</td>
+<td>varchar</td>
+<td>processed firm name without legal suffixes</td>
+<td>Alphabet</td>
+</tr>
+<tr>
+<td></td>
+<td>date_get_firmname</td>
+<td>date</td>
+<td>timestamp when the firm name was retrieved</td>
+<td>10/11/2020</td>
+</tr>
+<tr>
+<td></td>
+<td>date_construct_keyword</td>
+<td>date</td>
+<td>timestamp when the keyword was constructed</td>
+<td>10/11/2020</td>
+</tr>
+<tr>
+<td></td>
+<td>date_query_googletrends</td>
+<td>date</td>
+<td>timestamp when the query started</td>
+<td>10/11/2020</td>
+</tr>
+<tr>
+<td>yahoofinance</td>
+<td>ticker</td>
+<td>varchar</td>
+<td>acronym at the stock exchange for a publicly listed firm</td>
+<td>GOOG</td>
+</tr>
+<tr>
+<td></td>
+<td>date_financial</td>
+<td>date</td>
+<td>timestamp of financial statements reports</td>
+<td>10/11/2020</td>
+</tr>
+<tr>
+<td></td>
+<td>financial_interval</td>
+<td>varchar</td>
+<td>specifies time between financial reports in months</td>
+<td>12M</td>
+</tr>
+<tr>
+<td></td>
+<td>financial_var</td>
+<td>varchar</td>
+<td>financial variable name</td>
+<td>CashAndCashEquivalents</td>
+</tr>
+<tr>
+<td></td>
+<td>financial_val</td>
+<td>BIGINT</td>
+<td>financial variable value</td>
+<td>39924000000</td>
+</tr>
+</tbody>
+</table>
 <h2 id="testing-and-data-quality-checks-with-great-expectations">Testing and data quality checks with Great Expectations</h2>
 <p>I rely on <a href="https://docs.greatexpectations.io/en/latest/">Great Expectations</a> to validate, document, and profile the data to ensure integrity and quality.</p>
 <p><strong>Validate data against checkpoints</strong></p>
