@@ -8,11 +8,6 @@
   </url>
   
   <url>
-    <loc>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://philippschmalen.github.io/tags/emr/</loc>
     <lastmod>2020-11-19T00:00:00+01:00</lastmod>
   </url>
@@ -34,6 +29,11 @@
   
   <url>
     <loc>https://philippschmalen.github.io/posts/</loc>
+    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</loc>
     <lastmod>2020-11-19T00:00:00+01:00</lastmod>
   </url>
   
