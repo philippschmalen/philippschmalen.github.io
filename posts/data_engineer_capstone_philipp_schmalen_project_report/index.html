@@ -52,7 +52,7 @@
                     <h2 class="headline">
                     17 Nov 2020
                     
-                    · 12 minute read
+                    · 14 minute read
                       <span class="tags">
                       
                       
@@ -102,6 +102,11 @@
     <li><a href="#airflow-dag">Airflow DAG</a>
       <ul>
         <li><a href="#entity-relationship-diagram-erd">Entity relationship diagram (ERD)</a></li>
+      </ul>
+    </li>
+    <li><a href="#testing-and-data-quality-checks-with-great-expectations">Testing and data quality checks with Great Expectations</a>
+      <ul>
+        <li><a href="#check-expected-vs-actual-response-of-an-api-in-pyspark">Check expected vs. actual response of an API in PySpark</a></li>
       </ul>
     </li>
     <li><a href="#discussion">Discussion</a>
@@ -221,11 +226,11 @@
 </table>
 <p>The schema below provide an overview of technical components  and AWS solutions.</p>
 <p><strong>Option 1</strong>: AWS EMR with HDFS and Spark
-<img src="/figures/spark_emr_airflow/option1_hdfs_spark_emr.PNG" alt=""></p>
+<img src="/figures/spark_emr_airflow/option1_hdfs_spark_emr.png" alt=""></p>
 <p><strong>Option 2</strong>: AWS EMR with S3 and Spark 
-<img src="/figures/spark_emr_airflow/option2_s3_spark_emr.PNG" alt=""></p>
+<img src="/figures/spark_emr_airflow/option2_s3_spark_emr.png" alt=""></p>
 <p><strong>Option 3</strong>: AWS 
-<img src="/figures/spark_emr_airflow/option3_athena.PNG" alt=""></p>
+<img src="/figures/spark_emr_airflow/option3_athena.png" alt=""></p>
 <p>We opt for <strong>Option 2</strong> since it combines the simplicity of S3 as a storage platform with the big data processing power of Spark EMR cluster. Moreover, I benefit from the learning experience when implementing a Spark ETL job on EMR clusters.</p>
 <h3 id="data-pipelines-with-airflow">Data pipelines with Airflow</h3>
 <p>Airflow defines, schedules, executes and monitors workflows using directed acyclic graphs (DAG). A DAG is a sequence of tasks, organized to reflect their relationships and dependencies. 
@@ -311,15 +316,68 @@ There are several reasons to use Airflow:</p>
 <img src="/figures/spark_emr_airflow/spark_submit_design.PNG" alt=""></p>
 <p>DAG Graph view of the tasks and dependencies:
 <img src="/figures/spark_emr_airflow/dag_graph_view.PNG" alt=""></p>
-<p>Running the DAG takes around 17 minutes in total as indicated by the Gantt chart. 
+<p>Running the DAG takes around 17 minutes in total as indicated by the gantt chart. 
 <img src="/figures/spark_emr_airflow/dag_gantt.PNG" alt=""></p>
 <h3 id="entity-relationship-diagram-erd">Entity relationship diagram (ERD)</h3>
 <p>The whole ETL results in the following relationship:</p>
 <p><img src="/figures/spark_emr_airflow/erd.PNG" alt=""></p>
 <p><strong>Putting it all together into one dataset for analysis</strong></p>
 <p>To merge all data to a single analysis dataset, requires some aggregations since we want one row for each firm. First, <em>gtrends</em> needs to be collapsed on the keyword level by taking the average, maximum or median search interest to remove the time dimension. Next, merge <em>gtrends</em> with <em>gtrends_meta</em> and reshape the dataframe to a wide format with one firm for each row. Second, <em>yahoofinance</em> needs to be reshaped into wide format to also get one row for each firm. Lastly, every</p>
-<p><em>Note:</em> I only outline this roadmap towards data analysis in favor of focusing on Airflow and Spark.</p>
-<h2 id="discussion">Discussion</h2>
+<p><em>Note:</em> I only outline this road map towards data analysis in favor of focusing on Airflow and Spark.</p>
+<h2 id="testing-and-data-quality-checks-with-great-expectations">Testing and data quality checks with Great Expectations</h2>
+<p>I rely on <a href="https://docs.greatexpectations.io/en/latest/">Great Expectations</a> to validate, document, and profile the data to ensure integrity and quality.</p>
+<p><strong>Validate data against checkpoints</strong></p>
+<p>Checkpoints make it easy to &ldquo;validate data X against expectation Y&rdquo; and match data batches with Expectation Suites for this. I created checkpoints for the three suites <em>esg, esg_processed and esg_processed_meta</em> which are located in <code>./great_expectations/expectations/</code>. To run these checkpoints and see whether the data meets the criteria, open a cmd window and type in the following (assuming you have great expectations installed):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># navigate to the project dir</span>
+cd ./&lt;project_path&gt;
+<span style="color:#75715e"># validate preprocessed data</span>
+great_expectations checkpoint run preprocess.chk
+<span style="color:#75715e"># validate processed data on S3</span>
+great_expectations checkpoint run processed.chk
+<span style="color:#75715e"># validate processed metadata on S3</span>
+great_expectations checkpoint run processed_meta.chk
+</code></pre></div><p>As an example, the expected output for the preprocessed data on the local directory looks like,</p>
+<p><img src="/figures/spark_emr_airflow/ge_checkpoint_success.PNG" alt=""></p>
+<p>whereas the processed metadata from S3 gives the following result:
+<img src="/figures/spark_emr_airflow/ge_checkpoint_success_meta.PNG" alt=""></p>
+<h3 id="check-expected-vs-actual-response-of-an-api-in-pyspark">Check expected vs. actual response of an API in PySpark</h3>
+<p>A central part of the ETL is to source data from APIs. The scripts send API requests to get some response. A response can either be successful, returning desired data or unsuccessful raising an error or returning empty data frames. A simple approach looks at a given request and compares expected responses with actual responses. In other words, I obtain the difference between the two sets of actual and expected output.</p>
+<p>I implemented the <code>data_inspection()</code> function as part of the script <code>./src/data/3etl_spark_gtrends.py</code> which compares the input to the output data and returns the set difference between actual and expected API output. An Airflow task uploads the script to S3 and launches a Spark EMR cluster which executes it. I define the <code>set_difference_keywords</code> with <code>spark.sql</code> and store it in the S3 bucket <code>/processed/gtrends_missing/</code>. Below is an excerpt from the function.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">data_inspection</span>(df, df_meta, spark):
+    <span style="color:#e6db74">&#34;&#34;&#34;Inspect and validate API output (df) against API input (df_meta)
+</span><span style="color:#e6db74">        Return: Set difference of keywords between output and input
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">DATA INSPECTION</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">+</span><span style="color:#e6db74">&#39;-&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">40</span>)
+    
+    <span style="color:#75715e"># create temporary view for SQL</span>
+    df<span style="color:#f92672">.</span>createOrReplaceTempView(<span style="color:#e6db74">&#34;df&#34;</span>)
+    df_meta<span style="color:#f92672">.</span>createOrReplaceTempView(<span style="color:#e6db74">&#34;meta&#34;</span>)
+
+    <span style="color:#75715e"># count distinct keywords, dates and </span>
+    kw_count <span style="color:#f92672">=</span> spark<span style="color:#f92672">.</span>sql(<span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        SELECT COUNT(DISTINCT keyword), COUNT(DISTINCT date)
+</span><span style="color:#e6db74">        FROM df
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>)<span style="color:#f92672">.</span>collect()
+
+    distinct_kw_date <span style="color:#f92672">=</span> [i <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> kw_count[<span style="color:#ae81ff">0</span>]]
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">DISTINCT </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">keywords </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">dates </span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">=dates*keywords&#34;</span>)
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;-&#34;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">40</span>)
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;{}</span><span style="color:#ae81ff">\t\t</span><span style="color:#e6db74"> {}</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> {}&#34;</span><span style="color:#f92672">.</span>format(distinct_kw_date[<span style="color:#ae81ff">0</span>], distinct_kw_date[<span style="color:#ae81ff">1</span>], distinct_kw_date[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">*</span>distinct_kw_date[<span style="color:#ae81ff">1</span>]))
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;-&#34;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">40</span>)
+ 
+    <span style="color:#75715e"># get set difference of meta (input)/df (output)</span>
+    set_difference_keywords <span style="color:#f92672">=</span> spark<span style="color:#f92672">.</span>sql(<span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        SELECT DISTINCT in.keyword
+</span><span style="color:#e6db74">        FROM meta AS in
+</span><span style="color:#e6db74">        WHERE in.keyword NOT IN (
+</span><span style="color:#e6db74">            SELECT DISTINCT out.keyword 
+</span><span style="color:#e6db74">            FROM df AS out)
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>)
+
+    <span style="color:#66d9ef">return</span> set_difference_keywords
+
+</code></pre></div><h2 id="discussion">Discussion</h2>
 <h3 id="update-frequency">Update frequency</h3>
 <p>Different sources with different updating schedules require a distinct update schedule. Google Trends data becomes available on a daily basis, whereas firms disclose financial data annually. A rule of thumb states that the data should be updated in a reasonable short interval of the source with the shortest update intervals which is each day Google Trends. However, due to server rate limits and forced timeouts, a query for all firm name-ESG topic combinations takes around 20 hours ($\frac{32500 \text{ keywords }}{5 \text{ batch size }} \times 24\text{s timeout }=43.33 \text{ hours}$). Therefore, it makes sense to run the Google Trends and Yahoo! Finance query each week.</p>
 <h3 id="scenarios">Scenarios</h3>
