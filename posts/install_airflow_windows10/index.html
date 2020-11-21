@@ -9,7 +9,7 @@
 		<meta name="author" content="Philipp Schmalen">
 		<meta name="description" content="Machine Learning, Data Science &amp; Empirics">
 		<meta name="generator" content="Hugo 0.73.0" />
-		<title> &middot; Philipp Schmalen</title>
+		<title>Run Apache Airflow on Windows 10 &middot; Philipp Schmalen</title>
 		<link rel="shortcut icon" href="https://philippschmalen.github.io/images/favicon.ico">
 		<link rel="stylesheet" href="https://philippschmalen.github.io/css/style.css">
 		<link rel="stylesheet" href="https://philippschmalen.github.io/css/highlight.css">
@@ -47,13 +47,27 @@
             <article>
                 <header>
                     <h1>
-                        
+                        Run Apache Airflow on Windows 10
                     </h1>
                     <h2 class="headline">
-                    1 Jan 0001
+                    21 Nov 2020
                     
-                    · 2 minute read
+                    · 4 minute read
                       <span class="tags">
+                      
+                      
+                          
+                              <a href="https://philippschmalen.github.io/tags/data-engineering">Data engineering</a>
+                          
+                              <a href="https://philippschmalen.github.io/tags/apache-airflow">Apache Airflow</a>
+                          
+                              <a href="https://philippschmalen.github.io/tags/data-pipeline">Data pipeline</a>
+                          
+                              <a href="https://philippschmalen.github.io/tags/wsl">WSL</a>
+                          
+                              <a href="https://philippschmalen.github.io/tags/windows-10">Windows 10</a>
+                          
+                      
                       
                       </span>
                     </h2>
@@ -61,30 +75,88 @@
                 
                   
                     <div id="toc">
-                      <nav id="TableOfContents"></nav>
+                      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#tldr">TLDR;</a></li>
+    <li><a href="#airflow-on-windows-wsl">Airflow on Windows WSL</a></li>
+    <li><a href="#other-ways-to-install-airflow">Other ways to install Airflow</a></li>
+    <li><a href="#how-to-run-an-airflow-instance">How to run an Airflow instance</a></li>
+    <li><a href="#setup-airflow-in-a-project-setting">Setup Airflow in a project setting</a></li>
+  </ul>
+</nav>
                     </div>
                   
                 
                 <section id="post-body">
-                    <h1 id="running-apache-airflow-on-windows-10">Running Apache Airflow on Windows 10</h1>
-<p>Apache Airflow is a great tool to manage and schedule all steps of a data pipeline. Getting it to work properly on Windows 10 can be challenging. The official quick start tutorial in <a href="http://airflow.apache.org/docs/stable/start.html">Airflow&rsquo;s docs</a> guides Linux users to install it. Windows 10 users need a workaround and some additional steps to Airflow. After getting many errors due to incorrect configuration</p>
-<p>I managed to make it work with a Windows substystem for Linux (WSL) which was recommended on blogs or Stack overflow. However, these resources do not get close to the concise quick start guide for Linux.</p>
-<p>After a lot of try and error I want to help you to with a concise <strong>Quick Start</strong> to get going with Apache Airflow on Windows 10 from the get-go.</p>
+                    <h1 id="run-apache-airflow-on-windows-10">Run Apache Airflow on Windows 10</h1>
+<p>Apache Airflow is a great tool to manage and schedule all steps of a data pipeline. However, running it on Windows 10 can be challenging. Airflow&rsquo;s official <a href="http://airflow.apache.org/docs/stable/start.html">Quick Start</a> suggests a smooth start, but solely for <em>Linux</em> users. What about us Windows 10 people if we want to avoid <a href="https://www.docker.com/">Docker</a>? These steps worked for me and hopefully will work for you, too.</p>
+<p><img src="/figures/airflow_wsl/cabin_woods.jpg" alt=""></p>
+<blockquote>
+<p><!-- raw HTML omitted -->Photo by <!-- raw HTML omitted -->Geran de Klerk<!-- raw HTML omitted --> on <!-- raw HTML omitted -->Unsplash<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+</blockquote>
+<p>After struggling with incorrect configuration, I eventually found a way to install and launch my first Airflow instance. With high spirits I applied it to a <a href="https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/">data pipeline with Spark EMR clusters</a>. I am happy to share my insights and list the steps that worked for me. If this also works for you - the better!</p>
+<h2 id="tldr">TLDR;</h2>
+<p>How to install and run Airflow <em>locally</em> with Windows subsystem for Linux (WSL) with these steps:</p>
 <ol>
-<li>install ubuntu wsl via Microsoft store</li>
+<li>
+<p>Open Microsoft Store, search for <code>Ubuntu</code>, install it then restart</p>
+</li>
+<li>
+<p>Open cmd and type <code>wsl</code></p>
+</li>
+<li>
+<p>Update everything: <code>sudo apt update &amp;&amp; sudo apt upgrade</code></p>
+</li>
+<li>
+<p>Install pip3 like this</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install software-properties-common
+sudo apt-add-repository universe
+sudo apt-get update
+sudo apt-get install python3-pip
+</code></pre></div></li>
+<li>
+<p>Install Airflow: <code>pip3 install apache-airflow</code></p>
+</li>
+<li>
+<p>Run <code>sudo nano /etc/wsl.conf</code>, insert the block below, save and exit with <code>ctrl+s</code> <code>ctrl+x</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  <span style="color:#f92672">[</span>automount<span style="color:#f92672">]</span>
+  root <span style="color:#f92672">=</span> /
+  options <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;metadata&#34;</span>
+</code></pre></div></li>
+<li>
+<p>Run <code>nano ~/.bashrc</code>, insert the block below, save and exit with <code>ctrl+s</code> <code>ctrl+x</code></p>
+</li>
 </ol>
-<p>The following commands run in terminal:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AIRFLOW_HOME<span style="color:#f92672">=</span>/c/users/YOURNAME/airflowhome
+</code></pre></div><ol start="8">
+<li>Restart terminal, activate <code>wsl</code>, run <code>airflow info</code>
+<ol>
+<li>Everything is fine if you see something like <code>Apache Airflow [1.10.12]</code></li>
+<li>If you get errors due to missing packages, install them with <code>pip3 install [package-name]</code></li>
+<li>Try <code>airflow info</code> again</li>
+<li>If it does not work by now, try to follow instructions by the error message. You might want to revert to <a href="https://www.docker.com/">Docker</a>.</li>
+</ol>
+</li>
+</ol>
+<p><img src="/figures/airflow_wsl/airflow_terminal_logo.PNG" alt=""></p>
+<h2 id="airflow-on-windows-wsl">Airflow on Windows WSL</h2>
+<p>I managed to make it work with a Windows subsystem for Linux (WSL) which was recommended on <a href="https://www.astronomer.io/guides/airflow-wsl/">blogs</a> or <a href="https://stackoverflow.com/questions/32378494/how-to-run-airflow-on-windows">Stack Overflow</a>. However, even these resources lead into dead ends.</p>
+<p>After a lot of try and error I want to help you with an approach that worked for me. Try to follow these steps. If you get stuck, try to resolve the error by installing missing dependencies, restart terminal or carefully check the instructions.</p>
+<ol>
+<li>Open Microsoft Store, search for <code>Ubuntu</code>, install it then restart</li>
+</ol>
+<p>Run the following commands run in terminal:</p>
 <ol start="2">
 <li>
 <p>everything up to date with <code>sudo apt update &amp;&amp; sudo apt upgrade</code></p>
 </li>
 <li>
-<p>install pip by running</p>
-<p><code>sudo apt-get install software-properties-common</code> 
-<code>sudo apt-add-repository universe</code> 
-<code>sudo apt-get update</code> 
-<code>sudo apt-get install python3-pip</code></p>
-</li>
+<p>install <code>pip3</code> by running</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install software-properties-common
+sudo apt-add-repository universe
+sudo apt-get update
+sudo apt-get install python3-pip  
+</code></pre></div></li>
 <li>
 <p>Install Airflow: <code>pip3 install apache-airflow</code></p>
 </li>
@@ -92,52 +164,65 @@
 <p>type <code>sudo nano /etc/wsl.conf</code></p>
 </li>
 <li>
-<p>insert the following, save and close with <code>ctrl+s</code> <code>ctrl+x</code></p>
-</li>
-</ol>
+<p>To access directories like <code>/c/users/philipp</code> instead of <code>/mnt/c/users/philipp</code> insert the code block, save and exit with <code>ctrl+s</code> <code>ctrl+x</code></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>automount<span style="color:#f92672">]</span>
 root <span style="color:#f92672">=</span> /
 options <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;metadata&#34;</span>
-</code></pre></div><ol start="4">
-<li>install pip <code>sudo apt update</code> and <code>sudo apt install python3-pip</code></li>
-<li>install airflow <code>pip3 install apache-airflow</code></li>
-<li>type <code>nano ~/.bashrc</code></li>
-<li>set AIRFLOW_HOME with by inserting the following, save and close with <code>ctrl+s</code> <code>ctrl+x</code></li>
-</ol>
+</code></pre></div></li>
+<li>
+<p>Type <code>nano ~/.bashrc</code></p>
+</li>
+<li>
+<p>Define the environment variable <code>AIRFLOW_HOME</code> by adding the code below, then save and exit with <code>ctrl+s</code>, <code>ctrl+x</code></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">export AIRFLOW_HOME<span style="color:#f92672">=</span>/c/Users/philipp/AirflowHome
-</code></pre></div><ol start="8">
-<li>exit Ubuntu and restart</li>
-<li>install missing packages with <code>pip3 install [package-name]</code></li>
-<li>initialize airflow with <code>airflow initdb</code></li>
-<li>run <code>airflow webserver</code></li>
-<li>open another Ubuntu bash and run <code>airflow scheduler</code></li>
+</code></pre></div></li>
+<li>
+<p>Close terminal, open cmd again, type <code>wsl</code></p>
+</li>
+<li>
+<p>Install missing packages with <code>pip3 install [package-name]</code></p>
+</li>
+<li>
+<p>Restart terminal, activate <code>wsl</code>, run <code>airflow info</code></p>
+<ol>
+<li>Everything is fine if you see something like <code>Apache Airflow [1.10.12]</code></li>
+<li>If you get errors due to missing packages, install them with <code>pip3 install [package-name]</code></li>
+<li>Try <code>airflow info</code> again</li>
+<li>If it does not work by now, try to follow instructions by the error message. You might want to revert to <a href="https://www.docker.com/">Docker</a>.</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
-</span><span style="color:#75715e"></span>
-<span style="color:#75715e"># Start airflow</span>
-airflow scheduler --daemon
-airflow webserver --daemon -p <span style="color:#ae81ff">8080</span>
+</li>
+</ol>
+<p><img src="/figures/airflow_wsl/wood_construction.jpg" alt=""></p>
+<blockquote>
+<p><!-- raw HTML omitted -->Photo by <!-- raw HTML omitted -->Zhipeng Ya<!-- raw HTML omitted --> on <!-- raw HTML omitted -->Unsplash<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+</blockquote>
+<h2 id="other-ways-to-install-airflow">Other ways to install Airflow</h2>
+<p>Docker offers a controlled environment (container) to run applications. Since Airflow solely runs on Linux it is a great candidate to use a Docker container. However, Docker is sometimes hard to debug, clunky and could add another layer of confusion. If you want to run Airflow with Docker <a href="https://dev.to/jfhbrook/how-to-run-airflow-on-windows-with-docker-2d01">see this tutorial</a>.</p>
+<h2 id="how-to-run-an-airflow-instance">How to run an Airflow instance</h2>
+<p>Now it is time to have a look at Airflow! Is <code>AIRFLOW_HOME</code> where you expect it to be? Open two cmd windows, activate <code>wsl</code>and run:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># check whether AIRFLOW_HOME was set correctly</span>
+env | grep AIRFLOW_HOME
 
-<span style="color:#75715e"># Wait till airflow web-server is ready</span>
-echo <span style="color:#e6db74">&#34;Waiting for Airflow web server...&#34;</span>
-<span style="color:#66d9ef">while</span> true; <span style="color:#66d9ef">do</span>
-  _RUNNING<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>ps aux | grep airflow-webserver | grep ready | wc -l<span style="color:#66d9ef">)</span>
-  <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $_RUNNING -eq <span style="color:#ae81ff">0</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-    sleep <span style="color:#ae81ff">1</span>
-  <span style="color:#66d9ef">else</span>
-    echo <span style="color:#e6db74">&#34;Airflow web server is ready&#34;</span>
-    break;
-  <span style="color:#66d9ef">fi</span>
-<span style="color:#66d9ef">done</span>
+<span style="color:#75715e"># initialize database in AIRFLOW_HOME</span>
+airflow initdb 
 
+<span style="color:#75715e"># initialize scheduler</span>
+airflow scheduler
 
+<span style="color:#75715e"># use the second cmd window to run</span>
+airflow webserver
+<span style="color:#75715e"># access the UI on localhost:8080 in your browser</span>
+</code></pre></div><p>Unfortunately, WSL does not support background tasks (<code>daemon</code>). This is why we have to open one terminal for <code>airflow webserver</code> and one for <code>airflow scheduler</code>.</p>
+<h2 id="setup-airflow-in-a-project-setting">Setup Airflow in a project setting</h2>
+<p>Copying your DAGs back and forth from a project folder to Airflow home directory is cumbersome. Fortunately, we can automate this with a bash script. For example, my project root directory is in <code>/c/users/philipp/projects/project_name/</code> and contains one folder with all scripts related to data collection and processing named <code>./src/data/</code>. I also have one folder for all Airflow-related files in <code>./src/airflow/</code>. In this folder 
+Have a look at my project Run Spark EMR clusters with Airflow <a href="https://github.com/philippschmalen/etl_spark_airflow_emr">on Github</a> to see the project structure. You find the script <code>deploy.sh</code> in <code>./src/airflow</code>.</p>
+<p>I am thankful for <a href="https://drivendata.github.io/cookiecutter-data-science/">Cookiecutter data science</a> for inspiration about the project structure.</p>
 
-</code></pre></div>
                 </section>
             </article>
 
             
-                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fphilippschmalen.github.io%2fposts%2finstall_airflow_windows10%2f -  "><span class="icon-twitter"> tweet</span></a>
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fphilippschmalen.github.io%2fposts%2finstall_airflow_windows10%2f - Run%20Apache%20Airflow%20on%20Windows%2010 "><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
@@ -157,6 +242,10 @@ echo <span style="color:#e6db74">&#34;Waiting for Airflow web server...&#34;</sp
 
     
     
+    
+        <li>
+            <a href="/posts/data_engineer_capstone_philipp_schmalen_project_report/">Run Spark EMR clusters with Airflow<aside class="dates">Nov 19 2020</aside></a>
+        </li>
     
         <li>
             <a href="/posts/thoughts_nolet_2020/">Machine Learning in Python: Main developments and technology trends<aside class="dates">Aug 20 2020</aside></a>

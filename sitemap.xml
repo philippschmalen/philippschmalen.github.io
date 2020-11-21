@@ -3,6 +3,51 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://philippschmalen.github.io/tags/apache-airflow/</loc>
+    <lastmod>2020-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/data-engineering/</loc>
+    <lastmod>2020-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/data-pipeline/</loc>
+    <lastmod>2020-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/</loc>
+    <lastmod>2020-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/</loc>
+    <lastmod>2020-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/install_airflow_windows10/</loc>
+    <lastmod>2020-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/</loc>
+    <lastmod>2020-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/windows-10/</loc>
+    <lastmod>2020-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/wsl/</loc>
+    <lastmod>2020-11-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://philippschmalen.github.io/tags/airflow/</loc>
     <lastmod>2020-11-19T00:00:00+01:00</lastmod>
   </url>
@@ -23,27 +68,12 @@
   </url>
   
   <url>
-    <loc>https://philippschmalen.github.io/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/posts/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</loc>
     <lastmod>2020-11-19T00:00:00+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://philippschmalen.github.io/tags/spark/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/</loc>
     <lastmod>2020-11-19T00:00:00+01:00</lastmod>
   </url>
   

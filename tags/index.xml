@@ -6,10 +6,55 @@
     <description>Recent content in Tags on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 19 Nov 2020 00:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 21 Nov 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://philippschmalen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Apache Airflow</title>
+      <link>https://philippschmalen.github.io/tags/apache-airflow/</link>
+      <pubDate>Sat, 21 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/apache-airflow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data engineering</title>
+      <link>https://philippschmalen.github.io/tags/data-engineering/</link>
+      <pubDate>Sat, 21 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/data-engineering/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data pipeline</title>
+      <link>https://philippschmalen.github.io/tags/data-pipeline/</link>
+      <pubDate>Sat, 21 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/data-pipeline/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Windows 10</title>
+      <link>https://philippschmalen.github.io/tags/windows-10/</link>
+      <pubDate>Sat, 21 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/windows-10/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>WSL</title>
+      <link>https://philippschmalen.github.io/tags/wsl/</link>
+      <pubDate>Sat, 21 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/wsl/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Airflow</title>
