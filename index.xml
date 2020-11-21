@@ -22,15 +22,6 @@
     </item>
     
     <item>
-      <title>Run Spark EMR clusters with Airflow</title>
-      <link>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</link>
-      <pubDate>Thu, 19 Nov 2020 00:00:00 +0100</pubDate>
-      
-      <guid>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</guid>
-      <description>Run Spark EMR clusters with Airflow Data pipeline on S3 using data from Google Trends and Yahoo! Finance API Capstone project for the data engineer nanodegree at Udacity The project centers around a fictitious firm called Green Quant that provides data about a firm&amp;rsquo;s sustainability profile. It combines both worlds from alternative indicators such as historical search interest from Google Trends and classical financial metrics taken from Yahoo! Finance. This showcases my skills in applying a broad range of tools like Apache Airflow, AWS EMR and Apache Spark.</description>
-    </item>
-    
-    <item>
       <title>Machine Learning in Python: Main developments and technology trends</title>
       <link>https://philippschmalen.github.io/posts/thoughts_nolet_2020/</link>
       <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>

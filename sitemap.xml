@@ -48,41 +48,6 @@
   </url>
   
   <url>
-    <loc>https://philippschmalen.github.io/tags/airflow/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/emr/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/etl/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/google-trends/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/spark/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/yahoo-finance/</loc>
-    <lastmod>2020-11-19T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://philippschmalen.github.io/tags/data-science/</loc>
     <lastmod>2020-08-20T00:00:00+00:00</lastmod>
   </url>
@@ -188,6 +153,11 @@
   </url>
   
   <url>
+    <loc>https://philippschmalen.github.io/tags/google-trends/</loc>
+    <lastmod>2020-08-07T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://philippschmalen.github.io/tags/model-deployment/</loc>
     <lastmod>2020-08-07T00:00:00+02:00</lastmod>
   </url>
@@ -209,6 +179,11 @@
   
   <url>
     <loc>https://philippschmalen.github.io/tags/sustainable-investment/</loc>
+    <lastmod>2020-08-07T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/yahoo-finance/</loc>
     <lastmod>2020-08-07T00:00:00+02:00</lastmod>
   </url>
   
