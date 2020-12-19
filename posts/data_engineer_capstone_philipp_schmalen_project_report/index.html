@@ -9,7 +9,7 @@
 		<meta name="author" content="Philipp Schmalen">
 		<meta name="description" content="Machine Learning, Data Science &amp; Empirics">
 		<meta name="generator" content="Hugo 0.73.0" />
-		<title>Run Spark EMR clusters with Airflow &middot; Philipp Schmalen</title>
+		<title>Data pipeline with Spark EMR clusters, Airflow and S3 &middot; Philipp Schmalen</title>
 		<link rel="shortcut icon" href="https://philippschmalen.github.io/images/favicon.ico">
 		<link rel="stylesheet" href="https://philippschmalen.github.io/css/style.css">
 		<link rel="stylesheet" href="https://philippschmalen.github.io/css/highlight.css">
@@ -47,12 +47,12 @@
             <article>
                 <header>
                     <h1>
-                        Run Spark EMR clusters with Airflow
+                        Data pipeline with Spark EMR clusters, Airflow and S3
                     </h1>
                     <h2 class="headline">
-                    19 Nov 2020
+                    19 Dec 2020
                     
-                    · 15 minute read
+                    · 16 minute read
                       <span class="tags">
                       
                       
@@ -69,6 +69,8 @@
                           
                               <a href="https://philippschmalen.github.io/tags/etl">ETL</a>
                           
+                              <a href="https://philippschmalen.github.io/tags/esg">ESG</a>
+                          
                       
                       
                       </span>
@@ -79,7 +81,7 @@
                     <div id="toc">
                       <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#alternative-esg-data-sourcing-from-google-trends-and-yahoo-finance-api">Alternative ESG data sourcing from Google Trends and Yahoo! Finance API</a>
       <ul>
         <li></li>
       </ul>
@@ -117,14 +119,14 @@
         <li><a href="#possible-extensions-or-improvements">Possible extensions or improvements</a></li>
       </ul>
     </li>
+    <li><a href="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
                     </div>
                   
                 
                 <section id="post-body">
-                    <h1 id="run-spark-emr-clusters-with-airflow">Run Spark EMR clusters with Airflow</h1>
-<h4 id="data-pipeline-on-s3-using-data-from-google-trends-and-yahoo-finance-api">Data pipeline on S3 using data from Google Trends and Yahoo! Finance API</h4>
+                    <h2 id="alternative-esg-data-sourcing-from-google-trends-and-yahoo-finance-api">Alternative ESG data sourcing from Google Trends and Yahoo! Finance API</h2>
 <h4 id="capstone-project-for-the-data-engineer-nanodegree-at-udacity"><em>Capstone project for the data engineer nanodegree at Udacity</em></h4>
 <p>The project centers around a fictitious firm called Green Quant that provides data about a firm&rsquo;s sustainability profile. It combines both worlds from alternative indicators such as historical search interest from Google Trends and classical financial metrics taken from Yahoo! Finance. This showcases my skills in applying a broad range of tools like Apache Airflow, AWS EMR and Apache Spark.</p>
 <blockquote>
@@ -226,14 +228,15 @@
 </tr>
 </tbody>
 </table>
-<p>The schema below provide an overview of technical components  and AWS solutions.</p>
+<p>The schema below provide an overview of technical components and AWS solutions.*</p>
 <p><strong>Option 1</strong>: AWS EMR with HDFS and Spark
 <img src="/figures/spark_emr_airflow/option1_hdfs_spark_emr.png" alt=""></p>
 <p><strong>Option 2</strong>: AWS EMR with S3 and Spark 
 <img src="/figures/spark_emr_airflow/option2_s3_spark_emr.png" alt=""></p>
-<p><strong>Option 3</strong>: AWS 
+<p><strong>Option 3</strong>: AWS Athena
 <img src="/figures/spark_emr_airflow/option3_athena.png" alt=""></p>
 <p>We opt for <strong>Option 2</strong> since it combines the simplicity of S3 as a storage platform with the big data processing power of Spark EMR cluster. Moreover, I benefit from the learning experience when implementing a Spark ETL job on EMR clusters.</p>
+<p><em>*Following the Udacity Terms of Use, license to educational content and the <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial- NoDerivs 4.0 License</a></em></p>
 <h3 id="data-pipelines-with-airflow">Data pipelines with Airflow</h3>
 <p>Airflow defines, schedules, executes and monitors workflows using directed acyclic graphs (DAG). A DAG is a sequence of tasks, organized to reflect their relationships and dependencies. 
 There are several reasons to use Airflow:</p>
@@ -315,7 +318,7 @@ There are several reasons to use Airflow:</p>
 <p>The number prefix from indicates what stages the data is in. <code>0[...]</code> sets the foundation for the API query input by obtaining firm names, ESG criteria and constructing the keywords. <code>1[...]</code> runs API queries, whereas <code>2[...]</code> preprocesses and <code>3[...]</code> finishes processing by creating analysis-ready datasets on S3 or within <code>./data/processed</code>.</p>
 <h2 id="airflow-dag">Airflow DAG</h2>
 <p>I implemented a DAG (<code>./src/airflow/dags/esg_dag.py</code>) that uploads raw data and a PySpark script to S3, launches an EMR cluster and runs a Spark step which calls the PySpark script as a Spark step. Lastly, the processed data loads back to S3, where it can be accessed for further analysis.
-<img src="/figures/spark_emr_airflow/spark_submit_design.PNG" alt=""></p>
+<img src="/figures/spark_emr_airflow/spark_submit_design.png" alt=""></p>
 <p>DAG Graph view of the tasks and dependencies:
 <img src="/figures/spark_emr_airflow/dag_graph_view.PNG" alt=""></p>
 <p>Running the DAG takes around 17 minutes in total as indicated by the gantt chart. 
@@ -559,12 +562,20 @@ great_expectations checkpoint run processed_meta.chk
 <ul>
 <li>Ensure to load the correct Google Trends dataset and pass filenames to &ldquo;Args&rdquo; in SPARK_STEPS to load the most recent files</li>
 </ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>The project showcases a data pipeline for a fictive company named GreenQuant. The firm sources data from Google Trends and Yahoo! Finance to provide alternaitve metrics about corporate sustainabiity within environmental, social and governmental (ESG) cirteria. I employed several tools to achieve this:</p>
+<ul>
+<li><em>workflow management</em> with <strong><a href="https://airflow.apache.org/docs/apache-airflow/stable/index.html">Apache Airflow</a></strong></li>
+<li><em>data quality</em> checks with <strong><a href="https://greatexpectations.io/">Great Expectations</a></strong></li>
+<li><em>data processing</em> with <strong><a href="https://spark.apache.org/docs/latest/">Apache Spark</a></strong> on <strong><a href="https://docs.aws.amazon.com/emr/index.html">Amazon EMR clusters</a></strong></li>
+</ul>
+<p>The project was part of the Data Engineering nanodegree at Udacity. It is the final project where I applied some of the course material and report on my learning journey.</p>
 
                 </section>
             </article>
 
             
-                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fphilippschmalen.github.io%2fposts%2fdata_engineer_capstone_philipp_schmalen_project_report%2f - Run%20Spark%20EMR%20clusters%20with%20Airflow "><span class="icon-twitter"> tweet</span></a>
+                <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fphilippschmalen.github.io%2fposts%2fdata_engineer_capstone_philipp_schmalen_project_report%2f - Data%20pipeline%20with%20Spark%20EMR%20clusters%2c%20Airflow%20and%20S3 "><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
