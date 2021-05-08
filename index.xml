@@ -65,25 +65,5 @@ If you are interested in Python and machine learning, the paper is a good read. 
 A few years ago investors were willing to accept lower returns for socially responsible investments, but firms with higher ESG scores closed the gap.</description>
     </item>
     
-    <item>
-      <title></title>
-      <link>https://philippschmalen.github.io/posts/data_inspection/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://philippschmalen.github.io/posts/data_inspection/</guid>
-      <description>Missings, duplicates and descriptives - quickly inspect data with Python pandas </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://philippschmalen.github.io/posts/my_data_science_project_setup/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://philippschmalen.github.io/posts/my_data_science_project_setup/</guid>
-      <description>My setup for any data science project with Sublime, project manager, cookiecutter Prerequisites: Installed sublime and added sublime.exe to path. Added package manager and project manager to Sublime. For pre-build folder structure install cookiecutter.
-TL;DR Follow these steps to setup your project:
- Create a project directory with a meaningful name and open it Click the address bar or press Alt+d, type cmd and hit enter Run subl . to open Sublime for the current directory Create a new project with Ctrl+ shift+ Pand run Project Manager: Add new Project Name the project  </description>
-    </item>
-    
   </channel>
 </rss>
