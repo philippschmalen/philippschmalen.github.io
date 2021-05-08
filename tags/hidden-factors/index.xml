@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hidden Factors on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/hidden-factors/</link>
+    <description>Recent content in Hidden Factors on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 15 Aug 2020 00:00:00 +0200</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/hidden-factors/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Understand your data with principle component analysis (PCA) and discover underlying patterns</title>
+      <link>https://philippschmalen.github.io/posts/data_exploration_pca/</link>
+      <pubDate>Sat, 15 Aug 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/data_exploration_pca/</guid>
+      <description>Understand your data with principle component analysis (PCA) and discover underlying patterns - Enhanced data exploration that goes beyond descriptives Save time, resources and stay healthy with data exploration that goes beyond means, distributions and correlations: Leverage PCA to see through the surface of variables. It saves time and resources, because it uncovers data issues before an hour-long model training and is good for a programmer&amp;rsquo;s health, since she trades off data worries with something more enjoyable.</description>
+    </item>
+    
+  </channel>
+</rss>

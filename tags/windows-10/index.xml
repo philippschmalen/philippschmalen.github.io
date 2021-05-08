@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Windows 10 on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/windows-10/</link>
+    <description>Recent content in Windows 10 on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 21 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/windows-10/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Run Apache Airflow on Windows 10</title>
+      <link>https://philippschmalen.github.io/posts/install_airflow_windows10/</link>
+      <pubDate>Sat, 21 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/install_airflow_windows10/</guid>
+      <description>Run Apache Airflow on Windows 10 Apache Airflow is a great tool to manage and schedule all steps of a data pipeline. However, running it on Windows 10 can be challenging. Airflow&amp;rsquo;s official Quick Start suggests a smooth start, but solely for Linux users. What about us Windows 10 people if we want to avoid Docker? These steps worked for me and hopefully will work for you, too.
+ Photo by Geran de Klerkon Unsplash After struggling with incorrect configuration, I eventually found a way to install and launch my first Airflow instance.</description>
+    </item>
+    
+  </channel>
+</rss>

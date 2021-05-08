@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>udpate on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/udpate/</link>
+    <description>Recent content in udpate on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 13 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/udpate/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://philippschmalen.github.io/about/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/about/</guid>
+      <description>Thanks for dropping by. This is my journey in brief:
+If you like to get in touch, I would love to hear from you and am excited to read your message. I appreciate your taking the time to just say hi or give feedback of any kind.
+Here is a selection of previously completed projects:
+  Sustainable finance trending topics radar: towardssustainablefinance.com
+  Sustainable finance: Predicting firms&#39; ESG scores with Google trends (Github)</description>
+    </item>
+    
+  </channel>
+</rss>
