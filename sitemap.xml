@@ -3,6 +3,51 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://philippschmalen.github.io/tags/anaconda-miniconda/</loc>
+    <lastmod>2021-05-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/data-science-project/</loc>
+    <lastmod>2021-05-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/</loc>
+    <lastmod>2021-05-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/</loc>
+    <lastmod>2021-05-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/project-manager/</loc>
+    <lastmod>2021-05-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/posts/project_setup_anaconda_repl/</loc>
+    <lastmod>2021-05-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/sublime-repl/</loc>
+    <lastmod>2021-05-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/sublime-text-3/</loc>
+    <lastmod>2021-05-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://philippschmalen.github.io/tags/</loc>
+    <lastmod>2021-05-13T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://philippschmalen.github.io/posts/working_on_causal_forest/</loc>
     <lastmod>2021-05-08T00:00:00+02:00</lastmod>
   </url>
@@ -14,21 +59,6 @@
   
   <url>
     <loc>https://philippschmalen.github.io/tags/grf/</loc>
-    <lastmod>2021-05-08T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/</loc>
-    <lastmod>2021-05-08T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/posts/</loc>
-    <lastmod>2021-05-08T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/tags/</loc>
     <lastmod>2021-05-08T00:00:00+02:00</lastmod>
   </url>
   
@@ -235,10 +265,6 @@
   <url>
     <loc>https://philippschmalen.github.io/tags/yahooquery/</loc>
     <lastmod>2020-08-07T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://philippschmalen.github.io/posts/project_setup_anaconda_repl/</loc>
   </url>
   
   <url>

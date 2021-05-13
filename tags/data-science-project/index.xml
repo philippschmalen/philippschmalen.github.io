@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data science project on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/data-science-project/</link>
+    <description>Recent content in Data science project on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 13 May 2021 00:00:00 +0200</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/data-science-project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python in Sublime Text 3 with Sublime REPL and Anaconda</title>
+      <link>https://philippschmalen.github.io/posts/project_setup_anaconda_repl/</link>
+      <pubDate>Thu, 13 May 2021 00:00:00 +0200</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/project_setup_anaconda_repl/</guid>
+      <description>A flexible, project-centered setup for data science In this tutorial you will learn how to link Sublime Text 3 to an environment from Anaconda/Miniconda and execute Python with SublimeREPL. You might already have existing projects with different conda virtual environments - no worries. This setup can be easily applied to any project that you already have.
+ Photo by Keira Burton from Pexels
+ TL;DR  Open Sublime Text 3 and add the packages package control, SublimeREPL and Project Manager.</description>
+    </item>
+    
+  </channel>
+</rss>
