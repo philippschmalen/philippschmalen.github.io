@@ -88,7 +88,7 @@
       <ul>
         <li><a href="#add-_open-anaconda-prompt-here_-on-right-click">Add <em>Open Anaconda prompt here</em> on right click</a></li>
         <li><a href="#launch-jupyter-notebook-or-jupyter-lab-with-a-double-click">Launch Jupyter Notebook or Jupyter lab with a double click</a></li>
-        <li><a href="#add-sublimeexe-to-environment-variables">Add sublime.exe to environment variables</a></li>
+        <li><a href="#add-sublexe-to-environment-variables">Add subl.exe to environment variables</a></li>
         <li><a href="#advanced-project-setup-for-data-science">Advanced project setup for data science</a></li>
       </ul>
     </li>
@@ -275,7 +275,7 @@
 </code></pre></div><p>If you prefer jupyter notebook, change <code>@CALL jupyter lab</code> to <code>@CALL jupyter notebook</code> and rename <code>activate_jupyternotebook.bat</code> accordingly.</p>
 <p>Go to the project directory and a folder where you want to open Jupyter. For example, I store  create a new batch file like <code>start_jupyterlab.bat</code> and insert</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">%windir%<span style="color:#ae81ff">\S</span>ystem32<span style="color:#ae81ff">\c</span>md.exe <span style="color:#e6db74">&#34;/K&#34;</span> C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\[</span>YOURNAME<span style="color:#f92672">]</span><span style="color:#ae81ff">\m</span>iniconda3<span style="color:#ae81ff">\S</span>cripts<span style="color:#ae81ff">\a</span>ctivate_jupyterlab.bat project1_env
-</code></pre></div><h3 id="add-sublimeexe-to-environment-variables">Add sublime.exe to environment variables</h3>
+</code></pre></div><h3 id="add-sublexe-to-environment-variables">Add subl.exe to environment variables</h3>
 <p>Shortcut for Windows users: Hit <em><!-- raw HTML omitted -->Windows key<!-- raw HTML omitted --></em>, type <code>env</code> and select <code>Edit environment variables for your account</code> from the search results.</p>
 <!-- raw HTML omitted -->
 <p>Then click <code>Path</code> &gt; <code>Edit</code> &gt; <code>New</code> &gt; <code>C:\Program Files\Sublime Text 3\</code> &gt; <code>OK</code>. Replace <code>C:\Program Files\Sublime Text 3\</code> with the directory where you find <code>subl.exe</code>. Also see <a href="https://scotch.io/tutorials/open-sublime-text-from-the-command-line-using-subl-exe-windows#:~:text=A%20nice%20shortcut%20to%20do,folder%20of%20your%20Sublime%20installation.">this tutorial</a></p>
