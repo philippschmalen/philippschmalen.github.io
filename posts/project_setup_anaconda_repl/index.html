@@ -65,7 +65,11 @@
                           
                               <a href="https://philippschmalen.github.io/tags/data-science-project">Data science project</a>
                           
+                              <a href="https://philippschmalen.github.io/tags/data-science-workflow">Data science workflow</a>
+                          
                               <a href="https://philippschmalen.github.io/tags/project-manager">Project Manager</a>
+                          
+                              <a href="https://philippschmalen.github.io/tags/build-system">Build system</a>
                           
                       
                       
@@ -80,13 +84,14 @@
     <li><a href="#a-flexible-project-centered-setup-for-data-science">A flexible, project-centered setup for data science</a></li>
     <li><a href="#tldr">TL;DR</a></li>
     <li><a href="#problem">Problem</a></li>
-    <li><a href="#getting-started">Getting started</a></li>
+    <li><a href="#before-you-start">Before you start</a></li>
     <li><a href="#solution">Solution</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
     <li><a href="#appendix">Appendix</a>
       <ul>
         <li><a href="#how-to-add-sublexe-to-environment-variables">How to add subl.exe to environment variables</a></li>
+        <li><a href="#resources">Resources</a></li>
       </ul>
     </li>
   </ul>
@@ -136,8 +141,8 @@
 <p>This post was inpspired by community efforts on <a href="https://stackoverflow.com/questions/38214656/using-different-conda-envs-with-sublime-repl">Stackoverflow</a>. My approach avoids that the Sublime build-system menu will be filled with every virtual environment you link to REPL. Furthermore, the solution here is project-centered or environment-centered instead of a global setting.</p>
 </blockquote>
 <h2 id="problem">Problem</h2>
-<p>The more projects you have, the more virtual environments you create - the more important project-specific settings become. I experienced this recently when three projects ran in parallel and I had to frequently switch between them. Switching projects and build systems disrupted my workflow. I needed a fast way to switch and have each build system changed as well. I love the tools I have: Sublime Text 3, Anaconda and Sublime REPL. This article suggests a way to smoothly integrate them for a quick &amp; stable project setup.</p>
-<p>What do we need for a lightweight and fast Python setup?</p>
+<p>The more projects you have, the more virtual environments you create - the more important project-specific settings become. I experienced this recently when three projects ran in parallel and I had to frequently switch between them. Switching projects and build systems disrupted my workflow. I needed a fast way to switch and have each build system changed as well. My workflow relies on Sublime Text 3, Anaconda and Sublime REPL, so I wanted a solution for these tools. This article suggests a way to smoothly integrate them for a quick &amp; stable project setup.</p>
+<p><strong>What do we need for a lightweight and fast Python setup?</strong></p>
 <ul>
 <li>quickly load files with a lightweight text editor &ndash;&gt; Sublime Text 3</li>
 <li>switch effortlessly between projects &ndash;&gt; Sublime Project Manager</li>
@@ -145,18 +150,15 @@
 <li>have a build system with an interactive command line &ndash;&gt; Sublime REPL</li>
 </ul>
 <p>The setup presented here lets you switch between projects and their related virtual environments with <!-- raw HTML omitted -->CTRL<!-- raw HTML omitted -->+<!-- raw HTML omitted -->ALT<!-- raw HTML omitted -->+<!-- raw HTML omitted -->p<!-- raw HTML omitted -->. After selecting another project the build system switches as well to what you have defined in the project settings. A few steps have to be followed, but it is worth it. Hopefully you find this useful, as well.</p>
-<h2 id="getting-started">Getting started</h2>
+<h2 id="before-you-start">Before you start</h2>
 <p>Install the following if you do not have it already:</p>
 <ol>
 <li>Sublime Text 3: <a href="https://www.sublimetext.com/3">https://www.sublimetext.com/3</a></li>
 <li>Sublime Package Control: <a href="https://packagecontrol.io/installation">https://packagecontrol.io/installation</a></li>
 <li>Project Manager: <a href="https://packagecontrol.io/packages/ProjectManager">https://packagecontrol.io/packages/ProjectManager</a></li>
 <li>Sublime REPL: <a href="https://packagecontrol.io/packages/SublimeREPL">https://packagecontrol.io/packages/SublimeREPL</a></li>
-<li>Anaconda/Miniconda: <a href="https://docs.conda.io/en/latest/miniconda.html">https://docs.conda.io/en/latest/miniconda.html</a>
-<ol>
-<li>I use <em>example_env</em>  for the whole tutorial (<code>conda create --name example_env python=3.8 -y</code>)</li>
-</ol>
-</li>
+<li>Anaconda/Miniconda: <a href="https://docs.conda.io/en/latest/miniconda.html">https://docs.conda.io/en/latest/miniconda.html</a> 
+a. I use <em>example_env</em>  for the whole tutorial (<code>conda create --name example_env python=3.8 -y</code>)</li>
 </ol>
 <p>This tutorial assumes <em>Windows 10</em>, but should similarly work on Linux. I recommend using Miniconda, see why <a href="https://www.reddit.com/r/datascience/comments/byy98j/anaconda_is_bloated_set_up_a_lean_robust_data/">on Reddit</a></p>
 <h2 id="solution">Solution</h2>
@@ -165,7 +167,7 @@
 <p>Photo by Andrea Piacquadio from Pexels</p>
 </blockquote>
 <p>We installed everything from the above list and have a conda environment. I use <em>example_env</em> as a conda environment. The first step is to center Sublime around the project root folder. In this way, all shortcuts like jumping to a file with <!-- raw HTML omitted -->CTRL<!-- raw HTML omitted -->+<!-- raw HTML omitted -->p<!-- raw HTML omitted --> relate to the project root <code>./</code>.  Then we initialize the Project Manager.</p>
-<p>Let us open a new instance of Sublime at the project root like <code>C:\Users\[YOURNAME]\[PATH-TO-PROJECT]\[PROJECTNAME]</code>. I have Sublime added to my environment variables (find a short how-to below) and open a terminal in the project root directory which is <code>C:\Users\philipp\projects\Sublime project setup</code>. Access the address bar with <!-- raw HTML omitted -->CTRL<!-- raw HTML omitted -->+<!-- raw HTML omitted -->l<!-- raw HTML omitted -->, type <code>cmd</code> to open command, <!-- raw HTML omitted -->↵ Enter<!-- raw HTML omitted -->. Run <code>subl .</code> (only works if you added <code>subl.exe</code> to your Windows environment variables). An empty Sublime window opens. There you go!</p>
+<p>Let us open a new instance of Sublime at the project root like <code>C:\Users\[YOURNAME]\[PATH-TO-PROJECT]\[PROJECTNAME]</code>. I have Sublime added to my environment variables (find a short how-to below) and open a terminal in the project root directory which is <code>C:\Users\philipp\projects\Sublime project setup</code>. Access the address bar with <!-- raw HTML omitted -->CTRL<!-- raw HTML omitted -->+<!-- raw HTML omitted -->l<!-- raw HTML omitted -->, type <code>cmd</code> to open command, <!-- raw HTML omitted -->↵ Enter<!-- raw HTML omitted -->. Run <code>subl .</code> (only works if you added <code>subl.exe</code> to your Windows environment variables - find a short howto in the appendix below). An empty Sublime window opens. There you go!</p>
 <p>Now we turn towards the Project Manager. Add a new project to Project Manager with the command palette via <!-- raw HTML omitted -->CTRL<!-- raw HTML omitted -->+<!-- raw HTML omitted -->SHIFT<!-- raw HTML omitted -->+<!-- raw HTML omitted -->p<!-- raw HTML omitted --> &gt; <code>Project Manager: Add new project</code>. Check out the project setting file with <!-- raw HTML omitted -->CTRL<!-- raw HTML omitted -->+<!-- raw HTML omitted -->SHIFT<!-- raw HTML omitted -->+<!-- raw HTML omitted -->p<!-- raw HTML omitted --> &gt; <code>Project Manger: Edit project</code>. Sublime stores your project settings here, including project <code>name</code> and <code>path</code>:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
     <span style="color:#f92672">&#34;folders&#34;</span>:
@@ -245,11 +247,16 @@
 <p>In this tutorial you learned how to set up Sublime REPL and link it to your conda environment. In this way you can have several environments across projects and switch easily with Sublime&rsquo;s Project Manager and its shortcut <!-- raw HTML omitted -->CTRL<!-- raw HTML omitted -->+ <!-- raw HTML omitted -->ALT<!-- raw HTML omitted -->+<!-- raw HTML omitted -->p<!-- raw HTML omitted -->. Have fun with your new setup and enjoy your projects!</p>
 <p>Drop me a message if you found this helpful or even encountered some issues with the setup. Feedback is greatly appreciated!</p>
 <p>Looking further for intermediate tips and tricks to develop your data science workflow? Stay tuned for the next post within the coming week.</p>
+<hr>
 <h2 id="appendix">Appendix</h2>
 <h3 id="how-to-add-sublexe-to-environment-variables">How to add subl.exe to environment variables</h3>
 <p>Shortcut for Windows users: Hit <em><!-- raw HTML omitted -->Windows key<!-- raw HTML omitted --></em>, type <code>env</code> and select <code>Edit environment variables for your account</code> from the search results.</p>
 <!-- raw HTML omitted -->
 <p>Then click <code>Path</code> &gt; <code>Edit</code> &gt; <code>New</code> &gt; <code>C:\Program Files\Sublime Text 3\</code> &gt; <code>OK</code>. Replace <code>C:\Program Files\Sublime Text 3\</code> with the directory where you find <code>subl.exe</code>. Also see <a href="https://scotch.io/tutorials/open-sublime-text-from-the-command-line-using-subl-exe-windows#:~:text=A%20nice%20shortcut%20to%20do,folder%20of%20your%20Sublime%20installation.">this tutorial</a></p>
+<h3 id="resources">Resources</h3>
+<p><a href="https://stackoverflow.com/questions/38214656/using-different-conda-envs-with-sublime-repl">https://stackoverflow.com/questions/38214656/using-different-conda-envs-with-sublime-repl</a></p>
+<p><a href="http://damnwidget.github.io/anaconda/anaconda_settings/">http://damnwidget.github.io/anaconda/anaconda_settings/</a></p>
+<p><a href="https://www.reddit.com/r/datascience/comments/byy98j/anaconda_is_bloated_set_up_a_lean_robust_data/">https://www.reddit.com/r/datascience/comments/byy98j/anaconda_is_bloated_set_up_a_lean_robust_data/</a></p>
 
                 </section>
             </article>
