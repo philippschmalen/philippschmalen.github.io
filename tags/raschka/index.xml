@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Raschka on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/raschka/</link>
+    <description>Recent content in Raschka on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 20 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/raschka/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Machine Learning in Python: Main developments and technology trends</title>
+      <link>https://philippschmalen.github.io/posts/machine-learning-in-python-main-developments-and-technology-trends/</link>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/machine-learning-in-python-main-developments-and-technology-trends/</guid>
+      <description>Some thoughts on Nolet et al. (2020)</description>
+    </item>
+    
+  </channel>
+</rss>

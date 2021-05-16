@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Apache Airflow on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/apache-airflow/</link>
+    <description>Recent content in Apache Airflow on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 21 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/apache-airflow/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Run Apache Airflow on Windows 10</title>
+      <link>https://philippschmalen.github.io/posts/run-apache-airflow-on-windows-10/</link>
+      <pubDate>Sat, 21 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/run-apache-airflow-on-windows-10/</guid>
+      <description>with windows subsystem for Linux (WSL)</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>A comprehensive guide to Causal Forest | Philipp Schmalen</title>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="description" content="with windows subsystem for Linux (WSL)">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+
+<link rel="stylesheet" href="/css/style.css">
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+
+ 
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-154596617-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+
+  </head>
+
+  <body>
+    <nav class="navigation">
+	
+		<a href="/"> <span class="arrow">←</span>Home</a>
+	
+	
+	
+
+	
+
+	<a href="/about">About</a>
+
+	
+
+	
+</nav>
+
+
+    <main class="main">
+      
+
+<section id="single">
+    <h1 class="title">A comprehensive guide to Causal Forest</h1>
+
+    <div class="tip">
+        <span>
+          May 8, 2021
+        </span>
+        <span class="split">
+          ·
+        </span>
+
+        <span>
+          23 minute read
+        </span>
+    </div>
+
+    <div class="content">
+      <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<hr>
+<h1 id="disclaimer">Disclaimer 
+
+</h1><p><em>This guide aims to be a great resource for practitioners of causal forest and wants to empower researchers with this awesome method. Whether you are a researcher keen to throw your data on causal forest or just want to have a glance for the next study, this article is for you.<br>
+I found myself diving into its source code, published papers on its theory and referring to its algorithm reference. I want to combine all these resources in one articlefor you to save time. Still, you are welcome to do so and dig with references. 
+But as of today 10th May 2021, this guide is in an early stage. I am grateful for any comments and appreciate your input! If you discover inconsistencies, or have questions, I am happy to discuss them with you and revise the tutorial.</em></p>
+<hr>
+<p>Causal forest gains attention as a powerful tool to add a machine learning perspective to empirical studies. The <code>grf</code> software library in <code>R</code> makes it straightforward and quick to apply. Nevertheless, practitioners that want to go beyond basic understanding and include it in their research face many questions and high upfront costs since it largely differs from traditionally used methods, such as ordinary least squares. This article combines insights on its algorithmic implementation, statistical properties and recommended practices to answer</p>
+<blockquote>
+<p><strong>How does causal forest work and how to apply it?</strong></p>
+</blockquote>
+<p>I synthesize five resources to provide an overview. These are (1) Athey et al. (2019) as the main work on its statistical properties, sometimes called &ldquo;the GRF paper&rdquo;, (2) Wager &amp; Athey (2018), which propose preliminary procedures for tree-based treatment estimation and honest trees, (3) Athey &amp; Wager (2019) who apply it to an exemplary dataset, (4) the GRF algorithm reference on Github which describes its algorithm, and lastly, (5) R scripts from the Github repository.</p>
+<p>Here, causal forest will be applied to data from an educational randomized intervention on grit by Alan et al. (2019) as a hands-on exercise.</p>
+<p>Emphasis is on</p>
+<ul>
+<li>procedures and concepts of causal forest</li>
+<li>understanding model parameters</li>
+<li>how to apply it to data</li>
+<li>interpreting its output</li>
+</ul>
+<p>Further posts will follow on <em>heterogeneity analyses</em>, <em>parameter tuning</em>, another proposal for <em>replicable models</em> and how <em>model parameters</em> such as <code>honesty</code> and <code>num.trees</code>, impact model performance and precision.</p>
+<h2 id="prerequisites---before-you-start">Prerequisites - Before you start 
+
+</h2><ol>
+<li>For this exercise I use <code>R 4.0.5</code> and <code>GRF 1.2.0</code>. Ensure to have the same versions to replicate the findings. You can check the version with: <code>R.Version()</code> and <code>packageVersion(&quot;grf&quot;)</code>. If you need to update a package, unload them first with <code>unloadNamespace(&quot;any_package&quot;)</code> and run <code>install.packages(&quot;any_package&quot;)</code></li>
+<li>Data can be downloaded on the Harvard Dataverse <a href="https://doi.org/10.7910/DVN/SAVGAL">https://doi.org/10.7910/DVN/SAVGAL</a></li>
+<li>Knowledge about tree-based methods. I find these resources useful:
+<ol>
+<li><a 
+    href="https://canvas.harvard.edu/courses/12656/files/3105061/download?verifier=epfLpoaq22ZWswpJlkcleMaMdS1DFs9QeyS8Sfsd&amp;wrap=1"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Data Science Lecture 16 (Protopapas, Rader, Pan, 2016)
+</a></li>
+<li>Elements of Statistical Learning, Chapter 9.2 &ldquo;Tree-based methods&rdquo; (Hastie et al., 2009)</li>
+</ol>
+</li>
+</ol>
+<!-- raw HTML omitted -->
+<h2 id="causal-forest-to-estimate-treatment-effects">Causal Forest to estimate treatment effects 
+
+</h2><p>Athey et al. modified Random Forest by Breiman et al. (2001) to estimate treatment effects. Furthermore, they derive its asymptotic properties and show that it yields unbiased estimators. I briefly explain Causal Trees as its core component and how they form a Causal Forest to estimate conditional average treatment effects. Ultimately, I outline variable importance as a key metric for heterogeneity analyses and mention parameter tuning to obtain data-driven model specifications.</p>
+<p>Assume a binary treatment $W_i \in {0,1}$, randomly assigned to treatment ($W_i=1$) and control group ($W_i=0$). Furthermore, assume unconfoundedness following Rosenbaum et al. (1983), where treatment assignment $W_i$ is independent from potential outcomes $Y_i$, conditional on covariates $X_i$ :</p>
+<p>$$ { Y_i^{(0)}, Y_i^{(1)} } \perp \!\! \perp W_i \ | \  X_i $$</p>
+<h3 id="how-causal-trees-grow---selecting-splits-training">How Causal Trees grow - Selecting splits (Training) 
+
+</h3><p>To see why Causal Forest enables heterogeneity analyses, it is crucial to know the objectives under which each causal tree grows. A causal tree is equivalent to decision trees in its basic structure:</p>
+<p><p class="markdown-image">
+  <img src="/figures/working_on_causal_forest/tree_scheme.png" alt="Tree scheme"  />
+</p></p>
+<p>It consists of a root node that branches into child nodes and eventually into terminal nodes, called leafs. At each node, a splitting rule divides observations based on a variable $X_i$ and its split value, such as $x,y,z,v$ in the scheme. Lastly, trees can have different sizes, depending on how many levels it has, with the root node being the first level. Decision trees as in Random Forest differ to Causal Trees in the criteria for a split. The algorithm decides on a split in four recursive steps:</p>
+<ol>
+<li>randomly select a subset of $m$ variables of all $M$ variables that serve as candidates for a split ($m$ is specified with <code>mtry</code>)</li>
+<li>for each of candidate variable, choose a split value $v$, such that it maximizes treatment heterogeneity between resulting child nodes (&ldquo;split criterion&rdquo;, see below)</li>
+<li>favor splits with similar numbers of treated and non-treated individuals within a leaf (<code>stabilize.splits=TRUE</code>) and similar number of individuals across leafs (<code>imbalance.penalty</code>)</li>
+<li>account for limiting factors, as given by the minimum number of observations in each leaf (<code>min.node.size</code>) and maximum imbalance of a split (<code>alpha</code>).</li>
+</ol>
+<p>This procedure applies recursively to a random subsample of the data in the training phase until no further splits can be done within a tree when reaching stop criteria as specified in the model.</p>
+<p>The exact split criterion from Athey et al. (2019) is defined by</p>
+<p>$$ \Delta(C_1, C_2) := \frac{nC_1 nC_2}{n^{2}_{P}} \left( \hat{\theta}_{C_1} (\mathcal{J}) - \hat{\theta}_{C_2}(\mathcal{J})  \right) ^2   $$</p>
+<p>where $nC_j$ and $n_P$ are the observation counts for a child node $C_j$ or a parent node $P$ with observations i from the training sample $\mathcal{J}$, i.e. $n_{P,C_j} = | \left( i \in \mathcal{J} : X_i \in {P,C_j} \right) | $.</p>
+<!-- raw HTML omitted -->
+<h4 id="honesty-separate-training-from-estimation">Honesty (separate training from estimation) 
+
+</h4><p>To ensure asymptotically normal and consistent estimates, causal forests use distinct data partitions that make them &ldquo;honest&rdquo;. For each tree the data is divided into three parts, as shown in the image below.</p>
+<p><p class="markdown-image">
+  <img src="/figures/working_on_causal_forest/data_partition.PNG" alt="Data partition"  />
+</p></p>
+<p>In the training phase, splits are determined with observations from data partition $I \subset J$, whereas outcome prediction is solely done with observations from $(1-I) \subset J$. For prediction, the algorithm distinguishes between estimating an average treatment effect (ATE) and conditional average treatment effects (CATE). ATE can be retrieved with <code>average_treatment_effect([cf object])</code> and uses outcomes $Y_i$ from $(1-I)$. In contrast, calling <code>predict([cf object])</code> yields CATE ($\hat{\tau_i}(x)$) which is estimated on &ldquo;out-of-bag&rdquo; observations from the partition $(1-J)$. The concept of honesty and this sample split is further described Wager and Athey (2018), section 2.4 and <em>Procedure 1. Double-sample trees</em>.</p>
+<h3 id="estimating-conditional-average-treatment-effects-cate">Estimating conditional average treatment effects (CATE) 
+
+</h3><!-- raw HTML omitted -->
+<p>Athey et al. (2019) optimized the algorithm in two ways to be computationally feasible while ensuring asymptotic normality and unbiased estimators. First, they replace the exact split criterion with a gradient-based approximation of it (equation (9) instead of (5) in Athey et al. (2019)).</p>
+<!-- raw HTML omitted -->
+<p>Secondly, they rely on a &ldquo;forest-based adaptive neighborhood weighting&rdquo; scheme instead of estimating treatment effects for each leaf of every tree (equation (2) replaced by equation (5) from Wager et al. (2018)). In particular, consider observations from a train and test set, where $i$ belongs to training observations and $x$ to test observations. A Causal Forest consists of trees $t$, where observations fall into its leafs $L$. Each training observation $i$ that falls into the same leaf as test observation $x$ (numerator), receives a positive weight, relative to the size of the leaf (denominator).</p>
+<p>$$ \alpha_{ti}(x) = \frac{1({X_i \in L_t(x)})}{|L_t(x)|} $$</p>
+<p>These assigned weights for $i$ that fall into the same leafs as test observation $x$ are then averaged across trees, so they sum up to 1: $ \alpha_i(x) =  \frac{1}{T} \sum\limits^T_{t=1} \alpha_{ti}(x) $.</p>
+<p>Figure 1 of Athey et al. (2019) illustrates this weighting procedure:</p>
+<blockquote>
+<p><p class="markdown-image">
+  <img src="/figures/working_on_causal_forest/athey2019_figure1.PNG" alt="Figure 1 (Athey et al., 2019)"  />
+</p>
+<em>Illustration of the random forest weighting function. The rectangles depticted above correspond to terminal nodes in the dendogram representation of Figure 4. Each tree starts by giving equal (positive) weight to the training examples in the same leaf as our test point x of interest, and zero weight to all the other training examples. Then, the forest averages all these tree-based weightings, and effectively measures how often each training example falls into the same leaf as x.</em></p>
+</blockquote>
+<p>CATE, $\hat{\tau}_i(x)$, is now based on all outcomes, $Y_j$, weighted by $\alpha_i(x)$. Outcomes of individuals that were already used in the training step are ignored ($D \times sample.fraction$).</p>
+<h3 id="variable-importance">Variable Importance 
+
+</h3><p>Variable importance indicates how often the algorithm selects a variable to split the sample (A variable that often fulfills the criteria for splits in higher tree levels likely relates to treatment effect heterogeneity, and hence, is deemed more important). Additionally, it is weighted by the level at which the split occurs within a tree, where splits higher up in the tree receive a higher weight.</p>
+<p>Hence, variable importance builds on information about the splits, which consists of two parts:</p>
+<ol>
+<li>the count of splits for each variable, called split frequencies, i.e. how often a variable was used to split the sample</li>
+<li>the total number of splits, i.e. how often all variables were used to split the sample in all trees (a total of = <code>num.trees</code>)</li>
+</ol>
+<p>More formally, split frequency, $SF$, as the count of splits for variable $m$ at level $l$ across all trees $t$:</p>
+<p>$$SF_{ml} = \sum^T_{t=1} \text{s}_{mlt}$$</p>
+<p>where $\text{s}_t = 1$
+if variable <em>m</em> used for a split at level <em>l</em> in tree <em>t</em> and $\text{s}_t = 0$ otherwise. This yields a matrix with split counts for each variable and tree levels:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">Var 1</th>
+<th style="text-align:right">Var 2</th>
+<th style="text-align:right">Var 3</th>
+<th style="text-align:right">Var 4</th>
+<th style="text-align:right">Var 5</th>
+<th style="text-align:right">Var 6</th>
+<th style="text-align:right">Var 7</th>
+<th style="text-align:right">Var 8</th>
+<th style="text-align:right">Var 9</th>
+<th style="text-align:right">Row total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Level 1</td>
+<td style="text-align:right">47</td>
+<td style="text-align:right">286</td>
+<td style="text-align:right">614</td>
+<td style="text-align:right">198</td>
+<td style="text-align:right">133</td>
+<td style="text-align:right">224</td>
+<td style="text-align:right">107</td>
+<td style="text-align:right">232</td>
+<td style="text-align:right">157</td>
+<td style="text-align:right">1998</td>
+</tr>
+<tr>
+<td style="text-align:left">Level 2</td>
+<td style="text-align:right">173</td>
+<td style="text-align:right">531</td>
+<td style="text-align:right">651</td>
+<td style="text-align:right">501</td>
+<td style="text-align:right">209</td>
+<td style="text-align:right">402</td>
+<td style="text-align:right">296</td>
+<td style="text-align:right">560</td>
+<td style="text-align:right">70</td>
+<td style="text-align:right">3393</td>
+</tr>
+<tr>
+<td style="text-align:left">Level 3</td>
+<td style="text-align:right">267</td>
+<td style="text-align:right">770</td>
+<td style="text-align:right">850</td>
+<td style="text-align:right">508</td>
+<td style="text-align:right">370</td>
+<td style="text-align:right">547</td>
+<td style="text-align:right">417</td>
+<td style="text-align:right">733</td>
+<td style="text-align:right">28</td>
+<td style="text-align:right">4490</td>
+</tr>
+<tr>
+<td style="text-align:left">Level 4</td>
+<td style="text-align:right">288</td>
+<td style="text-align:right">819</td>
+<td style="text-align:right">949</td>
+<td style="text-align:right">580</td>
+<td style="text-align:right">451</td>
+<td style="text-align:right">590</td>
+<td style="text-align:right">474</td>
+<td style="text-align:right">843</td>
+<td style="text-align:right">7</td>
+<td style="text-align:right">5001</td>
+</tr>
+</tbody>
+</table>
+<p>Next, each split count is divided by the total number of splits at that level (= row total), which leads to the relative split frequency <em>RSF</em>:</p>
+<p>$$ RSF_{ml} = \frac{SF_{ml}}{\sum\limits_{m=1}^M SF_{ml}} $$</p>
+<p>Further, a weight is introduced that exponentially favors higher tree levels: $w_l = l^{-2}$. Lastly, apply the weights, $RSF_{ml} \times w_l$, and divide this by the weights' total, $\sum\limits^L_{l=1} w_l$ to get rid of the *level* dimension and obtain variable importance:</p>
+<p>$$ VI_m=\frac{\sum\limits^L_{l=1} RSF_{ml} \cdot {w_l}}{\sum\limits^L_{l=1} w_l} $$</p>
+<h2 id="case-study-a-randomized-educational-study-on-grit">Case study: A randomized educational study on grit 
+
+</h2><!-- raw HTML omitted -->
+<h3 id="study-design">Study Design 
+
+</h3><p><strong>Treatment group (TG)</strong>: Additional program in elementary and post-elementary schools that features a tailored curriculum for 12 weeks to promote gritty behavior among pupils. To achieve this, teachers inform about (i) growth mindset (&ldquo;plasticity of the brain against notion of innate ability&rdquo;), (ii) the role of effort to enhance skills and achieve goals, (iii) failure coping strategies, and (iv) goal setting. Videos, mini case studies, stories and artworks of famous individuals highlight the importance of grit and perseverance from multiple perspectives.</p>
+<p>Treatment is randomly assigned across 16 schools (8 treatment + 8 control schools, 1499 pupils of 42 classrooms, where 1360 (91%) were present and consented). Treated schools solely received the grit curriculum. The sample of this intervention is <em>Sample 2</em> and resolved some design issues of a first intervention, stored in <em>Sample 1</em>. <em>Sample 2&rsquo;s</em> baseline information was collected in spring 2015, implemented in fall 2015 and tested in January 2016 shortly after the curriculum. Also long-term follow-up was done in June 2017, when students advanced to 5th grade, circa 1.5 years after the intervention (60% could be tracked). The follow-up pupils had slightly different verbal scores at baseline compared to the original intervention sample.</p>
+<p><strong>Control group (CG)</strong>: Several placebo treatments were in place for the control group, including projects on environment sensitivity, health and hygiene.</p>
+<h3 id="data">Data 
+
+</h3><p>Outcomes were derived from two incentivized experimental tasks about grit. The first showed a grid with numbers and thed pupils had to find number pairs adding up to 100. Rewards depend on a minimum score (performance target), which was 3 pairs per 1.5 minutes. Before each round, the children decided between a difficult grid and get (i) four gifts or a simpler grid to get (ii) one gift in case of success. Experimenters give feedback after each round if they succeeded or failed to meet the target. Students decided between (i) and (ii) except for the first round, where they got randomly either (i) or (ii) to get a subsample free of selection into the tasks. The following table gives an overview of relevant covariates that are later assigned to <code>causal_forest()</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Variable categories</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Demographics</td>
+<td>gender, age, teacher estimated socioeconomic status</td>
+</tr>
+<tr>
+<td>Cognitive skills</td>
+<td>Ravens matrices</td>
+</tr>
+<tr>
+<td>Academic performance</td>
+<td>teacher estimated academic success, grades and standardized tests in mathematics and Turkish</td>
+</tr>
+<tr>
+<td>Risk tolerance</td>
+<td>risk allocation task</td>
+</tr>
+<tr>
+<td>Beliefs (survey)</td>
+<td>malleability of skills, attitudes and behavior towards grit and perseverance</td>
+</tr>
+</tbody>
+</table>
+<h4 id="data-preparation">Data Preparation 
+
+</h4><p>The quality and preparation of collected data determines the informative value of a study. With many missing entries, researchers have to drop substantial amounts of observations, if they rely on methods requiring data without gaps, such as ordinary least squares (OLS). Alan et al. deal with missings using the simple approach of replacing missings with the average across all other non-missings of each variable. 
+For the analysis here, I focus on the outcome where pupils choose the difficult in all five rounds. The data preparation can be summarized with the following code. Note, that I drop all missings of the outcome $Y (alldiff)$ and replace all missings in $X$ with their average.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">df_nomiss <span style="color:#666">&lt;-</span> df <span style="color:#666">%&gt;%</span> 
+	<span style="color:#00a000">drop_na</span>(alldiff) <span style="color:#666">%&gt;%</span>
+	<span style="color:#00a000">mutate_at</span>(<span style="color:#00a000">vars</span>(<span style="color:#666">-</span>alldiff),<span style="color:#666">~</span><span style="color:#00a000">ifelse</span>(<span style="color:#00a000">is.na</span>(.), <span style="color:#666">0</span>, .)) 
+</code></pre></div><p>In contrast, tree-based methods like Random Forest can handle missing data. Causal Forest has been <a 
+    href="https://github.com/grf-labs/grf/pull/612"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    recently extended
+</a> to handle missing data in the upcoming release of Version 1.1.0. However, right now we have to replace missings as done by the authors using <a 
+    href="https://www.iriseekhout.com/missing-data/missing-data-methods/imputation-methods/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    mean imputation
+</a>. This approach reduces data variability and may introduce biases such as underestimating variance, and thereby, leading to more precise estimates than actually observed. To check for robustness, I replicate their main results (Table III - Treatment effect of choice of difficult task) with and without mean imputation. The results indicate no substantial impact on standard errors through mean imputation.</p>
+<h3 id="replicate-results-with-ordinary-least-squares-ols">Replicate results with Ordinary Least Squares (OLS) 
+
+</h3><p>Before going further, I want to verify data loading and preparation. If estimates are within ballpark of Alan et al.s', I can be confident to obtain valid estimates with Causal Forest later on. To keep it simple, I choose ordinary least squares instead of logit as in their paper, since the latter needs some workarounds for obtaining average marginal effects with clustered standard errors (a combination of the <code>mfx</code> and <code>miceadds</code> package solves this). Therefore, estimates should differ slightly from theirs, but would have similar magnitudes.</p>
+<p>Below you find the estimated treatment treatment effects employing ordinary least squares.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:center">Difficult round 1</th>
+<th style="text-align:center">Difficult round 2</th>
+<th style="text-align:center">Difficult round 3</th>
+<th style="text-align:center">Difficult round 4</th>
+<th style="text-align:center">Difficult round 5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Est. treatment effect</td>
+<td style="text-align:center">0.10</td>
+<td style="text-align:center">0.16</td>
+<td style="text-align:center">0.16</td>
+<td style="text-align:center">0.16</td>
+<td style="text-align:center">0.14</td>
+</tr>
+<tr>
+<td style="text-align:left">Std. Error</td>
+<td style="text-align:center">0.04</td>
+<td style="text-align:center">0.04</td>
+<td style="text-align:center">0.04</td>
+<td style="text-align:center">0.05</td>
+<td style="text-align:center">0.04</td>
+</tr>
+<tr>
+<td style="text-align:left">Intercept</td>
+<td style="text-align:center">0.57</td>
+<td style="text-align:center">0.32</td>
+<td style="text-align:center">0.15</td>
+<td style="text-align:center">0.06</td>
+<td style="text-align:center">0.05</td>
+</tr>
+<tr>
+<td style="text-align:left">N</td>
+<td style="text-align:center">1354</td>
+<td style="text-align:center">1351</td>
+<td style="text-align:center">1351</td>
+<td style="text-align:center">1350</td>
+<td style="text-align:center">1354</td>
+</tr>
+</tbody>
+</table>
+<p>The estimates correspond to those in Table A.8 of their online appendix (Alan et al., 2019) and differ slightly from those in Table III. This is reassuring for the steps so far and avoids any issues arising from coarse errors in variable coding. The next section guides through a hands-on example of applying causal forest to the data.</p>
+<h2 id="apply-causal-forest-to-the-data">Apply Causal Forest to the data 
+
+</h2><h3 id="assign-data">Assign data 
+
+</h3><p>Data provided to the <code>causal_forest</code> function has to have a certain format. First of all, the full dataset is divided into covariates $X$, treatment assignment $W$ and outcome $Y$. The latter two, $W$ and $Y$ have to be a numeric vector, where $W$ can be either $0$ or $1$. The covariate matrix, $X$, can include several variable types, such as categorical, continuous or binary variables. Additionally, it can contain missing values with a caveat for categorical values, that might be hand-coded NA values a new factor (see <a 
+    href="https://github.com/grf-labs/grf/issues/632"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    #632
+</a>, <a 
+    href="https://github.com/grf-labs/grf/issues/457"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    #475
+</a>). Beyond this, clusters can be assigned to obtain clustered standard errors for the estimates.</p>
+<p>The following shows how the data parts can be assigned</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#080;font-style:italic">#covariates (X), outcome (Y), treatment assignment (W) and cluster (cluster) </span>
+X <span style="color:#666">&lt;-</span> df_nomiss <span style="color:#666">%&gt;%</span>
+	<span style="color:#00a000">select</span>(male,task_ability,raven,grit_survey1,belief_survey1,
+		mathscore1,verbalscore1,risk,inconsistent) 		
+Y <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>alldiff
+W <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>grit 
+cluster <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>schoolid
+</code></pre></div><h3 id="parameters-for-the-causal_forest-function">Parameters for the <code>causal_forest()</code> function 
+
+</h3><p>The main function to build a model is <code>causal_forest()</code>, which takes several arguments to specify its parameters. The table below gives an overview of the most important arguments to control the model:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>num.trees</td>
+<td>number of trees grown in the   forest      more trees increases prediction accuracy, default is 2000</td>
+</tr>
+<tr>
+<td>sample.fraction</td>
+<td>Share of the data used to train   a tree (determine splits)      higher fraction assigns more observations to training (within bag)</td>
+</tr>
+<tr>
+<td>honesty</td>
+<td>enable honesty (TRUE, FALSE),   where the training sample (data x sample.fraction) is further split to have   one sample</td>
+</tr>
+<tr>
+<td>honesty.fraction</td>
+<td>Subsample (= honesty.fraction x   (data x sample.fraction)) that is used to choose splits for a tree.   Increasing honesty.fraction assigns more data to the task of finding splits.</td>
+</tr>
+<tr>
+<td>honesty.prune.leaves</td>
+<td>whether or not leaves will be   removed that are empty when the data from the honesty sample is applied to a   tree</td>
+</tr>
+<tr>
+<td>mtry</td>
+<td>Number of variables from   covariates (X) that are candidates for a split. When mtry = Number of   variables, all variables are tested for a given split</td>
+</tr>
+<tr>
+<td>min.node.size</td>
+<td>minimum number of treated and   control group observations for a leaf node. Increasing min.node.size likely   leads to fewer splits since child nodes have to meet a stricter condition. A   node must contain at least min.node.size treated samples (W=1), and   also at least that many control samples (W=0).</td>
+</tr>
+<tr>
+<td>alpha</td>
+<td>the maximum imbalance of a split relative to the size of the parent node. Causal forests rely on a measure that tries to capture &lsquo;information content&rsquo;  $IC_N$ of a node $N$: $IC_N = \sum\limits_{i \in N} (W_i - \bar{W})^2$. Each child node, $C_{j \in {1,2}}$ has to fulfill $IC(C_j) \geq \alpha \cdot IC(N_{parent}) $</td>
+</tr>
+<tr>
+<td>imbalance.penalty</td>
+<td>the imbalance of a split between   resulting child nodes. Observation count for each child node has to be   greater than that of (parent node* alpha).</td>
+</tr>
+<tr>
+<td>ci.group.size</td>
+<td>To calculate confidence   intervals, minimum = 2</td>
+</tr>
+<tr>
+<td>stabilize.splits</td>
+<td>Whether or not the treatment   should be taken into account when determining splits</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>As the table shows, there are many ways to specify a model through these parameters. Choosing default parameters may not yield the most optimal model, but is a shortcut to spare computing time and obtain a trained forest right away. Another option is to rely on causal forest&rsquo;s internal parameter tuning that approximates optimal parameters through cross-validation. Even though it is computationally more expensive, approximate optimal values for  <code>min.node.size</code>, <code>sample.fraction</code>, <code>mtry</code>, <code>honesty.fraction</code> and <code>honesty.prune.leaves</code>, <code>alpha</code> and <code>imbalance.penalty</code> decreases bias and is easily available by setting <code>tune.parameters='all'</code> in the function. The section in the appendix describes the procedure in more detail.</p>
+<p>Nevertheless, parameter tuning throws an error that says instructs to increase the number of trained trees (<code>tune.num.trees</code>) within cross-validation. However, values of up to 50000 could not avoid the error while runtime of the algorithm substantially increased to several minutes. Thus, default model parameters are used.</p>
+<h3 id="applying-cf-to-the-data">Applying CF to the data 
+
+</h3><p><em>Orthogonalization.</em> Before assigning the data to <code>causal_forest()</code>, Athey et al. (2019) recommend to fit separate regression trees to estimate $\hat{Y}_i$ and $\hat{W}_i$. Even though, the CF algorithm would do this by default when neither <code>Y.hat</code> nor <code>W.hat</code> are assigned, calling <code>regression_forest()</code> separately sets <code>num.trees=2000</code> instead of 500 with CF&rsquo;s default parameters.  It ensures more precise estimates for treatment propensity and marginal outcomes to compute residual treatment and outcome.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">seed <span style="color:#666">&lt;-</span> <span style="color:#666">42</span>
+<span style="color:#00a000">set.seed</span>(seed)
+Y.hat <span style="color:#666">&lt;-</span> <span style="color:#00a000">regression_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>Y, seed<span style="color:#666">=</span>seed, clusters<span style="color:#666">=</span>cluster)<span style="color:#666">$</span>predictions
+W.hat <span style="color:#666">&lt;-</span> <span style="color:#00a000">regression_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>W, seed<span style="color:#666">=</span>seed, clusters<span style="color:#666">=</span>cluster)<span style="color:#666">$</span>predictions
+</code></pre></div><p>Thereafter, a CF with default parameters is initialized. How to retrieve and interpret these default parameters is explained in the following.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00a000">set.seed</span>(seed)
+cf_default <span style="color:#666">&lt;-</span> <span style="color:#00a000">causal_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>Y, W<span style="color:#666">=</span>W, 
+	Y.hat<span style="color:#666">=</span>Y.hat,
+	W.hat<span style="color:#666">=</span>W.hat,
+	clusters<span style="color:#666">=</span>cluster, 
+	seed<span style="color:#666">=</span>seed)
+</code></pre></div><p><em>Default parameters.</em>
+To inspect the model&rsquo;s characteristics, <code>names(cf_default)</code> lists callable objects.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#666">&gt;</span> <span style="color:#00a000">names</span>(cf_default)
+ [1] <span style="color:#b44">&#34;_ci_group_size&#34;</span>           <span style="color:#b44">&#34;_num_variables&#34;</span>          
+ [3] <span style="color:#b44">&#34;_num_trees&#34;</span>               <span style="color:#b44">&#34;_root_nodes&#34;</span>             
+ [5] <span style="color:#b44">&#34;_child_nodes&#34;</span>             <span style="color:#b44">&#34;_leaf_samples&#34;</span>           
+ [7] <span style="color:#b44">&#34;_split_vars&#34;</span>              <span style="color:#b44">&#34;_split_values&#34;</span>           
+ [9] <span style="color:#b44">&#34;_drawn_samples&#34;</span>           <span style="color:#b44">&#34;_send_missing_left&#34;</span>      
+[11] <span style="color:#b44">&#34;_pv_values&#34;</span>               <span style="color:#b44">&#34;_pv_num_types&#34;</span>           
+[13] <span style="color:#b44">&#34;predictions&#34;</span>              <span style="color:#b44">&#34;variance.estimates&#34;</span>      
+[15] <span style="color:#b44">&#34;debiased.error&#34;</span>           <span style="color:#b44">&#34;excess.error&#34;</span>            
+[17] <span style="color:#b44">&#34;ci.group.size&#34;</span>            <span style="color:#b44">&#34;X.orig&#34;</span>                  
+[19] <span style="color:#b44">&#34;Y.orig&#34;</span>                   <span style="color:#b44">&#34;W.orig&#34;</span>                  
+[21] <span style="color:#b44">&#34;Y.hat&#34;</span>                    <span style="color:#b44">&#34;W.hat&#34;</span>                   
+[23] <span style="color:#b44">&#34;clusters&#34;</span>                 <span style="color:#b44">&#34;equalize.cluster.weights&#34;</span>
+[25] <span style="color:#b44">&#34;tunable.params&#34;</span>           <span style="color:#b44">&#34;has.missing.values&#34;</span>   
+</code></pre></div><p>For example, <code>$tunable.params</code> shows the default parameters that would normally be tuned.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">cf_default<span style="color:#666">$</span>tunable.params <span style="color:#666">%&gt;%</span> as.data.frame <span style="color:#666">%&gt;%</span>
+	rownames_to_column <span style="color:#666">%&gt;%</span> 
+   	<span style="color:#00a000">gather</span>(var, value, <span style="color:#666">-</span>rowname) <span style="color:#666">%&gt;%</span> 
+   	<span style="color:#00a000">pivot_wider</span>(names_from<span style="color:#666">=</span>rowname, values_from<span style="color:#666">=</span>value) 
+
+<span style="color:#666">1</span> sample.fraction       <span style="color:#666">0.5</span> 
+<span style="color:#666">2</span> mtry                  <span style="color:#666">9</span>   
+<span style="color:#666">3</span> min.node.size         <span style="color:#666">5</span>   
+<span style="color:#666">4</span> honesty.fraction      <span style="color:#666">0.5</span> 
+<span style="color:#666">5</span> honesty.prune.leaves  <span style="color:#666">1</span>   
+<span style="color:#666">6</span> alpha                 <span style="color:#666">0.05</span>
+<span style="color:#666">7</span> imbalance.penalty     <span style="color:#666">0</span>  
+</code></pre></div><p>To get a feeling for the model specification, I explain the parameters. 25% of the data was sampled to choose splits (<code>sample.fraction</code>$\times$<code>honesty.fraction</code>, $=J$ in the figure above), 25% was used for estimating treatment effects and the remaining 50% held out for out-of-bag prediction. All 9 variables were considered as candidates for a split (<code>mtry</code>). Splits are discarded where leaves contain less than 5 treated or less than 5 non-treated individuals (<code>min.node.size</code>). Honesty will also discard splits, when no observations of the honesty sample (<code>sample.fraction</code> $\times (1-$ <code>honesty.fraction</code>$)$) fall into a leaf. Furthermore, <code>alpha</code> discards splits that likely have nodes with low information content, as approximated by the function $IC_N =\sum\limits_{i \in N} (W_i - \bar{W})^2$, where $N$ is a node. Any child node, $C_{j\in {1,2}}$, must fulfill $IC_{C_j} \geq \alpha * IC_{parent}$. Lastly, <code>imbalance.penalty</code> does not apply, which would favor splits with balanced count of treated and control observation.</p>
+<blockquote>
+<p>I hope you enjoyed the guide so far! Corona-life is keeping me somehow busy and further parts of the tutorial are soon completed and reviewed. If you discover any inconsistencies in my description and coding of the method, I appreciate your feedback. Just hit me on <a href="mailto:philippschmalen@gmail.com">philippschmalen@gmail.com</a>.</p>
+</blockquote>
+<!-- raw HTML omitted -->
+<hr>
+<h2 id="references">References 
+
+</h2><p>Alan, S., Boneva, T., &amp; Ertac, S. (2019). Ever failed, try again, succeed better: Results from a randomized educational intervention on grit. The Quarterly Journal of Economics, 134(3), 1121-1162.</p>
+<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Replication Data for: &lsquo;Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rsquo;&rdquo;. <a href="https://doi.org/10.7910/DVN/SAVGAL">https://doi.org/10.7910/DVN/SAVGAL</a>. Harvard Dataverse, V1, UNF:6:d2Hfm4IAxljvu95OYqXGOQ== [fileUNF].</p>
+<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Online Appendix Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rdquo;, <a href="https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf">https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf</a>.</p>
+<p>Athey, S., Tibshirani, J., &amp; Wager, S. (2019). Generalized random forests. The Annals of Statistics, 47(2), 1148-1178.</p>
+<p>Athey, S., &amp; Wager, S. (2019). Estimating treatment effects with causal forests: An application. arXiv preprint arXiv:1902.07409.</p>
+<p>Breiman, L. (2001). Random forests. Machine learning, 45(1), 5-32.</p>
+<p>Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). The elements of statistical learning: data mining, inference, and prediction. Springer Science &amp; Business Media.</p>
+<p>Rosenbaum, P. R., &amp; Rubin, D. B. (1983). The central role of the propensity score in observational studies for causal effects. Biometrika, 70(1), 41-55.</p>
+<p>Wager, S., &amp; Athey, S. (2018). Estimation and inference of heterogeneous treatment effects using random forests. Journal of the American Statistical Association, 113(523), 1228-1242.</p>
+<p>GRF-Labs (2020). The GRF Algorithm. <a href="https://github.com/grf-labs/grf/blob/master/REFERENCE.md">https://github.com/grf-labs/grf/blob/master/REFERENCE.md</a>.</p>
+<hr>
+<h2 id="appendix">Appendix 
+
+</h2><h3 id="orthogonalization">Orthogonalization 
+
+</h3><p>Causal forest assumes that treatment assignment is independent from potential outcomes conditional on $X$. The feature space $\mathbb{X}$ however contains parts related to estimated treatment effects and parts related to treatment propensities. To shift splits towards estimating treatment effects instead of propensities, orthogonalization employs regression forests to estimate (i) treatment propensities and (ii) marginal outcomes which is used as input to grow a causal forest. Estimates of treatment propensities, $ e(x)=E[W|X=x] $, and marginal outcomes, $m(x) = E[Y|X=x]$, yield residual treatments $W-e(x)$ and outcomes $Y-m(x)$. In that way, causal trees solely split on the parts of the variation that contain information on potential treatment effects.</p>
+<h3 id="model-error-measures">Model error measures 
+
+</h3><p><em>Debiased error</em>: Estimates of the &lsquo;R-Loss&rsquo; criterion which relates to the mean-squared error (infeasible). It assumes an infinite number of trees. Therefore, it is complemented by the excess error estimate which captures model induced estimate variance.</p>
+<p><em>Excess error</em>: Jackknife estimates of the Monte-carlo error which relates to estimate variance induced by the trees themselves. The error decreases with more trees and becomes negligible with large forests. To test this, grow forests with different sizes and observe their excess error. The sum of these errors yields the overall error of the forest.</p>
+<h3 id="finding-model-parameters-with-parameter-tuning">Finding model parameters with parameter tuning 
+
+</h3><p>Another feature included for Causal Forest is its automated search for suitable model parameters. The procedure determines close-to optimal parameters for the provided data with cross-validation. However, instead of relying on precise error measures, they are approximated to trade off complexity with lower computational expenses. To enable this for all tunable parameters, set <code>causal_forest(...parameter.tuning='all')</code> and the algorithm looks for determines values for: <code>min.node.size</code>, <code>sample.fraction</code>, <code>mtry</code>, <code>honesty.fraction</code> and <code>honesty.prune.leaves</code>, <code>alpha</code> and <code>imbalance.penalty</code>.</p>
+<p>The procedure can be tweaked changing the default values for <code>tune.num.reps</code>, <code>tune.num.trees</code> and <code>tune.num.draws</code>. <code>tune.num.reps</code> is the number of distinct parameter sets that are tested in a mini-forest containing <code>tune.num.trees</code> trees, to obtain a debiased error estimate. Lastly, these error estimates yield a smoothing function to predict the error for another randomly drawn distinct set of <code>tune.num.draws</code> parameters. Those parameter sets that minimize the predicted error are considered optimal.</p>
+<h3 id="variance-across-causal-forests">Variance across Causal Forests 
+
+</h3><p>The algorithm selects splits that maximize any given differences in estimated treatment effects between child nodes. However, these differences could be almost negligible and a high variable importance does not necessarily imply heterogeneity across treatment. It solely means that the algorithm selected variables which are more associated with any existing treatment effect heterogeneity than others. Additionally, low heterogeneity could imply that variable importances vary across a set of differently seeded Causal Forests. In that case, slightly varying, random initializations can tip the scales for variable selection and cause different splits. Therefore, it makes sense to explore treatment heterogeneity visually by plotting CATE against values of $X_i$</p>
+<p>Especially for lower sample sizes, model parameter have a larger impact on variable importance. Even though, variable importance does not have to be a precise measure, it would be great to obtain robust coefficients.</p>
+<p>One way to ensure variable importance for every variable is to force the algorithm to try all variables for each candidate split. <code>mtry</code> is the parameter that controls the number of tried variables and defaults to $\sqrt(M) + 20$ Hold the <code>mtry</code> parameter constant and insert the maximum number, corresponding to the total number of variables.</p>
+<h3 id="remarks-on-study-design">Remarks on Study Design 
+
+</h3><ul>
+<li>The authors conducted two interventions on grit and patience. Therefore, the dataset contains a &ldquo;sample&rdquo; variable to indicate sample 1 or 2. The first sample can be disregarded due to design issues.</li>
+<li>Teachers willing to participate were randomly assigned to TG or CG. Due to this selection into the study, average treatment effect on the treated is observed (ATT). However, since a high share of 80% teachers were willing to participate, the authors conjecture strong external validity. But what are the assumptions and how does it relate to ATE again?
+<a 
+    href="https://stats.stackexchange.com/questions/308397/why-is-average-treatment-effect-different-from-average-treatment-effect-on-the-t"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    This post
+</a> explains it in brief.</li>
+<li>teachers of the TG attended a one-day training seminar to present materials and suggested classroom activities. Pedagogical guidelines focused on task effort and process instead of outcome-based feedback: Praising effort, rewarding perseverant behavior and favor positive attitudes towards learning.</li>
+<li>verbal and math scores were measured before and after treatment</li>
+<li>data was collected in two classroom visits each a week apart</li>
+</ul>
+<h3 id="results-without-mean-imputation">Results without mean imputation 
+
+</h3><p>I was curious, in which way the mean imputation shaped the results. Therefore, I rerun the estimation without mean imputation and obtain:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:center">Difficult round 1</th>
+<th style="text-align:center">Difficult round 2</th>
+<th style="text-align:center">Difficult round 3</th>
+<th style="text-align:center">Difficult round 4</th>
+<th style="text-align:center">Difficult round 5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Est. treatment effect</td>
+<td style="text-align:center">0.10</td>
+<td style="text-align:center">0.18</td>
+<td style="text-align:center">0.19</td>
+<td style="text-align:center">0.18</td>
+<td style="text-align:center">0.16</td>
+</tr>
+<tr>
+<td style="text-align:left">Std. Error</td>
+<td style="text-align:center">0.05</td>
+<td style="text-align:center">0.04</td>
+<td style="text-align:center">0.04</td>
+<td style="text-align:center">0.05</td>
+<td style="text-align:center">0.04</td>
+</tr>
+<tr>
+<td style="text-align:left">Intercept</td>
+<td style="text-align:center">0.55</td>
+<td style="text-align:center">0.35</td>
+<td style="text-align:center">0.17</td>
+<td style="text-align:center">0.09</td>
+<td style="text-align:center">0.06</td>
+</tr>
+<tr>
+<td style="text-align:left">N</td>
+<td style="text-align:center">1058</td>
+<td style="text-align:center">1058</td>
+<td style="text-align:center">1056</td>
+<td style="text-align:center">1056</td>
+<td style="text-align:center">1057</td>
+</tr>
+</tbody>
+</table>
+<p>Mean imputation often leads to more precise estimates and could remove selection issues, when missing values occur in patterns across individuals. Nevertheless, the above table indicates robust estimates in both dimensions with coefficients differing slightly. It looks as if the mean imputation neither changed standard errors nor treatment estimates. Additionally, the estimation method with OLS did not impact coefficients compared to logit as used in the study.</p>
+<h3 id="replicate-results-with-cf-alan-et-al-table-3">Replicate results with CF (Alan et al., Table 3) 
+
+</h3><p>Loop to train 5 causal forests on 5 outcomes (choicer1-5) in the following steps: 
+(i)	drop missings for each outcome Y (choicer1-5), (ii) Select and assign X, Y, W and cluster, (iii) train CF model on that data.</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">	cf_choicer <span style="color:#666">&lt;-</span> <span style="color:#00a000">lapply</span>(<span style="color:#00a000">paste0</span>(<span style="color:#b44">&#34;choicer&#34;</span>, <span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">5</span>), <span style="color:#00a000">function</span>(x){
+
+	<span style="color:#080;font-style:italic"># (i) Remove missings in Y (while keeping missings in X)</span>
+		df_nomiss <span style="color:#666">&lt;-</span> df <span style="color:#666">%&gt;%</span> <span style="color:#00a000">drop_na</span>(x) 
+
+	<span style="color:#080;font-style:italic"># (ii) Assign covariates (X), outcome (Y), treatment (W) and cluster</span>
+		X <span style="color:#666">&lt;-</span> df_nomiss <span style="color:#666">%&gt;%</span>
+			<span style="color:#00a000">select</span>(male,task_ability,raven,grit_survey1,belief_survey1,mathscore1,
+				verbalscore1,risk,inconsistent) 		
+		Y <span style="color:#666">&lt;-</span> df_nomiss[,x] <span style="color:#666">%&gt;%</span> pull <span style="color:#080;font-style:italic">#convert to vector with pull()</span>
+		W <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>grit 
+		cluster <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>schoolid
+
+	<span style="color:#080;font-style:italic"># (iii) Train CF</span>
+		<span style="color:#00a000">set.seed</span>(seed)
+		<span style="color:#00a000">causal_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>Y, W<span style="color:#666">=</span>W, clusters<span style="color:#666">=</span>cluster, seed<span style="color:#666">=</span>seed)
+	})
+
+	<span style="color:#080;font-style:italic"># Store estimated average treatment effects (ATE) </span>
+	cf_ate <span style="color:#666">&lt;-</span> <span style="color:#00a000">sapply</span>(cf_choicer, <span style="color:#00a000">function</span>(x){
+		<span style="color:#00a000">average_treatment_effect</span>(x)
+})
+
+
+<span style="color:#080;font-style:italic"># Results table</span>
+cf_ate <span style="color:#666">%&gt;%</span> 
+	<span style="color:#00a000">`colnames&lt;-`</span>(<span style="color:#00a000">sapply</span>(<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">5</span>, <span style="color:#00a000">function</span>(i) <span style="color:#00a000">paste</span>(<span style="color:#b44">&#34;Difficult Round&#34;</span>,i))) <span style="color:#666">%&gt;%</span>
+	<span style="color:#00a000">`rownames&lt;-`</span>(<span style="color:#00a000">c</span>(<span style="color:#b44">&#34;Est. treatment effect&#34;</span>, <span style="color:#b44">&#34;Std. Error&#34;</span>)) <span style="color:#666">%&gt;%</span>
+	<span style="color:#00a000">rbind</span>(N<span style="color:#666">=</span><span style="color:#00a000">sapply</span>(cf_choicer, <span style="color:#00a000">function</span>(x) <span style="color:#00a000">nrow</span>(x<span style="color:#666">$</span>X.orig))) <span style="color:#666">%&gt;%</span>
+	<span style="color:#00a000">kable</span>(format<span style="color:#666">=</span><span style="color:#b44">&#34;markdown&#34;</span>, digits<span style="color:#666">=</span><span style="color:#666">2</span>)
+</code></pre></div><table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">Difficult Round 1</th>
+<th style="text-align:right">Difficult Round 2</th>
+<th style="text-align:right">Difficult Round 3</th>
+<th style="text-align:right">Difficult Round 4</th>
+<th style="text-align:right">Difficult Round 5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Est. treatment effect</td>
+<td style="text-align:right">0.11</td>
+<td style="text-align:right">0.18</td>
+<td style="text-align:right">0.16</td>
+<td style="text-align:right">0.17</td>
+<td style="text-align:right">0.15</td>
+</tr>
+<tr>
+<td style="text-align:left">Std. Error</td>
+<td style="text-align:right">0.05</td>
+<td style="text-align:right">0.05</td>
+<td style="text-align:right">0.06</td>
+<td style="text-align:right">0.07</td>
+<td style="text-align:right">0.06</td>
+</tr>
+<tr>
+<td style="text-align:left">N</td>
+<td style="text-align:right">1354</td>
+<td style="text-align:right">1351</td>
+<td style="text-align:right">1351</td>
+<td style="text-align:right">1350</td>
+<td style="text-align:right">1354</td>
+</tr>
+</tbody>
+</table>
+<p>The estimated average treatment effects resemble those before obtained with OLS. Standard errors tend to be slightly higher possibly induced by the method and not having imputed.</p>
+
+    </div>
+
+    
+        <div class="tags">
+            
+                <a href="https://philippschmalen.github.io/tags/causal-forest">causal forest</a>
+            
+                <a href="https://philippschmalen.github.io/tags/grf">grf</a>
+            
+                <a href="https://philippschmalen.github.io/tags/tutorial">tutorial</a>
+            
+        </div>
+    
+    
+    
+
+</section>
+
+
+    </main>
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css" integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js" integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O" crossorigin="anonymous"></script>
+<footer id="footer">
+    
+        <div id="social">
+
+
+    <a class="inline-svg" href="mailto:philippschmalen@gmail.com" target="_blank">
+        
+        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="envelope" class="svg-inline--fa fa-envelope fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"></path></svg>
+    </a>
+
+    <a class="inline-svg" href="https://github.com/philippschmalen" target="_blank">
+        
+        <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" class="svg-inline--fa fa-github fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+    </a>
+
+    <a class="inline-svg" href="https://www.linkedin.com/in/philippschmalen/" target="_blank">
+        
+        <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="linkedin-in" class="svg-inline--fa fa-linkedin-in fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"></path></svg>
+    </a>
+
+</div>
+
+
+
+
+    
+
+    <p class="copyright">
+    
+       © Copyright 
+       2021 
+
+       Philipp Schmalen
+    
+    </p>
+
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js" integrity="sha256-34ADEQM6cIZ7chSRA07lN4aD5JM9IQoeIr2VamKDcT0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/contrib/auto-render.min.js" integrity="sha256-HkMrKMLKQk4t1R2ofMAcLz72fWM2sshnx6215U+LgU0=" crossorigin="anonymous"></script>
+<script>
+  renderMathInElement(document.body,
+    {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+        ]
+    }
+  );
+
+  var inlineMathArray = document.querySelectorAll("script[type='math/tex']");
+  for (var i = 0; i < inlineMathArray.length; i++) {
+    var inlineMath = inlineMathArray[i];
+    var tex = inlineMath.innerText || inlineMath.textContent;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex, {displayMode: false});
+    inlineMath.parentNode.replaceChild(replaced, inlineMath);
+  }
+
+  var displayMathArray = document.querySelectorAll("script[type='math/tex; mode=display']");
+  for (var i = 0; i < displayMathArray.length; i++) {
+    var displayMath = displayMathArray[i];
+    var tex = displayMath.innerHTML;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+    displayMath.parentNode.replaceChild(replaced, displayMath);
+  }
+</script>
+  </body>
+</html>
