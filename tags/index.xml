@@ -6,11 +6,47 @@
     <description>Recent content in Tags on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 13 May 2021 00:00:00 +0200</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>about</title>
+      <link>https://philippschmalen.github.io/tags/about/</link>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/about/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>philippschmalen</title>
+      <link>https://philippschmalen.github.io/tags/philippschmalen/</link>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/philippschmalen/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>projects</title>
+      <link>https://philippschmalen.github.io/tags/projects/</link>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/projects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>udpate</title>
+      <link>https://philippschmalen.github.io/tags/udpate/</link>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/tags/udpate/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Anaconda, Miniconda</title>
       <link>https://philippschmalen.github.io/tags/anaconda-miniconda/</link>
-      <pubDate>Thu, 13 May 2021 00:00:00 +0200</pubDate>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0200</pubDate>
       
       <guid>https://philippschmalen.github.io/tags/anaconda-miniconda/</guid>
       <description></description>
@@ -19,7 +55,7 @@
     <item>
       <title>Data science project</title>
       <link>https://philippschmalen.github.io/tags/data-science-project/</link>
-      <pubDate>Thu, 13 May 2021 00:00:00 +0200</pubDate>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0200</pubDate>
       
       <guid>https://philippschmalen.github.io/tags/data-science-project/</guid>
       <description></description>
@@ -28,7 +64,7 @@
     <item>
       <title>Project Manager</title>
       <link>https://philippschmalen.github.io/tags/project-manager/</link>
-      <pubDate>Thu, 13 May 2021 00:00:00 +0200</pubDate>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0200</pubDate>
       
       <guid>https://philippschmalen.github.io/tags/project-manager/</guid>
       <description></description>
@@ -37,7 +73,7 @@
     <item>
       <title>Sublime REPL</title>
       <link>https://philippschmalen.github.io/tags/sublime-repl/</link>
-      <pubDate>Thu, 13 May 2021 00:00:00 +0200</pubDate>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0200</pubDate>
       
       <guid>https://philippschmalen.github.io/tags/sublime-repl/</guid>
       <description></description>
@@ -46,7 +82,7 @@
     <item>
       <title>Sublime Text 3</title>
       <link>https://philippschmalen.github.io/tags/sublime-text-3/</link>
-      <pubDate>Thu, 13 May 2021 00:00:00 +0200</pubDate>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0200</pubDate>
       
       <guid>https://philippschmalen.github.io/tags/sublime-text-3/</guid>
       <description></description>
@@ -292,42 +328,6 @@
       <pubDate>Sat, 15 Aug 2020 00:00:00 +0200</pubDate>
       
       <guid>https://philippschmalen.github.io/tags/toolbox/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>about</title>
-      <link>https://philippschmalen.github.io/tags/about/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/about/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>philippschmalen</title>
-      <link>https://philippschmalen.github.io/tags/philippschmalen/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/philippschmalen/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>projects</title>
-      <link>https://philippschmalen.github.io/tags/projects/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/projects/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>udpate</title>
-      <link>https://philippschmalen.github.io/tags/udpate/</link>
-      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://philippschmalen.github.io/tags/udpate/</guid>
       <description></description>
     </item>
     
