@@ -5,15 +5,15 @@
     <link>https://philippschmalen.github.io/tags/etl/</link>
     <description>Recent content in ETL on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Sat, 19 Dec 2020 00:00:00 +0100</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/etl/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Data pipeline with Spark EMR clusters, Airflow and S3</title>
-      <link>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</link>
+      <link>https://philippschmalen.github.io/posts/data-pipeline-with-spark-emr-clusters-airflow-and-s3/</link>
       <pubDate>Sat, 19 Dec 2020 00:00:00 +0100</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</guid>
-      <description>Alternative ESG data sourcing from Google Trends and Yahoo! Finance API Capstone project for the data engineer nanodegree at Udacity The project centers around a fictitious firm called Green Quant that provides data about a firm&amp;rsquo;s sustainability profile. It combines both worlds from alternative indicators such as historical search interest from Google Trends and classical financial metrics taken from Yahoo! Finance. This showcases my skills in applying a broad range of tools like Apache Airflow, AWS EMR and Apache Spark.</description>
+      <guid>https://philippschmalen.github.io/posts/data-pipeline-with-spark-emr-clusters-airflow-and-s3/</guid>
+      <description>Alternative ESG data sourcing from Google Trends and Yahoo! Finance API</description>
     </item>
     
   </channel>

@@ -5,16 +5,15 @@
     <link>https://philippschmalen.github.io/tags/yahooquery/</link>
     <description>Recent content in yahooquery on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Fri, 07 Aug 2020 00:00:00 +0200</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/yahooquery/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker</title>
-      <link>https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends/</link>
+      <link>https://philippschmalen.github.io/posts/predicting-esg-risks-with-pytorch-google-trends-and-amazon-sagemaker/</link>
       <pubDate>Fri, 07 Aug 2020 00:00:00 +0200</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends/</guid>
-      <description>Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker Introduction The project deals with a prediction task within finance, and in particular, sustainable investment. Private investors increasingly demand firms that act socially responsible, environmentally friendly and have good governance. The UN and leading asset management firms developed the three pillars of ESG, namely environmental, social and governmental, in a conference in 2005 (International Finance Corporation et al., 2005).
-A few years ago investors were willing to accept lower returns for socially responsible investments, but firms with higher ESG scores closed the gap.</description>
+      <guid>https://philippschmalen.github.io/posts/predicting-esg-risks-with-pytorch-google-trends-and-amazon-sagemaker/</guid>
+      <description>Search keywords for negative ESG screening</description>
     </item>
     
   </channel>

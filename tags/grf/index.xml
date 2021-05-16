@@ -5,16 +5,15 @@
     <link>https://philippschmalen.github.io/tags/grf/</link>
     <description>Recent content in grf on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Sat, 08 May 2021 00:00:00 +0200</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/grf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A comprehensive guide to Causal Forest</title>
-      <link>https://philippschmalen.github.io/posts/working_on_causal_forest/</link>
+      <link>https://philippschmalen.github.io/posts/a-comprehensive-guide-to-causal-forest/</link>
       <pubDate>Sat, 08 May 2021 00:00:00 +0200</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/working_on_causal_forest/</guid>
-      <description>Disclaimer This guide aims to be a great resource for practitioners of causal forest and wants to empower researchers with this awesome method. Whether you are a researcher keen to throw your data on causal forest or just want to have a glance for the next study, this article is for you.
-I found myself diving into its source code, published papers on its theory and referring to its algorithm reference.</description>
+      <guid>https://philippschmalen.github.io/posts/a-comprehensive-guide-to-causal-forest/</guid>
+      <description>Machine learning for causal inference</description>
     </item>
     
   </channel>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Run Apache Airflow on Windows 10 | Philipp Schmalen</title>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="description" content="Alternative ESG data sourcing from Google Trends and Yahoo! Finance API">
+<meta name="generator" content="Hugo 0.80.0" />
+
+
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+
+<link rel="stylesheet" href="/css/style.css">
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+
+ 
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-154596617-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+
+  </head>
+
+  <body>
+    <nav class="navigation">
+	
+		<a href="/"> <span class="arrow">←</span>Home</a>
+	
+	
+	
+
+	
+
+	<a href="/about">About</a>
+
+	
+
+	
+</nav>
+
+
+    <main class="main">
+      
+
+<section id="single">
+    <h1 class="title">Run Apache Airflow on Windows 10</h1>
+
+    <div class="tip">
+        <span>
+          Nov 21, 2020
+        </span>
+        <span class="split">
+          ·
+        </span>
+
+        <span>
+          4 minute read
+        </span>
+    </div>
+
+    <div class="content">
+      <h1 id="run-apache-airflow-on-windows-10">Run Apache Airflow on Windows 10 
+
+</h1><p>Apache Airflow is a great tool to manage and schedule all steps of a data pipeline. However, running it on Windows 10 can be challenging. Airflow&rsquo;s official <a 
+    href="http://airflow.apache.org/docs/stable/start.html"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Quick Start
+</a> suggests a smooth start, but solely for <em>Linux</em> users. What about us Windows 10 people if we want to avoid <a 
+    href="https://www.docker.com/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Docker
+</a>? These steps worked for me and hopefully will work for you, too.</p>
+<p><p class="markdown-image">
+  <img src="/figures/airflow_wsl/cabin_woods.jpg" alt=""  />
+</p></p>
+<blockquote>
+<p><!-- raw HTML omitted -->Photo by <!-- raw HTML omitted -->Geran de Klerk<!-- raw HTML omitted --> on <!-- raw HTML omitted -->Unsplash<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+</blockquote>
+<p>After struggling with incorrect configuration, I eventually found a way to install and launch my first Airflow instance. With high spirits I applied it to a <a 
+    href="https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    data pipeline with Spark EMR clusters
+</a>. I am happy to share my insights and list the steps that worked for me. If this also works for you - the better!</p>
+<h2 id="tldr">TLDR; 
+
+</h2><p>How to install and run Airflow <em>locally</em> with Windows subsystem for Linux (WSL) with these steps:</p>
+<ol>
+<li>
+<p>Open Microsoft Store, search for <code>Ubuntu</code>, install it then restart</p>
+</li>
+<li>
+<p>Open cmd and type <code>wsl</code></p>
+</li>
+<li>
+<p>Update everything: <code>sudo apt update &amp;&amp; sudo apt upgrade</code></p>
+</li>
+<li>
+<p>Install pip3 like this</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install software-properties-common
+sudo apt-add-repository universe
+sudo apt-get update
+sudo apt-get install python3-pip
+</code></pre></div></li>
+<li>
+<p>Install Airflow: <code>pip3 install apache-airflow</code></p>
+</li>
+<li>
+<p>Run <code>sudo nano /etc/wsl.conf</code>, insert the block below, save and exit with <code>ctrl+s</code> <code>ctrl+x</code></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  <span style="color:#666">[</span>automount<span style="color:#666">]</span>
+  <span style="color:#b8860b">root</span> <span style="color:#666">=</span> /
+  <span style="color:#b8860b">options</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;metadata&#34;</span>
+</code></pre></div></li>
+<li>
+<p>Run <code>nano ~/.bashrc</code>, insert the block below, save and exit with <code>ctrl+s</code> <code>ctrl+x</code></p>
+</li>
+</ol>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#a2f">export</span> <span style="color:#b8860b">AIRFLOW_HOME</span><span style="color:#666">=</span>/c/users/YOURNAME/airflowhome
+</code></pre></div><ol start="8">
+<li>Restart terminal, activate <code>wsl</code>, run <code>airflow info</code>
+<ol>
+<li>Everything is fine if you see something like <code>Apache Airflow [1.10.12]</code></li>
+<li>If you get errors due to missing packages, install them with <code>pip3 install [package-name]</code></li>
+<li>Try <code>airflow info</code> again</li>
+<li>If it does not work by now, try to follow instructions by the error message. You might want to revert to <a 
+    href="https://www.docker.com/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Docker
+</a>.</li>
+</ol>
+</li>
+</ol>
+<p><p class="markdown-image">
+  <img src="/figures/airflow_wsl/airflow_terminal_logo.PNG" alt=""  />
+</p></p>
+<h2 id="airflow-on-windows-wsl">Airflow on Windows WSL 
+
+</h2><p>I managed to make it work with a Windows subsystem for Linux (WSL) which was recommended on <a 
+    href="https://www.astronomer.io/guides/airflow-wsl/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    blogs
+</a> or <a 
+    href="https://stackoverflow.com/questions/32378494/how-to-run-airflow-on-windows"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Stack Overflow
+</a>. However, even these resources lead into dead ends.</p>
+<p>After a lot of try and error I want to help you with an approach that worked for me. Try to follow these steps. If you get stuck, try to resolve the error by installing missing dependencies, restart terminal or carefully check the instructions.</p>
+<ol>
+<li>Open Microsoft Store, search for <code>Ubuntu</code>, install it then restart</li>
+</ol>
+<p>Run the following commands run in terminal:</p>
+<ol start="2">
+<li>
+<p>everything up to date with <code>sudo apt update &amp;&amp; sudo apt upgrade</code></p>
+</li>
+<li>
+<p>install <code>pip3</code> by running</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install software-properties-common
+sudo apt-add-repository universe
+sudo apt-get update
+sudo apt-get install python3-pip  
+</code></pre></div></li>
+<li>
+<p>Install Airflow: <code>pip3 install apache-airflow</code></p>
+</li>
+<li>
+<p>type <code>sudo nano /etc/wsl.conf</code></p>
+</li>
+<li>
+<p>To access directories like <code>/c/users/philipp</code> instead of <code>/mnt/c/users/philipp</code> insert the code block, save and exit with <code>ctrl+s</code> <code>ctrl+x</code></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">[</span>automount<span style="color:#666">]</span>
+<span style="color:#b8860b">root</span> <span style="color:#666">=</span> /
+<span style="color:#b8860b">options</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;metadata&#34;</span>
+</code></pre></div></li>
+<li>
+<p>Type <code>nano ~/.bashrc</code></p>
+</li>
+<li>
+<p>Define the environment variable <code>AIRFLOW_HOME</code> by adding the code below, then save and exit with <code>ctrl+s</code>, <code>ctrl+x</code></p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#a2f">export</span> <span style="color:#b8860b">AIRFLOW_HOME</span><span style="color:#666">=</span>/c/Users/philipp/AirflowHome
+</code></pre></div></li>
+<li>
+<p>Close terminal, open cmd again, type <code>wsl</code></p>
+</li>
+<li>
+<p>Install missing packages with <code>pip3 install [package-name]</code></p>
+</li>
+<li>
+<p>Restart terminal, activate <code>wsl</code>, run <code>airflow info</code></p>
+<ol>
+<li>Everything is fine if you see something like <code>Apache Airflow [1.10.12]</code></li>
+<li>If you get errors due to missing packages, install them with <code>pip3 install [package-name]</code></li>
+<li>Try <code>airflow info</code> again</li>
+<li>If it does not work by now, try to follow instructions by the error message. You might want to revert to <a 
+    href="https://www.docker.com/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Docker
+</a>.</li>
+</ol>
+</li>
+</ol>
+<p><p class="markdown-image">
+  <img src="/figures/airflow_wsl/wood_construction.jpg" alt=""  />
+</p></p>
+<blockquote>
+<p><!-- raw HTML omitted -->Photo by <!-- raw HTML omitted -->Zhipeng Ya<!-- raw HTML omitted --> on <!-- raw HTML omitted -->Unsplash<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+</blockquote>
+<h2 id="other-ways-to-install-airflow">Other ways to install Airflow 
+
+</h2><p>Docker offers a controlled environment (container) to run applications. Since Airflow solely runs on Linux it is a great candidate to use a Docker container. However, Docker is sometimes hard to debug, clunky and could add another layer of confusion. If you want to run Airflow with Docker <a 
+    href="https://dev.to/jfhbrook/how-to-run-airflow-on-windows-with-docker-2d01"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    see this tutorial
+</a>.</p>
+<h2 id="how-to-run-an-airflow-instance">How to run an Airflow instance 
+
+</h2><p>Now it is time to have a look at Airflow! Is <code>AIRFLOW_HOME</code> where you expect it to be? Open two cmd windows, activate <code>wsl</code>and run:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#080;font-style:italic"># check whether AIRFLOW_HOME was set correctly</span>
+env | grep AIRFLOW_HOME
+
+<span style="color:#080;font-style:italic"># initialize database in AIRFLOW_HOME</span>
+airflow initdb 
+
+<span style="color:#080;font-style:italic"># initialize scheduler</span>
+airflow scheduler
+
+<span style="color:#080;font-style:italic"># use the second cmd window to run</span>
+airflow webserver
+<span style="color:#080;font-style:italic"># access the UI on localhost:8080 in your browser</span>
+</code></pre></div><p>Unfortunately, WSL does not support background tasks (<code>daemon</code>). This is why we have to open one terminal for <code>airflow webserver</code> and one for <code>airflow scheduler</code>.</p>
+<h2 id="setup-airflow-in-a-project-setting">Setup Airflow in a project setting 
+
+</h2><p>Copying your DAGs back and forth from a project folder to Airflow home directory is cumbersome. Fortunately, we can automate this with a bash script. For example, my project root directory is in <code>/c/users/philipp/projects/project_name/</code> and contains one folder with all scripts related to data collection and processing named <code>./src/data/</code>. I also have one folder for all Airflow-related files in <code>./src/airflow/</code>. In this folder 
+Have a look at my project Run Spark EMR clusters with Airflow <a 
+    href="https://github.com/philippschmalen/etl_spark_airflow_emr"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    on Github
+</a> to see the project structure. You find the script <code>deploy.sh</code> in <code>./src/airflow</code>.</p>
+<p>I am thankful for <a 
+    href="https://drivendata.github.io/cookiecutter-data-science/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Cookiecutter data science
+</a> for inspiration about the project structure.</p>
+
+    </div>
+
+    
+        <div class="tags">
+            
+                <a href="https://philippschmalen.github.io/tags/data-engineering">Data engineering</a>
+            
+                <a href="https://philippschmalen.github.io/tags/apache-airflow">Apache Airflow</a>
+            
+                <a href="https://philippschmalen.github.io/tags/data-pipeline">Data pipeline</a>
+            
+                <a href="https://philippschmalen.github.io/tags/wsl">WSL</a>
+            
+                <a href="https://philippschmalen.github.io/tags/windows-10">Windows 10</a>
+            
+        </div>
+    
+    
+    
+
+</section>
+
+
+    </main>
+    
+    
+<footer id="footer">
+    
+        <div id="social">
+
+
+    <a class="inline-svg" href="mailto:philippschmalen@gmail.com" target="_blank">
+        
+        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="envelope" class="svg-inline--fa fa-envelope fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"></path></svg>
+    </a>
+
+    <a class="inline-svg" href="https://github.com/philippschmalen" target="_blank">
+        
+        <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" class="svg-inline--fa fa-github fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+    </a>
+
+    <a class="inline-svg" href="https://www.linkedin.com/in/philippschmalen/" target="_blank">
+        
+        <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="linkedin-in" class="svg-inline--fa fa-linkedin-in fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"></path></svg>
+    </a>
+
+</div>
+
+
+
+
+    
+
+    <p class="copyright">
+    
+       © Copyright 
+       2021 
+
+       Philipp Schmalen
+    
+    </p>
+
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js" integrity="sha256-34ADEQM6cIZ7chSRA07lN4aD5JM9IQoeIr2VamKDcT0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/contrib/auto-render.min.js" integrity="sha256-HkMrKMLKQk4t1R2ofMAcLz72fWM2sshnx6215U+LgU0=" crossorigin="anonymous"></script>
+<script>
+  renderMathInElement(document.body,
+    {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+        ]
+    }
+  );
+
+  var inlineMathArray = document.querySelectorAll("script[type='math/tex']");
+  for (var i = 0; i < inlineMathArray.length; i++) {
+    var inlineMath = inlineMathArray[i];
+    var tex = inlineMath.innerText || inlineMath.textContent;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex, {displayMode: false});
+    inlineMath.parentNode.replaceChild(replaced, inlineMath);
+  }
+
+  var displayMathArray = document.querySelectorAll("script[type='math/tex; mode=display']");
+  for (var i = 0; i < displayMathArray.length; i++) {
+    var displayMath = displayMathArray[i];
+    var tex = displayMath.innerHTML;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+    displayMath.parentNode.replaceChild(replaced, displayMath);
+  }
+</script>
+  </body>
+</html>

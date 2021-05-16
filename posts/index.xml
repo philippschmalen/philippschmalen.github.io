@@ -5,74 +5,69 @@
     <link>https://philippschmalen.github.io/posts/</link>
     <description>Recent content in Posts on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>en-us</language>
     <lastBuildDate>Sun, 16 May 2021 00:00:00 +0200</lastBuildDate><atom:link href="https://philippschmalen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Python in Sublime Text 3 with Sublime REPL and Anaconda</title>
-      <link>https://philippschmalen.github.io/posts/project_setup_anaconda_repl/</link>
+      <link>https://philippschmalen.github.io/posts/python-in-sublime-text-3-with-sublime-repl-and-anaconda/</link>
       <pubDate>Sun, 16 May 2021 00:00:00 +0200</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/project_setup_anaconda_repl/</guid>
-      <description>A flexible, project-centered setup for data science Switch between projects with a keystroke and do not worry about switching build systems. Expedite your data science workflow with this project-centered setup.
-In this tutorial you will learn how to link Sublime Text 3 to an environment from Anaconda/Miniconda and execute Python with Sublime REPL. When you switch the project in Sublime, the build system switches as well to the conda environment associated with it.</description>
+      <guid>https://philippschmalen.github.io/posts/python-in-sublime-text-3-with-sublime-repl-and-anaconda/</guid>
+      <description>A flexible, project-centered setup for build systems</description>
     </item>
     
     <item>
       <title>A comprehensive guide to Causal Forest</title>
-      <link>https://philippschmalen.github.io/posts/working_on_causal_forest/</link>
+      <link>https://philippschmalen.github.io/posts/a-comprehensive-guide-to-causal-forest/</link>
       <pubDate>Sat, 08 May 2021 00:00:00 +0200</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/working_on_causal_forest/</guid>
-      <description>Disclaimer This guide aims to be a great resource for practitioners of causal forest and wants to empower researchers with this awesome method. Whether you are a researcher keen to throw your data on causal forest or just want to have a glance for the next study, this article is for you.
-I found myself diving into its source code, published papers on its theory and referring to its algorithm reference.</description>
+      <guid>https://philippschmalen.github.io/posts/a-comprehensive-guide-to-causal-forest/</guid>
+      <description>Machine learning for causal inference</description>
     </item>
     
     <item>
       <title>Data pipeline with Spark EMR clusters, Airflow and S3</title>
-      <link>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</link>
+      <link>https://philippschmalen.github.io/posts/data-pipeline-with-spark-emr-clusters-airflow-and-s3/</link>
       <pubDate>Sat, 19 Dec 2020 00:00:00 +0100</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/data_engineer_capstone_philipp_schmalen_project_report/</guid>
-      <description>Alternative ESG data sourcing from Google Trends and Yahoo! Finance API Capstone project for the data engineer nanodegree at Udacity The project centers around a fictitious firm called Green Quant that provides data about a firm&amp;rsquo;s sustainability profile. It combines both worlds from alternative indicators such as historical search interest from Google Trends and classical financial metrics taken from Yahoo! Finance. This showcases my skills in applying a broad range of tools like Apache Airflow, AWS EMR and Apache Spark.</description>
+      <guid>https://philippschmalen.github.io/posts/data-pipeline-with-spark-emr-clusters-airflow-and-s3/</guid>
+      <description>Alternative ESG data sourcing from Google Trends and Yahoo! Finance API</description>
     </item>
     
     <item>
       <title>Run Apache Airflow on Windows 10</title>
-      <link>https://philippschmalen.github.io/posts/install_airflow_windows10/</link>
+      <link>https://philippschmalen.github.io/posts/run-apache-airflow-on-windows-10/</link>
       <pubDate>Sat, 21 Nov 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/install_airflow_windows10/</guid>
-      <description>Run Apache Airflow on Windows 10 Apache Airflow is a great tool to manage and schedule all steps of a data pipeline. However, running it on Windows 10 can be challenging. Airflow&amp;rsquo;s official Quick Start suggests a smooth start, but solely for Linux users. What about us Windows 10 people if we want to avoid Docker? These steps worked for me and hopefully will work for you, too.
- Photo by Geran de Klerkon Unsplash After struggling with incorrect configuration, I eventually found a way to install and launch my first Airflow instance.</description>
+      <guid>https://philippschmalen.github.io/posts/run-apache-airflow-on-windows-10/</guid>
+      <description>with windows subsystem for Linux (WSL)</description>
     </item>
     
     <item>
       <title>Machine Learning in Python: Main developments and technology trends</title>
-      <link>https://philippschmalen.github.io/posts/thoughts_nolet_2020/</link>
+      <link>https://philippschmalen.github.io/posts/machine-learning-in-python-main-developments-and-technology-trends/</link>
       <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/thoughts_nolet_2020/</guid>
-      <description>Machine Learning in Python: Main developments and technology trends - Some thoughts on Nolet et al. (2020) Here, I briefly talk about the paper by Nolet, Patterson and Raschka (2020) &amp;ldquo;Machine Learning in Python: Main developments and technology trends in data science, machine learning, and artificial intelligence.&amp;rdquo;
-If you are interested in Python and machine learning, the paper is a good read. It gives an historical account of why Python became a go-to language for ML and is here to stay.</description>
+      <guid>https://philippschmalen.github.io/posts/machine-learning-in-python-main-developments-and-technology-trends/</guid>
+      <description>Some thoughts on Nolet et al. (2020)</description>
     </item>
     
     <item>
       <title>Understand your data with principle component analysis (PCA) and discover underlying patterns</title>
-      <link>https://philippschmalen.github.io/posts/data_exploration_pca/</link>
+      <link>https://philippschmalen.github.io/posts/understand-your-data-with-principle-component-analysis-pca-and-discover-underlying-patterns/</link>
       <pubDate>Sat, 15 Aug 2020 00:00:00 +0200</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/data_exploration_pca/</guid>
-      <description>Understand your data with principle component analysis (PCA) and discover underlying patterns - Enhanced data exploration that goes beyond descriptives Save time, resources and stay healthy with data exploration that goes beyond means, distributions and correlations: Leverage PCA to see through the surface of variables. It saves time and resources, because it uncovers data issues before an hour-long model training and is good for a programmer&amp;rsquo;s health, since she trades off data worries with something more enjoyable.</description>
+      <guid>https://philippschmalen.github.io/posts/understand-your-data-with-principle-component-analysis-pca-and-discover-underlying-patterns/</guid>
+      <description>Enhanced data exploration that goes beyond descriptives</description>
     </item>
     
     <item>
       <title>Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker</title>
-      <link>https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends/</link>
+      <link>https://philippschmalen.github.io/posts/predicting-esg-risks-with-pytorch-google-trends-and-amazon-sagemaker/</link>
       <pubDate>Fri, 07 Aug 2020 00:00:00 +0200</pubDate>
       
-      <guid>https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends/</guid>
-      <description>Predicting ESG risks with Pytorch, Google Trends and Amazon SageMaker Introduction The project deals with a prediction task within finance, and in particular, sustainable investment. Private investors increasingly demand firms that act socially responsible, environmentally friendly and have good governance. The UN and leading asset management firms developed the three pillars of ESG, namely environmental, social and governmental, in a conference in 2005 (International Finance Corporation et al., 2005).
-A few years ago investors were willing to accept lower returns for socially responsible investments, but firms with higher ESG scores closed the gap.</description>
+      <guid>https://philippschmalen.github.io/posts/predicting-esg-risks-with-pytorch-google-trends-and-amazon-sagemaker/</guid>
+      <description>Search keywords for negative ESG screening</description>
     </item>
     
   </channel>
