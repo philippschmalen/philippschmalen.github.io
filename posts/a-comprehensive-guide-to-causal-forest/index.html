@@ -6,8 +6,8 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="with windows subsystem for Linux (WSL)">
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="description" content="Philipp Schmalen">
+<meta name="generator" content="Hugo 0.104.3" />
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,6 +32,11 @@ if (!doNotTrack) {
 
 
 
+
+  
+    <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Philipp Schmalen" />
+    <link href="/index.xml" rel="feed" type="application/rss+xml" title="Philipp Schmalen" />
+  
 
 
 
@@ -103,7 +108,17 @@ But as of today 10th May 2021, this guide is in an early stage. I am grateful fo
 
 </h2><ol>
 <li>For this exercise I use <code>R 4.0.5</code> and <code>GRF 1.2.0</code>. Ensure to have the same versions to replicate the findings. You can check the version with: <code>R.Version()</code> and <code>packageVersion(&quot;grf&quot;)</code>. If you need to update a package, unload them first with <code>unloadNamespace(&quot;any_package&quot;)</code> and run <code>install.packages(&quot;any_package&quot;)</code></li>
-<li>Data can be downloaded on the Harvard Dataverse <a href="https://doi.org/10.7910/DVN/SAVGAL">https://doi.org/10.7910/DVN/SAVGAL</a></li>
+<li>Data can be downloaded on the Harvard Dataverse <a 
+    href="https://doi.org/10.7910/DVN/SAVGAL"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://doi.org/10.7910/DVN/SAVGAL
+</a></li>
 <li>Knowledge about tree-based methods. I find these resources useful:
 <ol>
 <li><a 
@@ -253,7 +268,7 @@ if variable <em>m</em> used for a split at level <em>l</em> in tree <em>t</em> a
 </table>
 <p>Next, each split count is divided by the total number of splits at that level (= row total), which leads to the relative split frequency <em>RSF</em>:</p>
 <p>$$ RSF_{ml} = \frac{SF_{ml}}{\sum\limits_{m=1}^M SF_{ml}} $$</p>
-<p>Further, a weight is introduced that exponentially favors higher tree levels: $w_l = l^{-2}$. Lastly, apply the weights, $RSF_{ml} \times w_l$, and divide this by the weights' total, $\sum\limits^L_{l=1} w_l$ to get rid of the *level* dimension and obtain variable importance:</p>
+<p>Further, a weight is introduced that exponentially favors higher tree levels: $w_l = l^{-2}$. Lastly, apply the weights, $RSF_{ml} \times w_l$, and divide this by the weights&rsquo; total, $\sum\limits^L_{l=1} w_l$ to get rid of the <em>level</em> dimension and obtain variable importance:</p>
 <p>$$ VI_m=\frac{\sum\limits^L_{l=1} RSF_{ml} \cdot {w_l}}{\sum\limits^L_{l=1} w_l} $$</p>
 <h2 id="case-study-a-randomized-educational-study-on-grit">Case study: A randomized educational study on grit 
 
@@ -300,10 +315,10 @@ if variable <em>m</em> used for a split at level <em>l</em> in tree <em>t</em> a
 
 </h4><p>The quality and preparation of collected data determines the informative value of a study. With many missing entries, researchers have to drop substantial amounts of observations, if they rely on methods requiring data without gaps, such as ordinary least squares (OLS). Alan et al. deal with missings using the simple approach of replacing missings with the average across all other non-missings of each variable. 
 For the analysis here, I focus on the outcome where pupils choose the difficult in all five rounds. The data preparation can be summarized with the following code. Note, that I drop all missings of the outcome $Y (alldiff)$ and replace all missings in $X$ with their average.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">df_nomiss <span style="color:#666">&lt;-</span> df <span style="color:#666">%&gt;%</span> 
-	<span style="color:#00a000">drop_na</span>(alldiff) <span style="color:#666">%&gt;%</span>
-	<span style="color:#00a000">mutate_at</span>(<span style="color:#00a000">vars</span>(<span style="color:#666">-</span>alldiff),<span style="color:#666">~</span><span style="color:#00a000">ifelse</span>(<span style="color:#00a000">is.na</span>(.), <span style="color:#666">0</span>, .)) 
-</code></pre></div><p>In contrast, tree-based methods like Random Forest can handle missing data. Causal Forest has been <a 
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>df_nomiss <span style="color:#666">&lt;-</span> df <span style="color:#666">%&gt;%</span> 
+</span></span><span style="display:flex;"><span>	<span style="color:#00a000">drop_na</span>(alldiff) <span style="color:#666">%&gt;%</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#00a000">mutate_at</span>(<span style="color:#00a000">vars</span>(<span style="color:#666">-</span>alldiff),<span style="color:#666">~</span><span style="color:#00a000">ifelse</span>(<span style="color:#00a000">is.na</span>(.), <span style="color:#666">0</span>, .)) 
+</span></span></code></pre></div><p>In contrast, tree-based methods like Random Forest can handle missing data. Causal Forest has been <a 
     href="https://github.com/grf-labs/grf/pull/612"
     
     
@@ -326,7 +341,7 @@ For the analysis here, I focus on the outcome where pupils choose the difficult 
 </a>. This approach reduces data variability and may introduce biases such as underestimating variance, and thereby, leading to more precise estimates than actually observed. To check for robustness, I replicate their main results (Table III - Treatment effect of choice of difficult task) with and without mean imputation. The results indicate no substantial impact on standard errors through mean imputation.</p>
 <h3 id="replicate-results-with-ordinary-least-squares-ols">Replicate results with Ordinary Least Squares (OLS) 
 
-</h3><p>Before going further, I want to verify data loading and preparation. If estimates are within ballpark of Alan et al.s', I can be confident to obtain valid estimates with Causal Forest later on. To keep it simple, I choose ordinary least squares instead of logit as in their paper, since the latter needs some workarounds for obtaining average marginal effects with clustered standard errors (a combination of the <code>mfx</code> and <code>miceadds</code> package solves this). Therefore, estimates should differ slightly from theirs, but would have similar magnitudes.</p>
+</h3><p>Before going further, I want to verify data loading and preparation. If estimates are within ballpark of Alan et al.s&rsquo;, I can be confident to obtain valid estimates with Causal Forest later on. To keep it simple, I choose ordinary least squares instead of logit as in their paper, since the latter needs some workarounds for obtaining average marginal effects with clustered standard errors (a combination of the <code>mfx</code> and <code>miceadds</code> package solves this). Therefore, estimates should differ slightly from theirs, but would have similar magnitudes.</p>
 <p>Below you find the estimated treatment treatment effects employing ordinary least squares.</p>
 <table>
 <thead>
@@ -401,14 +416,14 @@ For the analysis here, I focus on the outcome where pupils choose the difficult 
     #475
 </a>). Beyond this, clusters can be assigned to obtain clustered standard errors for the estimates.</p>
 <p>The following shows how the data parts can be assigned</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#080;font-style:italic">#covariates (X), outcome (Y), treatment assignment (W) and cluster (cluster) </span>
-X <span style="color:#666">&lt;-</span> df_nomiss <span style="color:#666">%&gt;%</span>
-	<span style="color:#00a000">select</span>(male,task_ability,raven,grit_survey1,belief_survey1,
-		mathscore1,verbalscore1,risk,inconsistent) 		
-Y <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>alldiff
-W <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>grit 
-cluster <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>schoolid
-</code></pre></div><h3 id="parameters-for-the-causal_forest-function">Parameters for the <code>causal_forest()</code> function 
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span><span style="color:#080;font-style:italic">#covariates (X), outcome (Y), treatment assignment (W) and cluster (cluster) </span>
+</span></span><span style="display:flex;"><span>X <span style="color:#666">&lt;-</span> df_nomiss <span style="color:#666">%&gt;%</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#00a000">select</span>(male,task_ability,raven,grit_survey1,belief_survey1,
+</span></span><span style="display:flex;"><span>		mathscore1,verbalscore1,risk,inconsistent) 		
+</span></span><span style="display:flex;"><span>Y <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>alldiff
+</span></span><span style="display:flex;"><span>W <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>grit 
+</span></span><span style="display:flex;"><span>cluster <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>schoolid
+</span></span></code></pre></div><h3 id="parameters-for-the-causal_forest-function">Parameters for the <code>causal_forest()</code> function 
 
 </h3><p>The main function to build a model is <code>causal_forest()</code>, which takes several arguments to specify its parameters. The table below gives an overview of the most important arguments to control the model:</p>
 <table>
@@ -474,64 +489,101 @@ cluster <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">
 <h3 id="applying-cf-to-the-data">Applying CF to the data 
 
 </h3><p><em>Orthogonalization.</em> Before assigning the data to <code>causal_forest()</code>, Athey et al. (2019) recommend to fit separate regression trees to estimate $\hat{Y}_i$ and $\hat{W}_i$. Even though, the CF algorithm would do this by default when neither <code>Y.hat</code> nor <code>W.hat</code> are assigned, calling <code>regression_forest()</code> separately sets <code>num.trees=2000</code> instead of 500 with CF&rsquo;s default parameters.  It ensures more precise estimates for treatment propensity and marginal outcomes to compute residual treatment and outcome.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">seed <span style="color:#666">&lt;-</span> <span style="color:#666">42</span>
-<span style="color:#00a000">set.seed</span>(seed)
-Y.hat <span style="color:#666">&lt;-</span> <span style="color:#00a000">regression_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>Y, seed<span style="color:#666">=</span>seed, clusters<span style="color:#666">=</span>cluster)<span style="color:#666">$</span>predictions
-W.hat <span style="color:#666">&lt;-</span> <span style="color:#00a000">regression_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>W, seed<span style="color:#666">=</span>seed, clusters<span style="color:#666">=</span>cluster)<span style="color:#666">$</span>predictions
-</code></pre></div><p>Thereafter, a CF with default parameters is initialized. How to retrieve and interpret these default parameters is explained in the following.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#00a000">set.seed</span>(seed)
-cf_default <span style="color:#666">&lt;-</span> <span style="color:#00a000">causal_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>Y, W<span style="color:#666">=</span>W, 
-	Y.hat<span style="color:#666">=</span>Y.hat,
-	W.hat<span style="color:#666">=</span>W.hat,
-	clusters<span style="color:#666">=</span>cluster, 
-	seed<span style="color:#666">=</span>seed)
-</code></pre></div><p><em>Default parameters.</em>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>seed <span style="color:#666">&lt;-</span> <span style="color:#666">42</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a000">set.seed</span>(seed)
+</span></span><span style="display:flex;"><span>Y.hat <span style="color:#666">&lt;-</span> <span style="color:#00a000">regression_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>Y, seed<span style="color:#666">=</span>seed, clusters<span style="color:#666">=</span>cluster)<span style="color:#666">$</span>predictions
+</span></span><span style="display:flex;"><span>W.hat <span style="color:#666">&lt;-</span> <span style="color:#00a000">regression_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>W, seed<span style="color:#666">=</span>seed, clusters<span style="color:#666">=</span>cluster)<span style="color:#666">$</span>predictions
+</span></span></code></pre></div><p>Thereafter, a CF with default parameters is initialized. How to retrieve and interpret these default parameters is explained in the following.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span><span style="color:#00a000">set.seed</span>(seed)
+</span></span><span style="display:flex;"><span>cf_default <span style="color:#666">&lt;-</span> <span style="color:#00a000">causal_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>Y, W<span style="color:#666">=</span>W, 
+</span></span><span style="display:flex;"><span>	Y.hat<span style="color:#666">=</span>Y.hat,
+</span></span><span style="display:flex;"><span>	W.hat<span style="color:#666">=</span>W.hat,
+</span></span><span style="display:flex;"><span>	clusters<span style="color:#666">=</span>cluster, 
+</span></span><span style="display:flex;"><span>	seed<span style="color:#666">=</span>seed)
+</span></span></code></pre></div><p><em>Default parameters.</em>
 To inspect the model&rsquo;s characteristics, <code>names(cf_default)</code> lists callable objects.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#666">&gt;</span> <span style="color:#00a000">names</span>(cf_default)
- [1] <span style="color:#b44">&#34;_ci_group_size&#34;</span>           <span style="color:#b44">&#34;_num_variables&#34;</span>          
- [3] <span style="color:#b44">&#34;_num_trees&#34;</span>               <span style="color:#b44">&#34;_root_nodes&#34;</span>             
- [5] <span style="color:#b44">&#34;_child_nodes&#34;</span>             <span style="color:#b44">&#34;_leaf_samples&#34;</span>           
- [7] <span style="color:#b44">&#34;_split_vars&#34;</span>              <span style="color:#b44">&#34;_split_values&#34;</span>           
- [9] <span style="color:#b44">&#34;_drawn_samples&#34;</span>           <span style="color:#b44">&#34;_send_missing_left&#34;</span>      
-[11] <span style="color:#b44">&#34;_pv_values&#34;</span>               <span style="color:#b44">&#34;_pv_num_types&#34;</span>           
-[13] <span style="color:#b44">&#34;predictions&#34;</span>              <span style="color:#b44">&#34;variance.estimates&#34;</span>      
-[15] <span style="color:#b44">&#34;debiased.error&#34;</span>           <span style="color:#b44">&#34;excess.error&#34;</span>            
-[17] <span style="color:#b44">&#34;ci.group.size&#34;</span>            <span style="color:#b44">&#34;X.orig&#34;</span>                  
-[19] <span style="color:#b44">&#34;Y.orig&#34;</span>                   <span style="color:#b44">&#34;W.orig&#34;</span>                  
-[21] <span style="color:#b44">&#34;Y.hat&#34;</span>                    <span style="color:#b44">&#34;W.hat&#34;</span>                   
-[23] <span style="color:#b44">&#34;clusters&#34;</span>                 <span style="color:#b44">&#34;equalize.cluster.weights&#34;</span>
-[25] <span style="color:#b44">&#34;tunable.params&#34;</span>           <span style="color:#b44">&#34;has.missing.values&#34;</span>   
-</code></pre></div><p>For example, <code>$tunable.params</code> shows the default parameters that would normally be tuned.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">cf_default<span style="color:#666">$</span>tunable.params <span style="color:#666">%&gt;%</span> as.data.frame <span style="color:#666">%&gt;%</span>
-	rownames_to_column <span style="color:#666">%&gt;%</span> 
-   	<span style="color:#00a000">gather</span>(var, value, <span style="color:#666">-</span>rowname) <span style="color:#666">%&gt;%</span> 
-   	<span style="color:#00a000">pivot_wider</span>(names_from<span style="color:#666">=</span>rowname, values_from<span style="color:#666">=</span>value) 
-
-<span style="color:#666">1</span> sample.fraction       <span style="color:#666">0.5</span> 
-<span style="color:#666">2</span> mtry                  <span style="color:#666">9</span>   
-<span style="color:#666">3</span> min.node.size         <span style="color:#666">5</span>   
-<span style="color:#666">4</span> honesty.fraction      <span style="color:#666">0.5</span> 
-<span style="color:#666">5</span> honesty.prune.leaves  <span style="color:#666">1</span>   
-<span style="color:#666">6</span> alpha                 <span style="color:#666">0.05</span>
-<span style="color:#666">7</span> imbalance.penalty     <span style="color:#666">0</span>  
-</code></pre></div><p>To get a feeling for the model specification, I explain the parameters. 25% of the data was sampled to choose splits (<code>sample.fraction</code>$\times$<code>honesty.fraction</code>, $=J$ in the figure above), 25% was used for estimating treatment effects and the remaining 50% held out for out-of-bag prediction. All 9 variables were considered as candidates for a split (<code>mtry</code>). Splits are discarded where leaves contain less than 5 treated or less than 5 non-treated individuals (<code>min.node.size</code>). Honesty will also discard splits, when no observations of the honesty sample (<code>sample.fraction</code> $\times (1-$ <code>honesty.fraction</code>$)$) fall into a leaf. Furthermore, <code>alpha</code> discards splits that likely have nodes with low information content, as approximated by the function $IC_N =\sum\limits_{i \in N} (W_i - \bar{W})^2$, where $N$ is a node. Any child node, $C_{j\in {1,2}}$, must fulfill $IC_{C_j} \geq \alpha * IC_{parent}$. Lastly, <code>imbalance.penalty</code> does not apply, which would favor splits with balanced count of treated and control observation.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span><span style="color:#666">&gt;</span> <span style="color:#00a000">names</span>(cf_default)
+</span></span><span style="display:flex;"><span> [1] <span style="color:#b44">&#34;_ci_group_size&#34;</span>           <span style="color:#b44">&#34;_num_variables&#34;</span>          
+</span></span><span style="display:flex;"><span> [3] <span style="color:#b44">&#34;_num_trees&#34;</span>               <span style="color:#b44">&#34;_root_nodes&#34;</span>             
+</span></span><span style="display:flex;"><span> [5] <span style="color:#b44">&#34;_child_nodes&#34;</span>             <span style="color:#b44">&#34;_leaf_samples&#34;</span>           
+</span></span><span style="display:flex;"><span> [7] <span style="color:#b44">&#34;_split_vars&#34;</span>              <span style="color:#b44">&#34;_split_values&#34;</span>           
+</span></span><span style="display:flex;"><span> [9] <span style="color:#b44">&#34;_drawn_samples&#34;</span>           <span style="color:#b44">&#34;_send_missing_left&#34;</span>      
+</span></span><span style="display:flex;"><span>[11] <span style="color:#b44">&#34;_pv_values&#34;</span>               <span style="color:#b44">&#34;_pv_num_types&#34;</span>           
+</span></span><span style="display:flex;"><span>[13] <span style="color:#b44">&#34;predictions&#34;</span>              <span style="color:#b44">&#34;variance.estimates&#34;</span>      
+</span></span><span style="display:flex;"><span>[15] <span style="color:#b44">&#34;debiased.error&#34;</span>           <span style="color:#b44">&#34;excess.error&#34;</span>            
+</span></span><span style="display:flex;"><span>[17] <span style="color:#b44">&#34;ci.group.size&#34;</span>            <span style="color:#b44">&#34;X.orig&#34;</span>                  
+</span></span><span style="display:flex;"><span>[19] <span style="color:#b44">&#34;Y.orig&#34;</span>                   <span style="color:#b44">&#34;W.orig&#34;</span>                  
+</span></span><span style="display:flex;"><span>[21] <span style="color:#b44">&#34;Y.hat&#34;</span>                    <span style="color:#b44">&#34;W.hat&#34;</span>                   
+</span></span><span style="display:flex;"><span>[23] <span style="color:#b44">&#34;clusters&#34;</span>                 <span style="color:#b44">&#34;equalize.cluster.weights&#34;</span>
+</span></span><span style="display:flex;"><span>[25] <span style="color:#b44">&#34;tunable.params&#34;</span>           <span style="color:#b44">&#34;has.missing.values&#34;</span>   
+</span></span></code></pre></div><p>For example, <code>$tunable.params</code> shows the default parameters that would normally be tuned.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>cf_default<span style="color:#666">$</span>tunable.params <span style="color:#666">%&gt;%</span> as.data.frame <span style="color:#666">%&gt;%</span>
+</span></span><span style="display:flex;"><span>	rownames_to_column <span style="color:#666">%&gt;%</span> 
+</span></span><span style="display:flex;"><span>   	<span style="color:#00a000">gather</span>(var, value, <span style="color:#666">-</span>rowname) <span style="color:#666">%&gt;%</span> 
+</span></span><span style="display:flex;"><span>   	<span style="color:#00a000">pivot_wider</span>(names_from<span style="color:#666">=</span>rowname, values_from<span style="color:#666">=</span>value) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666">1</span> sample.fraction       <span style="color:#666">0.5</span> 
+</span></span><span style="display:flex;"><span><span style="color:#666">2</span> mtry                  <span style="color:#666">9</span>   
+</span></span><span style="display:flex;"><span><span style="color:#666">3</span> min.node.size         <span style="color:#666">5</span>   
+</span></span><span style="display:flex;"><span><span style="color:#666">4</span> honesty.fraction      <span style="color:#666">0.5</span> 
+</span></span><span style="display:flex;"><span><span style="color:#666">5</span> honesty.prune.leaves  <span style="color:#666">1</span>   
+</span></span><span style="display:flex;"><span><span style="color:#666">6</span> alpha                 <span style="color:#666">0.05</span>
+</span></span><span style="display:flex;"><span><span style="color:#666">7</span> imbalance.penalty     <span style="color:#666">0</span>  
+</span></span></code></pre></div><p>To get a feeling for the model specification, I explain the parameters. 25% of the data was sampled to choose splits (<code>sample.fraction</code>$\times$<code>honesty.fraction</code>, $=J$ in the figure above), 25% was used for estimating treatment effects and the remaining 50% held out for out-of-bag prediction. All 9 variables were considered as candidates for a split (<code>mtry</code>). Splits are discarded where leaves contain less than 5 treated or less than 5 non-treated individuals (<code>min.node.size</code>). Honesty will also discard splits, when no observations of the honesty sample (<code>sample.fraction</code> $\times (1-$ <code>honesty.fraction</code>$)$) fall into a leaf. Furthermore, <code>alpha</code> discards splits that likely have nodes with low information content, as approximated by the function $IC_N =\sum\limits_{i \in N} (W_i - \bar{W})^2$, where $N$ is a node. Any child node, $C_{j\in {1,2}}$, must fulfill $IC_{C_j} \geq \alpha * IC_{parent}$. Lastly, <code>imbalance.penalty</code> does not apply, which would favor splits with balanced count of treated and control observation.</p>
 <blockquote>
-<p>I hope you enjoyed the guide so far! Corona-life is keeping me somehow busy and further parts of the tutorial are soon completed and reviewed. If you discover any inconsistencies in my description and coding of the method, I appreciate your feedback. Just hit me on <a href="mailto:philippschmalen@gmail.com">philippschmalen@gmail.com</a>.</p>
+<p>I hope you enjoyed the guide so far! Corona-life is keeping me somehow busy and further parts of the tutorial are soon completed and reviewed. If you discover any inconsistencies in my description and coding of the method, I appreciate your feedback. Just hit me on <a 
+    href="mailto:philippschmalen@gmail.com"
+    
+    
+    
+>
+    philippschmalen@gmail.com
+</a>.</p>
 </blockquote>
 <!-- raw HTML omitted -->
 <hr>
 <h2 id="references">References 
 
 </h2><p>Alan, S., Boneva, T., &amp; Ertac, S. (2019). Ever failed, try again, succeed better: Results from a randomized educational intervention on grit. The Quarterly Journal of Economics, 134(3), 1121-1162.</p>
-<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Replication Data for: &lsquo;Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rsquo;&rdquo;. <a href="https://doi.org/10.7910/DVN/SAVGAL">https://doi.org/10.7910/DVN/SAVGAL</a>. Harvard Dataverse, V1, UNF:6:d2Hfm4IAxljvu95OYqXGOQ== [fileUNF].</p>
-<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Online Appendix Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rdquo;, <a href="https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf">https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf</a>.</p>
+<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Replication Data for: &lsquo;Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rsquo;&rdquo;. <a 
+    href="https://doi.org/10.7910/DVN/SAVGAL"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://doi.org/10.7910/DVN/SAVGAL
+</a>. Harvard Dataverse, V1, UNF:6:d2Hfm4IAxljvu95OYqXGOQ== [fileUNF].</p>
+<p>Alan, S., Boneva, T., Ertac, S. (2019). &ldquo;Online Appendix Ever Failed, Try Again, Succeed Better: Results from a Randomized Educational Intervention on Grit&rdquo;, <a 
+    href="https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://www.edworkingpapers.com/sites/default/files/Online%20Appendix.pdf
+</a>.</p>
 <p>Athey, S., Tibshirani, J., &amp; Wager, S. (2019). Generalized random forests. The Annals of Statistics, 47(2), 1148-1178.</p>
 <p>Athey, S., &amp; Wager, S. (2019). Estimating treatment effects with causal forests: An application. arXiv preprint arXiv:1902.07409.</p>
 <p>Breiman, L. (2001). Random forests. Machine learning, 45(1), 5-32.</p>
 <p>Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). The elements of statistical learning: data mining, inference, and prediction. Springer Science &amp; Business Media.</p>
 <p>Rosenbaum, P. R., &amp; Rubin, D. B. (1983). The central role of the propensity score in observational studies for causal effects. Biometrika, 70(1), 41-55.</p>
 <p>Wager, S., &amp; Athey, S. (2018). Estimation and inference of heterogeneous treatment effects using random forests. Journal of the American Statistical Association, 113(523), 1228-1242.</p>
-<p>GRF-Labs (2020). The GRF Algorithm. <a href="https://github.com/grf-labs/grf/blob/master/REFERENCE.md">https://github.com/grf-labs/grf/blob/master/REFERENCE.md</a>.</p>
+<p>GRF-Labs (2020). The GRF Algorithm. <a 
+    href="https://github.com/grf-labs/grf/blob/master/REFERENCE.md"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://github.com/grf-labs/grf/blob/master/REFERENCE.md
+</a>.</p>
 <hr>
 <h2 id="appendix">Appendix 
 
@@ -625,37 +677,37 @@ To inspect the model&rsquo;s characteristics, <code>names(cf_default)</code> lis
 
 </h3><p>Loop to train 5 causal forests on 5 outcomes (choicer1-5) in the following steps: 
 (i)	drop missings for each outcome Y (choicer1-5), (ii) Select and assign X, Y, W and cluster, (iii) train CF model on that data.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">	cf_choicer <span style="color:#666">&lt;-</span> <span style="color:#00a000">lapply</span>(<span style="color:#00a000">paste0</span>(<span style="color:#b44">&#34;choicer&#34;</span>, <span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">5</span>), <span style="color:#00a000">function</span>(x){
-
-	<span style="color:#080;font-style:italic"># (i) Remove missings in Y (while keeping missings in X)</span>
-		df_nomiss <span style="color:#666">&lt;-</span> df <span style="color:#666">%&gt;%</span> <span style="color:#00a000">drop_na</span>(x) 
-
-	<span style="color:#080;font-style:italic"># (ii) Assign covariates (X), outcome (Y), treatment (W) and cluster</span>
-		X <span style="color:#666">&lt;-</span> df_nomiss <span style="color:#666">%&gt;%</span>
-			<span style="color:#00a000">select</span>(male,task_ability,raven,grit_survey1,belief_survey1,mathscore1,
-				verbalscore1,risk,inconsistent) 		
-		Y <span style="color:#666">&lt;-</span> df_nomiss[,x] <span style="color:#666">%&gt;%</span> pull <span style="color:#080;font-style:italic">#convert to vector with pull()</span>
-		W <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>grit 
-		cluster <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>schoolid
-
-	<span style="color:#080;font-style:italic"># (iii) Train CF</span>
-		<span style="color:#00a000">set.seed</span>(seed)
-		<span style="color:#00a000">causal_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>Y, W<span style="color:#666">=</span>W, clusters<span style="color:#666">=</span>cluster, seed<span style="color:#666">=</span>seed)
-	})
-
-	<span style="color:#080;font-style:italic"># Store estimated average treatment effects (ATE) </span>
-	cf_ate <span style="color:#666">&lt;-</span> <span style="color:#00a000">sapply</span>(cf_choicer, <span style="color:#00a000">function</span>(x){
-		<span style="color:#00a000">average_treatment_effect</span>(x)
-})
-
-
-<span style="color:#080;font-style:italic"># Results table</span>
-cf_ate <span style="color:#666">%&gt;%</span> 
-	<span style="color:#00a000">`colnames&lt;-`</span>(<span style="color:#00a000">sapply</span>(<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">5</span>, <span style="color:#00a000">function</span>(i) <span style="color:#00a000">paste</span>(<span style="color:#b44">&#34;Difficult Round&#34;</span>,i))) <span style="color:#666">%&gt;%</span>
-	<span style="color:#00a000">`rownames&lt;-`</span>(<span style="color:#00a000">c</span>(<span style="color:#b44">&#34;Est. treatment effect&#34;</span>, <span style="color:#b44">&#34;Std. Error&#34;</span>)) <span style="color:#666">%&gt;%</span>
-	<span style="color:#00a000">rbind</span>(N<span style="color:#666">=</span><span style="color:#00a000">sapply</span>(cf_choicer, <span style="color:#00a000">function</span>(x) <span style="color:#00a000">nrow</span>(x<span style="color:#666">$</span>X.orig))) <span style="color:#666">%&gt;%</span>
-	<span style="color:#00a000">kable</span>(format<span style="color:#666">=</span><span style="color:#b44">&#34;markdown&#34;</span>, digits<span style="color:#666">=</span><span style="color:#666">2</span>)
-</code></pre></div><table>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>	cf_choicer <span style="color:#666">&lt;-</span> <span style="color:#00a000">lapply</span>(<span style="color:#00a000">paste0</span>(<span style="color:#b44">&#34;choicer&#34;</span>, <span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">5</span>), <span style="color:#00a000">function</span>(x){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># (i) Remove missings in Y (while keeping missings in X)</span>
+</span></span><span style="display:flex;"><span>		df_nomiss <span style="color:#666">&lt;-</span> df <span style="color:#666">%&gt;%</span> <span style="color:#00a000">drop_na</span>(x) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># (ii) Assign covariates (X), outcome (Y), treatment (W) and cluster</span>
+</span></span><span style="display:flex;"><span>		X <span style="color:#666">&lt;-</span> df_nomiss <span style="color:#666">%&gt;%</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#00a000">select</span>(male,task_ability,raven,grit_survey1,belief_survey1,mathscore1,
+</span></span><span style="display:flex;"><span>				verbalscore1,risk,inconsistent) 		
+</span></span><span style="display:flex;"><span>		Y <span style="color:#666">&lt;-</span> df_nomiss[,x] <span style="color:#666">%&gt;%</span> pull <span style="color:#080;font-style:italic">#convert to vector with pull()</span>
+</span></span><span style="display:flex;"><span>		W <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>grit 
+</span></span><span style="display:flex;"><span>		cluster <span style="color:#666">&lt;-</span> df_nomiss<span style="color:#666">$</span>schoolid
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># (iii) Train CF</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#00a000">set.seed</span>(seed)
+</span></span><span style="display:flex;"><span>		<span style="color:#00a000">causal_forest</span>(X<span style="color:#666">=</span>X, Y<span style="color:#666">=</span>Y, W<span style="color:#666">=</span>W, clusters<span style="color:#666">=</span>cluster, seed<span style="color:#666">=</span>seed)
+</span></span><span style="display:flex;"><span>	})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Store estimated average treatment effects (ATE) </span>
+</span></span><span style="display:flex;"><span>	cf_ate <span style="color:#666">&lt;-</span> <span style="color:#00a000">sapply</span>(cf_choicer, <span style="color:#00a000">function</span>(x){
+</span></span><span style="display:flex;"><span>		<span style="color:#00a000">average_treatment_effect</span>(x)
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Results table</span>
+</span></span><span style="display:flex;"><span>cf_ate <span style="color:#666">%&gt;%</span> 
+</span></span><span style="display:flex;"><span>	<span style="color:#00a000">`colnames&lt;-`</span>(<span style="color:#00a000">sapply</span>(<span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">5</span>, <span style="color:#00a000">function</span>(i) <span style="color:#00a000">paste</span>(<span style="color:#b44">&#34;Difficult Round&#34;</span>,i))) <span style="color:#666">%&gt;%</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#00a000">`rownames&lt;-`</span>(<span style="color:#00a000">c</span>(<span style="color:#b44">&#34;Est. treatment effect&#34;</span>, <span style="color:#b44">&#34;Std. Error&#34;</span>)) <span style="color:#666">%&gt;%</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#00a000">rbind</span>(N<span style="color:#666">=</span><span style="color:#00a000">sapply</span>(cf_choicer, <span style="color:#00a000">function</span>(x) <span style="color:#00a000">nrow</span>(x<span style="color:#666">$</span>X.orig))) <span style="color:#666">%&gt;%</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#00a000">kable</span>(format<span style="color:#666">=</span><span style="color:#b44">&#34;markdown&#34;</span>, digits<span style="color:#666">=</span><span style="color:#666">2</span>)
+</span></span></code></pre></div><table>
 <thead>
 <tr>
 <th style="text-align:left"></th>
@@ -751,7 +803,7 @@ cf_ate <span style="color:#666">%&gt;%</span>
     <p class="copyright">
     
        © Copyright 
-       2021 
+       2022 
        Philipp Schmalen
     
     </p>

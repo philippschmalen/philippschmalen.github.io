@@ -6,8 +6,8 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="with windows subsystem for Linux (WSL)">
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="description" content="Philipp Schmalen">
+<meta name="generator" content="Hugo 0.104.3" />
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,6 +32,11 @@ if (!doNotTrack) {
 
 
 
+
+  
+    <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Philipp Schmalen" />
+    <link href="/index.xml" rel="feed" type="application/rss+xml" title="Philipp Schmalen" />
+  
 
 
 
@@ -82,7 +87,17 @@ if (!doNotTrack) {
 
 </h4><p>The project centers around a fictitious firm called Green Quant that provides data about a firm&rsquo;s sustainability profile. It combines both worlds from alternative indicators such as historical search interest from Google Trends and classical financial metrics taken from Yahoo! Finance. This showcases my skills in applying a broad range of tools like Apache Airflow, AWS EMR and Apache Spark.</p>
 <blockquote>
-<p>Please refer to the Github repository here: <a href="https://github.com/philippschmalen/etl_spark_airflow_emr">https://github.com/philippschmalen/etl_spark_airflow_emr</a></p>
+<p>Please refer to the Github repository here: <a 
+    href="https://github.com/philippschmalen/etl_spark_airflow_emr"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://github.com/philippschmalen/etl_spark_airflow_emr
+</a></p>
 </blockquote>
 <h2 id="problem-measure-firm-sustainability">Problem: Measure firm sustainability 
 
@@ -253,7 +268,7 @@ There are several reasons to use Airflow:</p>
 <p><em>Note:</em> Steps for data collection could already be scheduled with tasks through Airflow. To stay concise, the pipeline with Airflow assumes that the above steps are successfully completed.</p>
 <h3 id="data-processing-and-description">Data processing and description 
 
-</h3><p>Description of relevant dataset which are uploaded to the S3 &lsquo;esg-analytics&rsquo; bucket with prefix <code>'raw'</code>:</p>
+</h3><p>Description of relevant dataset which are uploaded to the S3 &rsquo;esg-analytics&rsquo; bucket with prefix <code>'raw'</code>:</p>
 <table>
 <thead>
 <tr>
@@ -489,15 +504,15 @@ There are several reasons to use Airflow:</p>
 </a> to validate, document, and profile the data to ensure integrity and quality.</p>
 <p><strong>Validate data against checkpoints</strong></p>
 <p>Checkpoints make it easy to &ldquo;validate data X against expectation Y&rdquo; and match data batches with Expectation Suites for this. I created checkpoints for the three suites <em>esg, esg_processed and esg_processed_meta</em> which are located in <code>./great_expectations/expectations/</code>. To run these checkpoints and see whether the data meets the criteria, open a cmd window and type in the following (assuming you have great expectations installed):</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#080;font-style:italic"># navigate to the project dir</span>
-<span style="color:#a2f">cd</span> ./&lt;project_path&gt;
-<span style="color:#080;font-style:italic"># validate preprocessed data</span>
-great_expectations checkpoint run preprocess.chk
-<span style="color:#080;font-style:italic"># validate processed data on S3</span>
-great_expectations checkpoint run processed.chk
-<span style="color:#080;font-style:italic"># validate processed metadata on S3</span>
-great_expectations checkpoint run processed_meta.chk
-</code></pre></div><p>As an example, the expected output for the preprocessed data on the local directory looks like,</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># navigate to the project dir</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">cd</span> ./&lt;project_path&gt;
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># validate preprocessed data</span>
+</span></span><span style="display:flex;"><span>great_expectations checkpoint run preprocess.chk
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># validate processed data on S3</span>
+</span></span><span style="display:flex;"><span>great_expectations checkpoint run processed.chk
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># validate processed metadata on S3</span>
+</span></span><span style="display:flex;"><span>great_expectations checkpoint run processed_meta.chk
+</span></span></code></pre></div><p>As an example, the expected output for the preprocessed data on the local directory looks like,</p>
 <p><p class="markdown-image">
   <img src="/figures/spark_emr_airflow/ge_checkpoint_success.PNG" alt=""  />
 </p></p>
@@ -509,41 +524,40 @@ great_expectations checkpoint run processed_meta.chk
 
 </h3><p>A central part of the ETL is to source data from APIs. The scripts send API requests to get some response. A response can either be successful, returning desired data or unsuccessful raising an error or returning empty data frames. A simple approach looks at a given request and compares expected responses with actual responses. In other words, I obtain the difference between the two sets of actual and expected output.</p>
 <p>I implemented the <code>data_inspection()</code> function as part of the script <code>./src/data/3etl_spark_gtrends.py</code> which compares the input to the output data and returns the set difference between actual and expected API output. An Airflow task uploads the script to S3 and launches a Spark EMR cluster which executes it. I define the <code>set_difference_keywords</code> with <code>spark.sql</code> and store it in the S3 bucket <code>/processed/gtrends_missing/</code>. Below is an excerpt from the function.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-<span style="color:#a2f;font-weight:bold">def</span> <span style="color:#00a000">data_inspection</span>(df, df_meta, spark):
-    <span style="color:#b44">&#34;&#34;&#34;Inspect and validate API output (df) against API input (df_meta)
-</span><span style="color:#b44">        Return: Set difference of keywords between output and input
-</span><span style="color:#b44">    &#34;&#34;&#34;</span>
-    <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">DATA INSPECTION</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">&#34;</span><span style="color:#666">+</span><span style="color:#b44">&#39;-&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
-    
-    <span style="color:#080;font-style:italic"># create temporary view for SQL</span>
-    df<span style="color:#666">.</span>createOrReplaceTempView(<span style="color:#b44">&#34;df&#34;</span>)
-    df_meta<span style="color:#666">.</span>createOrReplaceTempView(<span style="color:#b44">&#34;meta&#34;</span>)
-
-    <span style="color:#080;font-style:italic"># count distinct keywords, dates and </span>
-    kw_count <span style="color:#666">=</span> spark<span style="color:#666">.</span>sql(<span style="color:#b44">&#34;&#34;&#34;
-</span><span style="color:#b44">        SELECT COUNT(DISTINCT keyword), COUNT(DISTINCT date)
-</span><span style="color:#b44">        FROM df
-</span><span style="color:#b44">        &#34;&#34;&#34;</span>)<span style="color:#666">.</span>collect()
-
-    distinct_kw_date <span style="color:#666">=</span> [i <span style="color:#a2f;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> kw_count[<span style="color:#666">0</span>]]
-    <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">DISTINCT </span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">keywords </span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">dates </span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">=dates*keywords&#34;</span>)
-    <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;-&#34;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
-    <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;{}</span><span style="color:#b62;font-weight:bold">\t\t</span><span style="color:#b44"> {}</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44"> {}&#34;</span><span style="color:#666">.</span>format(distinct_kw_date[<span style="color:#666">0</span>], distinct_kw_date[<span style="color:#666">1</span>], distinct_kw_date[<span style="color:#666">0</span>]<span style="color:#666">*</span>distinct_kw_date[<span style="color:#666">1</span>]))
-    <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;-&#34;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
- 
-    <span style="color:#080;font-style:italic"># get set difference of meta (input)/df (output)</span>
-    set_difference_keywords <span style="color:#666">=</span> spark<span style="color:#666">.</span>sql(<span style="color:#b44">&#34;&#34;&#34;
-</span><span style="color:#b44">        SELECT DISTINCT in.keyword
-</span><span style="color:#b44">        FROM meta AS in
-</span><span style="color:#b44">        WHERE in.keyword NOT IN (
-</span><span style="color:#b44">            SELECT DISTINCT out.keyword 
-</span><span style="color:#b44">            FROM df AS out)
-</span><span style="color:#b44">    &#34;&#34;&#34;</span>)
-
-    <span style="color:#a2f;font-weight:bold">return</span> set_difference_keywords
-
-</code></pre></div><h2 id="discussion">Discussion 
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">def</span> <span style="color:#00a000">data_inspection</span>(df, df_meta, spark):
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">&#34;&#34;&#34;Inspect and validate API output (df) against API input (df_meta)
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        Return: Set difference of keywords between output and input
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">DATA INSPECTION</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">&#34;</span><span style="color:#666">+</span><span style="color:#b44">&#39;-&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># create temporary view for SQL</span>
+</span></span><span style="display:flex;"><span>    df<span style="color:#666">.</span>createOrReplaceTempView(<span style="color:#b44">&#34;df&#34;</span>)
+</span></span><span style="display:flex;"><span>    df_meta<span style="color:#666">.</span>createOrReplaceTempView(<span style="color:#b44">&#34;meta&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># count distinct keywords, dates and </span>
+</span></span><span style="display:flex;"><span>    kw_count <span style="color:#666">=</span> spark<span style="color:#666">.</span>sql(<span style="color:#b44">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        SELECT COUNT(DISTINCT keyword), COUNT(DISTINCT date)
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        FROM df
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        &#34;&#34;&#34;</span>)<span style="color:#666">.</span>collect()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    distinct_kw_date <span style="color:#666">=</span> [i <span style="color:#a2f;font-weight:bold">for</span> i <span style="color:#a2f;font-weight:bold">in</span> kw_count[<span style="color:#666">0</span>]]
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">DISTINCT </span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">keywords </span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">dates </span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">=dates*keywords&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;-&#34;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b62;font-weight:bold">\t\t</span><span style="color:#b44"> </span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44"> </span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44">&#34;</span><span style="color:#666">.</span>format(distinct_kw_date[<span style="color:#666">0</span>], distinct_kw_date[<span style="color:#666">1</span>], distinct_kw_date[<span style="color:#666">0</span>]<span style="color:#666">*</span>distinct_kw_date[<span style="color:#666">1</span>]))
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;-&#34;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># get set difference of meta (input)/df (output)</span>
+</span></span><span style="display:flex;"><span>    set_difference_keywords <span style="color:#666">=</span> spark<span style="color:#666">.</span>sql(<span style="color:#b44">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        SELECT DISTINCT in.keyword
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        FROM meta AS in
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        WHERE in.keyword NOT IN (
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">            SELECT DISTINCT out.keyword 
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">            FROM df AS out)
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    &#34;&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">return</span> set_difference_keywords
+</span></span></code></pre></div><h2 id="discussion">Discussion 
 
 </h2><h3 id="update-frequency">Update frequency 
 
@@ -692,7 +706,7 @@ great_expectations checkpoint run processed_meta.chk
     <p class="copyright">
     
        © Copyright 
-       2021 
+       2022 
        Philipp Schmalen
     
     </p>

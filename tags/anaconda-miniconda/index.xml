@@ -6,11 +6,11 @@
     <description>Recent content in Anaconda, Miniconda on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 16 May 2021 00:00:00 +0200</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/anaconda-miniconda/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/anaconda-miniconda/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Python in Sublime Text 3 with Sublime REPL and Anaconda</title>
       <link>https://philippschmalen.github.io/posts/python-in-sublime-text-3-with-sublime-repl-and-anaconda/</link>
-      <pubDate>Sun, 16 May 2021 00:00:00 +0200</pubDate>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0000</pubDate>
       
       <guid>https://philippschmalen.github.io/posts/python-in-sublime-text-3-with-sublime-repl-and-anaconda/</guid>
       <description>A flexible, project-centered setup for build systems</description>

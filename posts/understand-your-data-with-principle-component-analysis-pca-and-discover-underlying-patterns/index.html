@@ -6,8 +6,8 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="with windows subsystem for Linux (WSL)">
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="description" content="Philipp Schmalen">
+<meta name="generator" content="Hugo 0.104.3" />
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,6 +32,11 @@ if (!doNotTrack) {
 
 
 
+
+  
+    <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Philipp Schmalen" />
+    <link href="/index.xml" rel="feed" type="application/rss+xml" title="Philipp Schmalen" />
+  
 
 
 
@@ -171,8 +176,28 @@ if (!doNotTrack) {
 </h2><p>Large datasets often require PCA to reduce dimensionality anyway. The method as such captures the maximum possible variance across features and projects observations onto mutually uncorrelated vectors, called components. Still, PCA serves other purposes than dimensionality reduction. It also helps to discover underlying patterns across features.</p>
 <p>To focus on the implementation in Python instead of methodology, I will skip describing PCA in its workings. There exist many great resources about it that I refer to those instead:</p>
 <ul>
-<li>Animations showing PCA in action: <a href="https://setosa.io/ev/principal-component-analysis/">https://setosa.io/ev/principal-component-analysis/</a></li>
-<li>PCA explained in a family conversation: <a href="https://stats.stackexchange.com/a/140579">https://stats.stackexchange.com/a/140579</a></li>
+<li>Animations showing PCA in action: <a 
+    href="https://setosa.io/ev/principal-component-analysis/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://setosa.io/ev/principal-component-analysis/
+</a></li>
+<li>PCA explained in a family conversation: <a 
+    href="https://stats.stackexchange.com/a/140579"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://stats.stackexchange.com/a/140579
+</a></li>
 <li>Smith (2002). A tutorial on principal components analysis: <a 
     href="https://ourarchive.otago.ac.nz/bitstream/handle/10523/7534/OUCS-2002-12.pdf"
     
@@ -197,7 +222,17 @@ if (!doNotTrack) {
 
 </h2><p>The iris dataset served well as a canonical example of several PCA. In an effort to be diverse and using novel data from a field study, I rely on replication data from Alan et al. [1]. I hope this is appreciated.</p>
 <p>It comprises data from behavioral experiments at Turkish schools, where 10 year olds took part in a curriculum to improve a non-cognitive skill called grit which defines as perseverance to pursue a task. The authors sampled individual characteristics and conducted behavioral experiments to measure a potential treatment effect between those receiving the program (<code>grit == 1</code>) and those taking part in a control treatment (<code>grit == 0</code>).</p>
-<p>(Interested in causal inference using a modified random forest? Check out my preliminary blog post on <a href="https://philippschmalen.github.io/posts/working_on_causal_forest/">https://philippschmalen.github.io/posts/working_on_causal_forest/</a> ).</p>
+<p>(Interested in causal inference using a modified random forest? Check out my preliminary blog post on <a 
+    href="https://philippschmalen.github.io/posts/working_on_causal_forest/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://philippschmalen.github.io/posts/working_on_causal_forest/
+</a> ).</p>
 <p>I selected features according to their replication scripts, accessible on <a 
     href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/SAVGAL"
     
@@ -220,85 +255,85 @@ if (!doNotTrack) {
     working paper
 </a>). To be concise, refer to the paper for relevant descriptives.</p>
 <p>The following loads the data from an URL and stores it as a pandas dataframe.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-<span style="color:#080;font-style:italic"># To load data from Harvard Dataverse</span>
-<span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">io</span> 
-<span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">requests</span> 
-
-<span style="color:#080;font-style:italic"># load exciting data from URL (at least something else than Iris)</span>
-url <span style="color:#666">=</span> <span style="color:#b44">&#39;https://dataverse.harvard.edu/api/access/datafile/3352340?gbrecs=false&#39;</span>
-s <span style="color:#666">=</span> requests<span style="color:#666">.</span>get(url)<span style="color:#666">.</span>content
-
-<span style="color:#080;font-style:italic"># store as dataframe</span>
-df_raw <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(io<span style="color:#666">.</span>StringIO(s<span style="color:#666">.</span>decode(<span style="color:#b44">&#39;utf-8&#39;</span>)), sep<span style="color:#666">=</span><span style="color:#b44">&#39;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">&#39;</span>)
-</code></pre></div><p><p class="markdown-image">
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># To load data from Harvard Dataverse</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">io</span> 
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">requests</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># load exciting data from URL (at least something else than Iris)</span>
+</span></span><span style="display:flex;"><span>url <span style="color:#666">=</span> <span style="color:#b44">&#39;https://dataverse.harvard.edu/api/access/datafile/3352340?gbrecs=false&#39;</span>
+</span></span><span style="display:flex;"><span>s <span style="color:#666">=</span> requests<span style="color:#666">.</span>get(url)<span style="color:#666">.</span>content
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># store as dataframe</span>
+</span></span><span style="display:flex;"><span>df_raw <span style="color:#666">=</span> pd<span style="color:#666">.</span>read_csv(io<span style="color:#666">.</span>StringIO(s<span style="color:#666">.</span>decode(<span style="color:#b44">&#39;utf-8&#39;</span>)), sep<span style="color:#666">=</span><span style="color:#b44">&#39;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">&#39;</span>)
+</span></span></code></pre></div><p><p class="markdown-image">
   <img src="/figures/pca_exploration/child_drawing_square.jpg" alt="Child draws PCA"  />
 </p></p>
 <h2 id="preprocessing-and-feature-engineering">Preprocessing and feature engineering 
 
 </h2><p>For PCA to work, the data needs to be numeric, without missings, and standardized. I put all steps into one function (<code>clean_data()</code>) which returns a dataframe with standardized features. and conduct steps 1 to 3 of the project work flow (collecting, processing and engineering). 
 To begin with, import necessary modules and packages.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
-<span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
-
-<span style="color:#080;font-style:italic"># sklearn module</span>
-<span style="color:#a2f;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.decomposition</span> <span style="color:#a2f;font-weight:bold">import</span> PCA
-
-<span style="color:#080;font-style:italic"># plots</span>
-<span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
-<span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">seaborn</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">sns</span>
-<span style="color:#080;font-style:italic"># seaborn settings</span>
-sns<span style="color:#666">.</span>set_style(<span style="color:#b44">&#34;whitegrid&#34;</span>)
-sns<span style="color:#666">.</span>set_context(<span style="color:#b44">&#34;talk&#34;</span>)
-
-<span style="color:#080;font-style:italic"># imports for function</span>
-<span style="color:#a2f;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.preprocessing</span> <span style="color:#a2f;font-weight:bold">import</span> StandardScaler
-<span style="color:#a2f;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.impute</span> <span style="color:#a2f;font-weight:bold">import</span> SimpleImputer
-</code></pre></div><p>Next, the <code>clean_data</code> function is defined. It gives a shortcut to transform the raw data into a prepared dataset with (i.) selected features, (ii.) missings replaced by column means, and (iii.) standardized variables. Preparing the data takes one line of code, (iv).</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a2f;font-weight:bold">def</span> <span style="color:#00a000">clean_data</span>(data, select_X<span style="color:#666">=</span>None, impute<span style="color:#666">=</span>False, std<span style="color:#666">=</span>False): 
-    <span style="color:#b44">&#34;&#34;&#34;Returns dataframe with selected, imputed and standardized features
-</span><span style="color:#b44">    
-</span><span style="color:#b44">    Input
-</span><span style="color:#b44">          data: dataframe
-</span><span style="color:#b44">          select_X: list of feature names to be selected (string)
-</span><span style="color:#b44">          impute: If True impute np.nan with mean
-</span><span style="color:#b44">          std: If True standardize data
-</span><span style="color:#b44">          
-</span><span style="color:#b44">    Return
-</span><span style="color:#b44">        dataframe: data with selected, imputed and standardized features    
-</span><span style="color:#b44">    &#34;&#34;&#34;</span>
-    
-    <span style="color:#080;font-style:italic"># (i.) select features</span>
-    <span style="color:#a2f;font-weight:bold">if</span> select_X <span style="color:#a2f;font-weight:bold">is</span> <span style="color:#a2f;font-weight:bold">not</span> None:
-        data <span style="color:#666">=</span> data<span style="color:#666">.</span>filter(select_X, axis<span style="color:#666">=</span><span style="color:#b44">&#39;columns&#39;</span>)
-        <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">&gt;&gt;&gt; Selected features: {}&#34;</span><span style="color:#666">.</span>format(select_X))
-    <span style="color:#a2f;font-weight:bold">else</span>:
-        <span style="color:#080;font-style:italic"># store column names</span>
-        select_X <span style="color:#666">=</span> <span style="color:#a2f">list</span>(data<span style="color:#666">.</span>columns)
-    
-    <span style="color:#080;font-style:italic"># (ii.) impute with mean </span>
-    <span style="color:#a2f;font-weight:bold">if</span> impute:
-        imp <span style="color:#666">=</span> SimpleImputer()
-        data <span style="color:#666">=</span> imp<span style="color:#666">.</span>fit_transform(data)
-        <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">&gt;&gt;&gt; Imputed missings&#34;</span>)
-    
-    <span style="color:#080;font-style:italic"># (iii.) standardize </span>
-    <span style="color:#a2f;font-weight:bold">if</span> std:
-        std_scaler <span style="color:#666">=</span> StandardScaler()
-        data <span style="color:#666">=</span> std_scaler<span style="color:#666">.</span>fit_transform(data)
-        <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">&gt;&gt;&gt; Standardized data&#34;</span>)
-    
-    <span style="color:#a2f;font-weight:bold">return</span> pd<span style="color:#666">.</span>DataFrame(data, columns<span style="color:#666">=</span>select_X)
-
-
-<span style="color:#080;font-style:italic"># select relevant features in line with Alan et al. (2019)</span>
-selected_features <span style="color:#666">=</span> [<span style="color:#b44">&#39;grit&#39;</span>, <span style="color:#b44">&#39;male&#39;</span>, <span style="color:#b44">&#39;task_ability&#39;</span>, <span style="color:#b44">&#39;raven&#39;</span>, <span style="color:#b44">&#39;grit_survey1&#39;</span> 
- <span style="color:#b44">&#39;belief_survey1&#39;</span>, <span style="color:#b44">&#39;mathscore1&#39;</span>, <span style="color:#b44">&#39;verbalscore1&#39;</span>, <span style="color:#b44">&#39;risk&#39;</span>, <span style="color:#b44">&#39;inconsistent&#39;</span>]
-
-
-<span style="color:#080;font-style:italic"># (iv.) select features, impute missings and standardize</span>
-X_std <span style="color:#666">=</span> clean_data(df_raw, selected_features, impute<span style="color:#666">=</span>True, std<span style="color:#666">=</span>True)
-</code></pre></div><p>Now, the data is ready for exploration.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># sklearn module</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.decomposition</span> <span style="color:#a2f;font-weight:bold">import</span> PCA
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># plots</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">matplotlib.pyplot</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">plt</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">seaborn</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">sns</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># seaborn settings</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#666">.</span>set_style(<span style="color:#b44">&#34;whitegrid&#34;</span>)
+</span></span><span style="display:flex;"><span>sns<span style="color:#666">.</span>set_context(<span style="color:#b44">&#34;talk&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># imports for function</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.preprocessing</span> <span style="color:#a2f;font-weight:bold">import</span> StandardScaler
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sklearn.impute</span> <span style="color:#a2f;font-weight:bold">import</span> SimpleImputer
+</span></span></code></pre></div><p>Next, the <code>clean_data</code> function is defined. It gives a shortcut to transform the raw data into a prepared dataset with (i.) selected features, (ii.) missings replaced by column means, and (iii.) standardized variables. Preparing the data takes one line of code, (iv).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">def</span> <span style="color:#00a000">clean_data</span>(data, select_X<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">None</span>, impute<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">False</span>, std<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">False</span>): 
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">&#34;&#34;&#34;Returns dataframe with selected, imputed and standardized features
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    Input
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">          data: dataframe
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">          select_X: list of feature names to be selected (string)
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">          impute: If True impute np.nan with mean
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">          std: If True standardize data
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">          
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    Return
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        dataframe: data with selected, imputed and standardized features    
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># (i.) select features</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">if</span> select_X <span style="color:#a2f;font-weight:bold">is</span> <span style="color:#a2f;font-weight:bold">not</span> <span style="color:#a2f;font-weight:bold">None</span>:
+</span></span><span style="display:flex;"><span>        data <span style="color:#666">=</span> data<span style="color:#666">.</span>filter(select_X, axis<span style="color:#666">=</span><span style="color:#b44">&#39;columns&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">&gt;&gt;&gt; Selected features: </span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44">&#34;</span><span style="color:#666">.</span>format(select_X))
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic"># store column names</span>
+</span></span><span style="display:flex;"><span>        select_X <span style="color:#666">=</span> <span style="color:#a2f">list</span>(data<span style="color:#666">.</span>columns)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># (ii.) impute with mean </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">if</span> impute:
+</span></span><span style="display:flex;"><span>        imp <span style="color:#666">=</span> SimpleImputer()
+</span></span><span style="display:flex;"><span>        data <span style="color:#666">=</span> imp<span style="color:#666">.</span>fit_transform(data)
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">&gt;&gt;&gt; Imputed missings&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># (iii.) standardize </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">if</span> std:
+</span></span><span style="display:flex;"><span>        std_scaler <span style="color:#666">=</span> StandardScaler()
+</span></span><span style="display:flex;"><span>        data <span style="color:#666">=</span> std_scaler<span style="color:#666">.</span>fit_transform(data)
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;</span><span style="color:#b62;font-weight:bold">\t</span><span style="color:#b44">&gt;&gt;&gt; Standardized data&#34;</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">return</span> pd<span style="color:#666">.</span>DataFrame(data, columns<span style="color:#666">=</span>select_X)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># select relevant features in line with Alan et al. (2019)</span>
+</span></span><span style="display:flex;"><span>selected_features <span style="color:#666">=</span> [<span style="color:#b44">&#39;grit&#39;</span>, <span style="color:#b44">&#39;male&#39;</span>, <span style="color:#b44">&#39;task_ability&#39;</span>, <span style="color:#b44">&#39;raven&#39;</span>, <span style="color:#b44">&#39;grit_survey1&#39;</span> 
+</span></span><span style="display:flex;"><span> <span style="color:#b44">&#39;belief_survey1&#39;</span>, <span style="color:#b44">&#39;mathscore1&#39;</span>, <span style="color:#b44">&#39;verbalscore1&#39;</span>, <span style="color:#b44">&#39;risk&#39;</span>, <span style="color:#b44">&#39;inconsistent&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># (iv.) select features, impute missings and standardize</span>
+</span></span><span style="display:flex;"><span>X_std <span style="color:#666">=</span> clean_data(df_raw, selected_features, impute<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">True</span>, std<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">True</span>)
+</span></span></code></pre></div><p>Now, the data is ready for exploration.</p>
 <h2 id="scree-plots-and-factor-loadings-interpret-pca-results">Scree plots and factor loadings: Interpret PCA results 
 
 </h2><p>A PCA yields two metrics that are relevant for data exploration: Firstly, how much variance each component explains (scree plot), and secondly how much a variable correlates with a component (factor loading). The following sections provide a practical example and guide through the PCA output with a scree plot for explained variance and a heatmap on factor loadings.</p>
@@ -307,50 +342,50 @@ X_std <span style="color:#666">=</span> clean_data(df_raw, selected_features, im
 </h3><p>Nowadays, data is abundant and the size of datasets continues to grow. Data scientists routinely deal with hundreds of variables. However, are these variables worth their memory? Put differently: Does a variable capture unique patterns or does it measure similar properties already reflected by other variables?</p>
 <p>PCA might answer this through the metric of explained variance per component. It details the number of underlying dimensions on which most of the variance is observed.</p>
 <p>The code below initializes a PCA object from sklearn and transforms the original data along the calculated components (i.).  Thereafter, information on explained variance is retrieved (ii.) and printed (iii.).</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#080;font-style:italic"># (i.) initialize and compute pca</span>
-pca <span style="color:#666">=</span> PCA()
-X_pca <span style="color:#666">=</span> pca<span style="color:#666">.</span>fit_transform(X_std)
-
-<span style="color:#080;font-style:italic"># (ii.) get basic info</span>
-n_components <span style="color:#666">=</span> <span style="color:#a2f">len</span>(pca<span style="color:#666">.</span>explained_variance_ratio_)
-explained_variance <span style="color:#666">=</span> pca<span style="color:#666">.</span>explained_variance_ratio_
-cum_explained_variance <span style="color:#666">=</span> np<span style="color:#666">.</span>cumsum(explained_variance)
-idx <span style="color:#666">=</span> np<span style="color:#666">.</span>arange(n_components)<span style="color:#666">+</span><span style="color:#666">1</span>
-
-df_explained_variance <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame([explained_variance, cum_explained_variance], 
-                                     index<span style="color:#666">=</span>[<span style="color:#b44">&#39;explained variance&#39;</span>, <span style="color:#b44">&#39;cumulative&#39;</span>], 
-                                     columns<span style="color:#666">=</span>idx)<span style="color:#666">.</span>T
-
-mean_explained_variance <span style="color:#666">=</span> df_explained_variance<span style="color:#666">.</span>iloc[:,<span style="color:#666">0</span>]<span style="color:#666">.</span>mean() <span style="color:#080;font-style:italic"># calculate mean explained variance</span>
-
-<span style="color:#080;font-style:italic"># (iii.) Print explained variance as plain text</span>
-<span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#39;PCA Overview&#39;</span>)
-<span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#39;=&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
-<span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;Total: {} components&#34;</span><span style="color:#666">.</span>format(n_components))
-<span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#39;-&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
-<span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#39;Mean explained variance:&#39;</span>, <span style="color:#a2f">round</span>(mean_explained_variance,<span style="color:#666">3</span>))
-<span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#39;-&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
-<span style="color:#a2f;font-weight:bold">print</span>(df_explained_variance<span style="color:#666">.</span>head(<span style="color:#666">20</span>))
-<span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#39;-&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
-</code></pre></div><div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">PCA Overview
-========================================
-Total: 10 components
-----------------------------------------
-Mean explained variance: 0.1
-----------------------------------------
-    explained variance  cumulative
-1             0.265261    0.265261
-2             0.122700    0.387962
-3             0.113990    0.501951
-4             0.099139    0.601090
-5             0.094357    0.695447
-6             0.083412    0.778859
-7             0.063117    0.841976
-8             0.056386    0.898362
-9             0.052588    0.950950
-10            0.049050    1.000000
-----------------------------------------
-</code></pre></div><p><strong>Interpretation:</strong> The first component makes up for around 27% of the explained variance. This is relatively low as compared to other datasets, but no matter of concern. It simply indicates that a major share (100%-27%=73%) of observations distributes across more than one dimension.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># (i.) initialize and compute pca</span>
+</span></span><span style="display:flex;"><span>pca <span style="color:#666">=</span> PCA()
+</span></span><span style="display:flex;"><span>X_pca <span style="color:#666">=</span> pca<span style="color:#666">.</span>fit_transform(X_std)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># (ii.) get basic info</span>
+</span></span><span style="display:flex;"><span>n_components <span style="color:#666">=</span> <span style="color:#a2f">len</span>(pca<span style="color:#666">.</span>explained_variance_ratio_)
+</span></span><span style="display:flex;"><span>explained_variance <span style="color:#666">=</span> pca<span style="color:#666">.</span>explained_variance_ratio_
+</span></span><span style="display:flex;"><span>cum_explained_variance <span style="color:#666">=</span> np<span style="color:#666">.</span>cumsum(explained_variance)
+</span></span><span style="display:flex;"><span>idx <span style="color:#666">=</span> np<span style="color:#666">.</span>arange(n_components)<span style="color:#666">+</span><span style="color:#666">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df_explained_variance <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame([explained_variance, cum_explained_variance], 
+</span></span><span style="display:flex;"><span>                                     index<span style="color:#666">=</span>[<span style="color:#b44">&#39;explained variance&#39;</span>, <span style="color:#b44">&#39;cumulative&#39;</span>], 
+</span></span><span style="display:flex;"><span>                                     columns<span style="color:#666">=</span>idx)<span style="color:#666">.</span>T
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mean_explained_variance <span style="color:#666">=</span> df_explained_variance<span style="color:#666">.</span>iloc[:,<span style="color:#666">0</span>]<span style="color:#666">.</span>mean() <span style="color:#080;font-style:italic"># calculate mean explained variance</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># (iii.) Print explained variance as plain text</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f">print</span>(<span style="color:#b44">&#39;PCA Overview&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">print</span>(<span style="color:#b44">&#39;=&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">print</span>(<span style="color:#b44">&#34;Total: </span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44"> components&#34;</span><span style="color:#666">.</span>format(n_components))
+</span></span><span style="display:flex;"><span><span style="color:#a2f">print</span>(<span style="color:#b44">&#39;-&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">print</span>(<span style="color:#b44">&#39;Mean explained variance:&#39;</span>, <span style="color:#a2f">round</span>(mean_explained_variance,<span style="color:#666">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#a2f">print</span>(<span style="color:#b44">&#39;-&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">print</span>(df_explained_variance<span style="color:#666">.</span>head(<span style="color:#666">20</span>))
+</span></span><span style="display:flex;"><span><span style="color:#a2f">print</span>(<span style="color:#b44">&#39;-&#39;</span><span style="color:#666">*</span><span style="color:#666">40</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>PCA Overview
+</span></span><span style="display:flex;"><span>========================================
+</span></span><span style="display:flex;"><span>Total: 10 components
+</span></span><span style="display:flex;"><span>----------------------------------------
+</span></span><span style="display:flex;"><span>Mean explained variance: 0.1
+</span></span><span style="display:flex;"><span>----------------------------------------
+</span></span><span style="display:flex;"><span>    explained variance  cumulative
+</span></span><span style="display:flex;"><span>1             0.265261    0.265261
+</span></span><span style="display:flex;"><span>2             0.122700    0.387962
+</span></span><span style="display:flex;"><span>3             0.113990    0.501951
+</span></span><span style="display:flex;"><span>4             0.099139    0.601090
+</span></span><span style="display:flex;"><span>5             0.094357    0.695447
+</span></span><span style="display:flex;"><span>6             0.083412    0.778859
+</span></span><span style="display:flex;"><span>7             0.063117    0.841976
+</span></span><span style="display:flex;"><span>8             0.056386    0.898362
+</span></span><span style="display:flex;"><span>9             0.052588    0.950950
+</span></span><span style="display:flex;"><span>10            0.049050    1.000000
+</span></span><span style="display:flex;"><span>----------------------------------------
+</span></span></code></pre></div><p><strong>Interpretation:</strong> The first component makes up for around 27% of the explained variance. This is relatively low as compared to other datasets, but no matter of concern. It simply indicates that a major share (100%-27%=73%) of observations distributes across more than one dimension.</p>
 <p>Another way to approach the output is to ask: How much components are required to cover more than X% of the variance? For example, I want to reduce the data&rsquo;s dimensionality retain at least 90% variance of the original data. Then I would have to include 9 components to reach at least 90% and even have 95% of explained variance covered in this case. With an overall of 10 variables in the original dataset, the scope to reduce dimensionality is limited. Additionally, this shows that each of the 10 original variables adds somewhat unique patterns and limitedly repeats information from other variables.</p>
 <p><p class="markdown-image">
   <img src="/figures/pca_exploration/wine_cellar.jpg" alt="Wine cellar"  />
@@ -366,62 +401,62 @@ Mean explained variance: 0.1
 >
     wine dataset
 </a>:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">PCA Overview: Wine dataset
-========================================
-Total: 13 components
-----------------------------------------
-Mean explained variance: 0.077
-----------------------------------------
-    explained variance  cumulative
-1             0.361988    0.361988
-2             0.192075    0.554063
-3             0.111236    0.665300
-4             0.070690    0.735990
-5             0.065633    0.801623
-6             0.049358    0.850981
-7             0.042387    0.893368
-8             0.026807    0.920175
-9             0.022222    0.942397
-10            0.019300    0.961697
-11            0.017368    0.979066
-12            0.012982    0.992048
-13            0.007952    1.000000
-----------------------------------------
-</code></pre></div><p>Here, 8 out of 13 components suffice to capture at least 90% of the original variance. Thus, there is more scope to reduce dimensionality. Furthermore it indicates that some variables do not contribute much to variance in the data.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>PCA Overview: Wine dataset
+</span></span><span style="display:flex;"><span>========================================
+</span></span><span style="display:flex;"><span>Total: 13 components
+</span></span><span style="display:flex;"><span>----------------------------------------
+</span></span><span style="display:flex;"><span>Mean explained variance: 0.077
+</span></span><span style="display:flex;"><span>----------------------------------------
+</span></span><span style="display:flex;"><span>    explained variance  cumulative
+</span></span><span style="display:flex;"><span>1             0.361988    0.361988
+</span></span><span style="display:flex;"><span>2             0.192075    0.554063
+</span></span><span style="display:flex;"><span>3             0.111236    0.665300
+</span></span><span style="display:flex;"><span>4             0.070690    0.735990
+</span></span><span style="display:flex;"><span>5             0.065633    0.801623
+</span></span><span style="display:flex;"><span>6             0.049358    0.850981
+</span></span><span style="display:flex;"><span>7             0.042387    0.893368
+</span></span><span style="display:flex;"><span>8             0.026807    0.920175
+</span></span><span style="display:flex;"><span>9             0.022222    0.942397
+</span></span><span style="display:flex;"><span>10            0.019300    0.961697
+</span></span><span style="display:flex;"><span>11            0.017368    0.979066
+</span></span><span style="display:flex;"><span>12            0.012982    0.992048
+</span></span><span style="display:flex;"><span>13            0.007952    1.000000
+</span></span><span style="display:flex;"><span>----------------------------------------
+</span></span></code></pre></div><p>Here, 8 out of 13 components suffice to capture at least 90% of the original variance. Thus, there is more scope to reduce dimensionality. Furthermore it indicates that some variables do not contribute much to variance in the data.</p>
 <p>Instead of plain text, a <strong>scree plot</strong> visualizes explained variance across components and informs about individual and cumulative explained variance for each component. The next code chunk creates such a scree plot and includes an option to focus on the first X components to be manageable when dealing with hundreds of components for larger datasets (<code>limit</code>).</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#080;font-style:italic">#limit plot to x PC</span>
-limit <span style="color:#666">=</span> <span style="color:#a2f">int</span>(<span style="color:#a2f">input</span>(<span style="color:#b44">&#34;Limit scree plot to nth component (0 for all) &gt; &#34;</span>))
-<span style="color:#a2f;font-weight:bold">if</span> limit <span style="color:#666">&gt;</span> <span style="color:#666">0</span>:
-    limit_df <span style="color:#666">=</span> limit
-<span style="color:#a2f;font-weight:bold">else</span>:
-    limit_df <span style="color:#666">=</span> n_components
-
-df_explained_variance_limited <span style="color:#666">=</span> df_explained_variance<span style="color:#666">.</span>iloc[:limit_df,:]
-
-<span style="color:#080;font-style:italic">#make scree plot</span>
-fig, ax1 <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(figsize<span style="color:#666">=</span>(<span style="color:#666">15</span>,<span style="color:#666">6</span>))
-
-ax1<span style="color:#666">.</span>set_title(<span style="color:#b44">&#39;Explained variance across principal components&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">14</span>)
-ax1<span style="color:#666">.</span>set_xlabel(<span style="color:#b44">&#39;Principal component&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">12</span>)
-ax1<span style="color:#666">.</span>set_ylabel(<span style="color:#b44">&#39;Explained variance&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">12</span>)
-
-ax2 <span style="color:#666">=</span> sns<span style="color:#666">.</span>barplot(x<span style="color:#666">=</span>idx[:limit_df], y<span style="color:#666">=</span><span style="color:#b44">&#39;explained variance&#39;</span>, data<span style="color:#666">=</span>df_explained_variance_limited, palette<span style="color:#666">=</span><span style="color:#b44">&#39;summer&#39;</span>)
-ax2 <span style="color:#666">=</span> ax1<span style="color:#666">.</span>twinx()
-ax2<span style="color:#666">.</span>grid(False)
-
-ax2<span style="color:#666">.</span>set_ylabel(<span style="color:#b44">&#39;Cumulative&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">14</span>)
-ax2 <span style="color:#666">=</span> sns<span style="color:#666">.</span>lineplot(x<span style="color:#666">=</span>idx[:limit_df]<span style="color:#666">-</span><span style="color:#666">1</span>, y<span style="color:#666">=</span><span style="color:#b44">&#39;cumulative&#39;</span>, data<span style="color:#666">=</span>df_explained_variance_limited, color<span style="color:#666">=</span><span style="color:#b44">&#39;#fc8d59&#39;</span>)
-
-ax1<span style="color:#666">.</span>axhline(mean_explained_variance, ls<span style="color:#666">=</span><span style="color:#b44">&#39;--&#39;</span>, color<span style="color:#666">=</span><span style="color:#b44">&#39;#fc8d59&#39;</span>) <span style="color:#080;font-style:italic">#plot mean</span>
-ax1<span style="color:#666">.</span>text(<span style="color:#666">-.</span><span style="color:#666">8</span>, mean_explained_variance<span style="color:#666">+</span>(mean_explained_variance<span style="color:#666">*.</span><span style="color:#666">05</span>), <span style="color:#b44">&#34;average&#34;</span>, color<span style="color:#666">=</span><span style="color:#b44">&#39;#fc8d59&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">14</span>) <span style="color:#080;font-style:italic">#label y axis</span>
-
-max_y1 <span style="color:#666">=</span> <span style="color:#a2f">max</span>(df_explained_variance_limited<span style="color:#666">.</span>iloc[:,<span style="color:#666">0</span>])
-max_y2 <span style="color:#666">=</span> <span style="color:#a2f">max</span>(df_explained_variance_limited<span style="color:#666">.</span>iloc[:,<span style="color:#666">1</span>])
-ax1<span style="color:#666">.</span>set(ylim<span style="color:#666">=</span>(<span style="color:#666">0</span>, max_y1<span style="color:#666">+</span>max_y1<span style="color:#666">*.</span><span style="color:#666">1</span>))
-ax2<span style="color:#666">.</span>set(ylim<span style="color:#666">=</span>(<span style="color:#666">0</span>, max_y2<span style="color:#666">+</span>max_y2<span style="color:#666">*.</span><span style="color:#666">1</span>))
-
-plt<span style="color:#666">.</span>show()
-</code></pre></div><p><p class="markdown-image">
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;font-style:italic">#limit plot to x PC</span>
+</span></span><span style="display:flex;"><span>limit <span style="color:#666">=</span> <span style="color:#a2f">int</span>(<span style="color:#a2f">input</span>(<span style="color:#b44">&#34;Limit scree plot to nth component (0 for all) &gt; &#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">if</span> limit <span style="color:#666">&gt;</span> <span style="color:#666">0</span>:
+</span></span><span style="display:flex;"><span>    limit_df <span style="color:#666">=</span> limit
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">else</span>:
+</span></span><span style="display:flex;"><span>    limit_df <span style="color:#666">=</span> n_components
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>df_explained_variance_limited <span style="color:#666">=</span> df_explained_variance<span style="color:#666">.</span>iloc[:limit_df,:]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#make scree plot</span>
+</span></span><span style="display:flex;"><span>fig, ax1 <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(figsize<span style="color:#666">=</span>(<span style="color:#666">15</span>,<span style="color:#666">6</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax1<span style="color:#666">.</span>set_title(<span style="color:#b44">&#39;Explained variance across principal components&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">14</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="color:#666">.</span>set_xlabel(<span style="color:#b44">&#39;Principal component&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">12</span>)
+</span></span><span style="display:flex;"><span>ax1<span style="color:#666">.</span>set_ylabel(<span style="color:#b44">&#39;Explained variance&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">12</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax2 <span style="color:#666">=</span> sns<span style="color:#666">.</span>barplot(x<span style="color:#666">=</span>idx[:limit_df], y<span style="color:#666">=</span><span style="color:#b44">&#39;explained variance&#39;</span>, data<span style="color:#666">=</span>df_explained_variance_limited, palette<span style="color:#666">=</span><span style="color:#b44">&#39;summer&#39;</span>)
+</span></span><span style="display:flex;"><span>ax2 <span style="color:#666">=</span> ax1<span style="color:#666">.</span>twinx()
+</span></span><span style="display:flex;"><span>ax2<span style="color:#666">.</span>grid(<span style="color:#a2f;font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax2<span style="color:#666">.</span>set_ylabel(<span style="color:#b44">&#39;Cumulative&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">14</span>)
+</span></span><span style="display:flex;"><span>ax2 <span style="color:#666">=</span> sns<span style="color:#666">.</span>lineplot(x<span style="color:#666">=</span>idx[:limit_df]<span style="color:#666">-</span><span style="color:#666">1</span>, y<span style="color:#666">=</span><span style="color:#b44">&#39;cumulative&#39;</span>, data<span style="color:#666">=</span>df_explained_variance_limited, color<span style="color:#666">=</span><span style="color:#b44">&#39;#fc8d59&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ax1<span style="color:#666">.</span>axhline(mean_explained_variance, ls<span style="color:#666">=</span><span style="color:#b44">&#39;--&#39;</span>, color<span style="color:#666">=</span><span style="color:#b44">&#39;#fc8d59&#39;</span>) <span style="color:#080;font-style:italic">#plot mean</span>
+</span></span><span style="display:flex;"><span>ax1<span style="color:#666">.</span>text(<span style="color:#666">-</span><span style="color:#666">.8</span>, mean_explained_variance<span style="color:#666">+</span>(mean_explained_variance<span style="color:#666">*</span><span style="color:#666">.05</span>), <span style="color:#b44">&#34;average&#34;</span>, color<span style="color:#666">=</span><span style="color:#b44">&#39;#fc8d59&#39;</span>, fontsize<span style="color:#666">=</span><span style="color:#666">14</span>) <span style="color:#080;font-style:italic">#label y axis</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>max_y1 <span style="color:#666">=</span> <span style="color:#a2f">max</span>(df_explained_variance_limited<span style="color:#666">.</span>iloc[:,<span style="color:#666">0</span>])
+</span></span><span style="display:flex;"><span>max_y2 <span style="color:#666">=</span> <span style="color:#a2f">max</span>(df_explained_variance_limited<span style="color:#666">.</span>iloc[:,<span style="color:#666">1</span>])
+</span></span><span style="display:flex;"><span>ax1<span style="color:#666">.</span>set(ylim<span style="color:#666">=</span>(<span style="color:#666">0</span>, max_y1<span style="color:#666">+</span>max_y1<span style="color:#666">*</span><span style="color:#666">.1</span>))
+</span></span><span style="display:flex;"><span>ax2<span style="color:#666">.</span>set(ylim<span style="color:#666">=</span>(<span style="color:#666">0</span>, max_y2<span style="color:#666">+</span>max_y2<span style="color:#666">*</span><span style="color:#666">.1</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#666">.</span>show()
+</span></span></code></pre></div><p><p class="markdown-image">
   <img src="/figures/pca_exploration/scree_plot.png" alt="Scree plot - Explained variance across components"  />
 </p></p>
 <p>A scree plot might show distinct jumps from one component to another. For example, when the first component captures disproportionately more variance than others, it could be a sign that variables inform about the same underlying factor or do not add additional dimensions, but say the same thing from a marginally different angle.</p>
@@ -451,20 +486,30 @@ plt<span style="color:#666">.</span>show()
 
 </h3><p>PCA offers another valuable statistic besides explained variance: The correlation between each principle component and a variable, also called factor loading. This statistic facilitates to grasp the dimension that lies behind a component. For example, a dataset includes information about individuals such as math score, reaction time and retention span. The overarching dimension would be cognitive skills and a component that strongly correlates with these variables can be interpreted as the cognitive skill dimension. Similarly, another dimension could be non-cognitive skills and personality, when the data has features such as self-confidence, patience or conscientiousness. A component that captures this area highly correlates with those features.</p>
 <p>The following code creates a heatmap to inspect these correlations, also called factor loading matrix.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#080;font-style:italic"># adjust y-axis size dynamically</span>
-size_yaxis <span style="color:#666">=</span> <span style="color:#a2f">round</span>(X_std<span style="color:#666">.</span>shape[<span style="color:#666">1</span>] <span style="color:#666">*</span> <span style="color:#666">0.5</span>)
-fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,size_yaxis))
-
-<span style="color:#080;font-style:italic"># plot the first top_pc components</span>
-top_pc <span style="color:#666">=</span> <span style="color:#666">3</span>
-sns<span style="color:#666">.</span>heatmap(df_c<span style="color:#666">.</span>iloc[:,:top_pc], annot<span style="color:#666">=</span>True, cmap<span style="color:#666">=</span><span style="color:#b44">&#34;YlGnBu&#34;</span>, ax<span style="color:#666">=</span>ax)
-plt<span style="color:#666">.</span>show()
-</code></pre></div><p><p class="markdown-image">
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># adjust y-axis size dynamically</span>
+</span></span><span style="display:flex;"><span>size_yaxis <span style="color:#666">=</span> <span style="color:#a2f">round</span>(X_std<span style="color:#666">.</span>shape[<span style="color:#666">1</span>] <span style="color:#666">*</span> <span style="color:#666">0.5</span>)
+</span></span><span style="display:flex;"><span>fig, ax <span style="color:#666">=</span> plt<span style="color:#666">.</span>subplots(figsize<span style="color:#666">=</span>(<span style="color:#666">8</span>,size_yaxis))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># plot the first top_pc components</span>
+</span></span><span style="display:flex;"><span>top_pc <span style="color:#666">=</span> <span style="color:#666">3</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#666">.</span>heatmap(df_c<span style="color:#666">.</span>iloc[:,:top_pc], annot<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">True</span>, cmap<span style="color:#666">=</span><span style="color:#b44">&#34;YlGnBu&#34;</span>, ax<span style="color:#666">=</span>ax)
+</span></span><span style="display:flex;"><span>plt<span style="color:#666">.</span>show()
+</span></span></code></pre></div><p><p class="markdown-image">
   <img src="/figures/pca_exploration/heatmap.png" alt="Factor loadings - Correlations of variables and components"  />
 </p></p>
 <p>The first component strongly negatively associates with task ability, reasoning score (raven), math score, verbal score and positively links to beliefs about being gritty (grit_survey1). Summarizing this into a common underlying factor is subjective and requires domain knowledge. In my opinion, the first component mainly captures cognitive skills.</p>
 <p>The second component correlates negatively with receiving the treatment (grit), gender (male) and positively relates to being inconsistent. Interpreting this dimension is less clear-cut and much more challenging. Nevertheless, it accounts for 12% of explained variance instead of 27% like the first component, which results in less interpretable dimensions as it spans slightly across several topical areas. All components that follow might be analogously difficult to interpret.</p>
-<p>Evidence that variables capture similar dimensions could be uniformly distributed factor loadings. One example which inspired this article is a project of mine with Google Trends and self-constructed keywords about a firm&rsquo;s sustainability (<a href="https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends">https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends</a> ). A list of the 15th highest factor loadings for the first principle component revealed loadings ranging from 0.12 as the highest value to 0.11 as the lowest loading of all 15. Such a uniform distribution of factor loadings could be an issue. This especially applies when data is self-collected and someone preselected what is being considered for collection. Adjusting this selection might add dimensionality to your data which possibly improves model performance at the end.</p>
+<p>Evidence that variables capture similar dimensions could be uniformly distributed factor loadings. One example which inspired this article is a project of mine with Google Trends and self-constructed keywords about a firm&rsquo;s sustainability (<a 
+    href="https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://philippschmalen.github.io/posts/esg_scores_pytorch_googletrends
+</a> ). A list of the 15th highest factor loadings for the first principle component revealed loadings ranging from 0.12 as the highest value to 0.11 as the lowest loading of all 15. Such a uniform distribution of factor loadings could be an issue. This especially applies when data is self-collected and someone preselected what is being considered for collection. Adjusting this selection might add dimensionality to your data which possibly improves model performance at the end.</p>
 <h4 id="another-reason-why-pca-saves-time-down-the-road">Another reason why PCA saves time down the road 
 
 </h4><blockquote>
@@ -608,7 +653,7 @@ plt<span style="color:#666">.</span>show()
     <p class="copyright">
     
        © Copyright 
-       2021 
+       2022 
        Philipp Schmalen
     
     </p>

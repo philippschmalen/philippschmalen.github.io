@@ -6,8 +6,8 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="with windows subsystem for Linux (WSL)">
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="description" content="Philipp Schmalen">
+<meta name="generator" content="Hugo 0.104.3" />
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,6 +32,11 @@ if (!doNotTrack) {
 
 
 
+
+  
+    <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Philipp Schmalen" />
+    <link href="/index.xml" rel="feed" type="application/rss+xml" title="Philipp Schmalen" />
+  
 
 
 
@@ -71,7 +76,7 @@ if (!doNotTrack) {
         </span>
 
         <span>
-          20 minute read
+          21 minute read
         </span>
     </div>
 
@@ -172,11 +177,31 @@ if (!doNotTrack) {
 <!-- raw HTML omitted -->
 <h3 id="constructing-the-dataset">Constructing the dataset 
 
-</h3><p>Google trends (<a href="https://trends.google.com/trends/?geo=US">https://trends.google.com/trends/?geo=US</a>) shows search interest for a given keyword within a specified region. As a starting point, I deal with American firms and thus focus on the US using English keywords. 
+</h3><p>Google trends (<a 
+    href="https://trends.google.com/trends/?geo=US"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://trends.google.com/trends/?geo=US
+</a>) shows search interest for a given keyword within a specified region. As a starting point, I deal with American firms and thus focus on the US using English keywords. 
 The Google trend indicator quantifies the relative search volume of searches between two or more terms.</p>
 <p>Relative search volume could be interpreted as search interest and ranges from 0 to 100. To be clear, it lacks a defined measurement unit such as an absolute search count, but relates to all other keywords that were part of the query to Google trends.</p>
 <p>A popular procedure to select ESG investments is by checking on whether a firm fulfills defined exclusion criteria, which is termed negative screening. For example, if a firm engages in  arms trade, it would be excluded from ESG portfolios. Some other examples are firms  linked to corruption, relying on fossil fuels or notorious for avoiding taxes. On the opposite, another ESG investment approach would be positive screening, where a person selects firms since they rely on renewables, promote gender equality or score high in transparency.</p>
-<p>I constructed 30 keywords based on negative screening, since issues about a particular firm likely appear in the news and are therefore more salient to the public than a corporate social responsiblity project mentioned in a sustainability report. I chose them in a way to cover a broad range of relevant topics for negative screening and derived them in part from negating UN&rsquo;s sustainable development goals (<a href="https://www.un.org/sustainabledevelopment/sustainable-development-goals/)">https://www.un.org/sustainabledevelopment/sustainable-development-goals/)</a>. Additionally, I included general keywords that people will search for, when they suspect a firm acting against their morale, such as &ldquo;firm xy issues&rdquo; or &ldquo;firm xy bad&rdquo;. Keywords like &ldquo;scandal&rdquo; or &ldquo;lawsuit&rdquo; will possibly cover a lot of specific terminology used by ESG investors for negative screening, but are assumed to be more common among individuals.</p>
+<p>I constructed 30 keywords based on negative screening, since issues about a particular firm likely appear in the news and are therefore more salient to the public than a corporate social responsiblity project mentioned in a sustainability report. I chose them in a way to cover a broad range of relevant topics for negative screening and derived them in part from negating UN&rsquo;s sustainable development goals (<a 
+    href="https://www.un.org/sustainabledevelopment/sustainable-development-goals/%29"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://www.un.org/sustainabledevelopment/sustainable-development-goals/)
+</a>. Additionally, I included general keywords that people will search for, when they suspect a firm acting against their morale, such as &ldquo;firm xy issues&rdquo; or &ldquo;firm xy bad&rdquo;. Keywords like &ldquo;scandal&rdquo; or &ldquo;lawsuit&rdquo; will possibly cover a lot of specific terminology used by ESG investors for negative screening, but are assumed to be more common among individuals.</p>
 <p>The overarching themes within my keywords inlcude ecological impact, gender equality, activities against law, negative news coverage, negative public image and weapons. All in all, I composed 30 keywords to capture a broad range of negative screening criteria and included the following keywords:</p>
 <pre><code>'scandal', 'greenwashing', 'corruption', 'fraud', 'bribe', 'tax',
  'forced', 'harassment', 'violation', 'human rights', 'conflict', 
@@ -196,81 +221,80 @@ The query limit requires a simple workaround, where I need to batch keywords and
 <p>The rate limit calls for a timeout. Since Google does not publish information about their search backend due to secutiry reasons, the exact rate limit is unknown. But, query errors lead to missing data entries, which leads to fewer data points to train, validate or test the model. Therefore, I favor a conservative approach, setting the timeout to 20 seconds. The downside of this are runtimes of $3000 \times 20 $ seconds $= 60.000$ seconds $\approx 16.7$ hours. A distinct jupyter notebook that exectutes queries in the background and stores query responses in a csv in case of error response, frees up coding capacity for model setup and avoids data loss caused by rate limits.</p>
 <p>The last challenge with Google trends is the relative search metric. To exemplify this, a query of three words with [&lsquo;pizza&rsquo;, &lsquo;president&rsquo;, &lsquo;covid&rsquo;] scales the search interest to the keyword with the most number of searches. The images below illustrate this. It would be a cause of concern when keywords belong to distinct informational sets. Nevertheless, the constructed keywords have the firm name in common, which makes outliers in search interest across queries unlikely since they have the firm name in common. To be concice, I assume that the firm name sufficiently conncets keywords and thereby reduces outliers caused by the relative metric.</p>
 <p>Below is the main code snippet, illustrating the timeout function and querying Google trends in a way to not raise any exceptions.</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">
-<span style="color:#080;font-style:italic"># PYTREND HELPERS</span>
-<span style="color:#a2f;font-weight:bold">def</span> <span style="color:#00a000">pytrends_sleep_init</span>(seconds):
-    <span style="color:#b44">&#34;&#34;&#34;Timeout for certain seconds and re-initialize pytrends
-</span><span style="color:#b44">    
-</span><span style="color:#b44">    Input
-</span><span style="color:#b44">        seconds: int with seconds for timeout
-</span><span style="color:#b44">        
-</span><span style="color:#b44">    Return
-</span><span style="color:#b44">        None
-</span><span style="color:#b44">    
-</span><span style="color:#b44">    &#34;&#34;&#34;</span>
-    <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;TIMEOUT for {} sec.&#34;</span><span style="color:#666">.</span>format(seconds))
-    sleep(seconds)
-    pt <span style="color:#666">=</span> TrendReq()
-
-
-<span style="color:#080;font-style:italic"># Define timeout </span>
-sec_sleep <span style="color:#666">=</span> <span style="color:#666">20</span>
-
-
-<span style="color:#080;font-style:italic"># initialize pytrends</span>
-pt <span style="color:#666">=</span> TrendReq()
-
-<span style="color:#080;font-style:italic"># store DFs for later concat</span>
-df_list <span style="color:#666">=</span> []
-index_batch_error <span style="color:#666">=</span> []
-
-<span style="color:#080;font-style:italic"># create csv to store intermediate results</span>
-make_csv(pd<span style="color:#666">.</span>DataFrame(), filename<span style="color:#666">=</span><span style="color:#b44">&#39;googletrends.csv&#39;</span>, data_dir<span style="color:#666">=</span><span style="color:#b44">&#39;data&#39;</span>, append<span style="color:#666">=</span>False)
-
-<span style="color:#a2f;font-weight:bold">for</span> i, batch <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#a2f">enumerate</span>(keyword_batches):
-    
-    <span style="color:#080;font-style:italic"># retrieve interest over time</span>
-    <span style="color:#a2f;font-weight:bold">try</span>:
-        <span style="color:#080;font-style:italic"># re-init pytrends and wait (sleep/timeout)</span>
-        pytrends_sleep_init(sec_sleep)
-        
-        <span style="color:#080;font-style:italic"># pass keywords to pytrends API</span>
-        pt<span style="color:#666">.</span>build_payload(kw_list<span style="color:#666">=</span>batch) 
-        <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;Payload build for {}. batch&#34;</span><span style="color:#666">.</span>format(i))
-        df_search_result <span style="color:#666">=</span> pt<span style="color:#666">.</span>interest_over_time()
-        
-    <span style="color:#a2f;font-weight:bold">except</span> <span style="color:#d2413a;font-weight:bold">Exception</span> <span style="color:#a2f;font-weight:bold">as</span> e:
-        <span style="color:#a2f;font-weight:bold">print</span>(e)
-        <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;Query {} of {}&#34;</span><span style="color:#666">.</span>format(i, n_query))
-        <span style="color:#080;font-style:italic"># store index at which error occurred</span>
-        index_batch_error<span style="color:#666">.</span>append(i)
-        
-        <span style="color:#080;font-style:italic"># re-init pytrends and wait (sleep/timeout)</span>
-        pytrends_sleep_init(sec_sleep)
-        
-        <span style="color:#080;font-style:italic"># retry</span>
-        <span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;RETRY for {}. batch&#34;</span><span style="color:#666">.</span>format(i))
-        pt<span style="color:#666">.</span>build_payload(kw_list<span style="color:#666">=</span>batch) 
-        df_search_result <span style="color:#666">=</span> pt<span style="color:#666">.</span>interest_over_time()
-        
-    <span style="color:#080;font-style:italic"># check for non-empty df</span>
-    <span style="color:#a2f;font-weight:bold">if</span> df_search_result<span style="color:#666">.</span>shape[<span style="color:#666">0</span>] <span style="color:#666">!=</span> <span style="color:#666">0</span>:
-        
-        <span style="color:#080;font-style:italic"># reset index for consistency (to call pd.concat later with empty dfs)</span>
-        df_search_result<span style="color:#666">.</span>reset_index(inplace<span style="color:#666">=</span>True)
-        df_list<span style="color:#666">.</span>append(df_search_result)
-        
-    <span style="color:#080;font-style:italic"># no search result for any keyword</span>
-    <span style="color:#a2f;font-weight:bold">else</span>:        
-        <span style="color:#080;font-style:italic"># create df containing 0s</span>
-        df_search_result <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(np<span style="color:#666">.</span>zeros((<span style="color:#666">261</span>,batch_size)), columns<span style="color:#666">=</span>batch)
-        df_list<span style="color:#666">.</span>append(df_search_result)
-        
-    make_csv(df_search_result, filename<span style="color:#666">=</span><span style="color:#b44">&#39;googletrends.csv&#39;</span>, data_dir<span style="color:#666">=</span><span style="color:#b44">&#39;data&#39;</span>,
-             append<span style="color:#666">=</span>True,
-            header<span style="color:#666">=</span>True)
-
-</code></pre></div><!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># PYTREND HELPERS</span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">def</span> <span style="color:#00a000">pytrends_sleep_init</span>(seconds):
+</span></span><span style="display:flex;"><span>    <span style="color:#b44">&#34;&#34;&#34;Timeout for certain seconds and re-initialize pytrends
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    Input
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        seconds: int with seconds for timeout
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    Return
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">        None
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;TIMEOUT for </span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44"> sec.&#34;</span><span style="color:#666">.</span>format(seconds))
+</span></span><span style="display:flex;"><span>    sleep(seconds)
+</span></span><span style="display:flex;"><span>    pt <span style="color:#666">=</span> TrendReq()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Define timeout </span>
+</span></span><span style="display:flex;"><span>sec_sleep <span style="color:#666">=</span> <span style="color:#666">20</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># initialize pytrends</span>
+</span></span><span style="display:flex;"><span>pt <span style="color:#666">=</span> TrendReq()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># store DFs for later concat</span>
+</span></span><span style="display:flex;"><span>df_list <span style="color:#666">=</span> []
+</span></span><span style="display:flex;"><span>index_batch_error <span style="color:#666">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># create csv to store intermediate results</span>
+</span></span><span style="display:flex;"><span>make_csv(pd<span style="color:#666">.</span>DataFrame(), filename<span style="color:#666">=</span><span style="color:#b44">&#39;googletrends.csv&#39;</span>, data_dir<span style="color:#666">=</span><span style="color:#b44">&#39;data&#39;</span>, append<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">for</span> i, batch <span style="color:#a2f;font-weight:bold">in</span> <span style="color:#a2f">enumerate</span>(keyword_batches):
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># retrieve interest over time</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic"># re-init pytrends and wait (sleep/timeout)</span>
+</span></span><span style="display:flex;"><span>        pytrends_sleep_init(sec_sleep)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic"># pass keywords to pytrends API</span>
+</span></span><span style="display:flex;"><span>        pt<span style="color:#666">.</span>build_payload(kw_list<span style="color:#666">=</span>batch) 
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;Payload build for </span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44">. batch&#34;</span><span style="color:#666">.</span>format(i))
+</span></span><span style="display:flex;"><span>        df_search_result <span style="color:#666">=</span> pt<span style="color:#666">.</span>interest_over_time()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">except</span> <span style="color:#d2413a;font-weight:bold">Exception</span> <span style="color:#a2f;font-weight:bold">as</span> e:
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">print</span>(e)
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;Query </span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44"> of </span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44">&#34;</span><span style="color:#666">.</span>format(i, n_query))
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic"># store index at which error occurred</span>
+</span></span><span style="display:flex;"><span>        index_batch_error<span style="color:#666">.</span>append(i)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic"># re-init pytrends and wait (sleep/timeout)</span>
+</span></span><span style="display:flex;"><span>        pytrends_sleep_init(sec_sleep)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic"># retry</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a2f">print</span>(<span style="color:#b44">&#34;RETRY for </span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44">. batch&#34;</span><span style="color:#666">.</span>format(i))
+</span></span><span style="display:flex;"><span>        pt<span style="color:#666">.</span>build_payload(kw_list<span style="color:#666">=</span>batch) 
+</span></span><span style="display:flex;"><span>        df_search_result <span style="color:#666">=</span> pt<span style="color:#666">.</span>interest_over_time()
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># check for non-empty df</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">if</span> df_search_result<span style="color:#666">.</span>shape[<span style="color:#666">0</span>] <span style="color:#666">!=</span> <span style="color:#666">0</span>:
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic"># reset index for consistency (to call pd.concat later with empty dfs)</span>
+</span></span><span style="display:flex;"><span>        df_search_result<span style="color:#666">.</span>reset_index(inplace<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>        df_list<span style="color:#666">.</span>append(df_search_result)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#080;font-style:italic"># no search result for any keyword</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a2f;font-weight:bold">else</span>:        
+</span></span><span style="display:flex;"><span>        <span style="color:#080;font-style:italic"># create df containing 0s</span>
+</span></span><span style="display:flex;"><span>        df_search_result <span style="color:#666">=</span> pd<span style="color:#666">.</span>DataFrame(np<span style="color:#666">.</span>zeros((<span style="color:#666">261</span>,batch_size)), columns<span style="color:#666">=</span>batch)
+</span></span><span style="display:flex;"><span>        df_list<span style="color:#666">.</span>append(df_search_result)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    make_csv(df_search_result, filename<span style="color:#666">=</span><span style="color:#b44">&#39;googletrends.csv&#39;</span>, data_dir<span style="color:#666">=</span><span style="color:#b44">&#39;data&#39;</span>,
+</span></span><span style="display:flex;"><span>             append<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">True</span>,
+</span></span><span style="display:flex;"><span>            header<span style="color:#666">=</span><span style="color:#a2f;font-weight:bold">True</span>)
+</span></span></code></pre></div><!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <h3 id="preprocessing-and-feature-engineering">Preprocessing and feature engineering 
 
@@ -614,34 +638,34 @@ Averaging by year, adding the time dimension to keywords variables and thereby c
 <!-- raw HTML omitted -->
 <p>I implemented the neural network with Pytorch on Amazon Sagemaker, with the necessary scripts <code>train.py</code>, <code>model.py</code> and <code>predict.py</code> in the corresponding <code>pytorch_source</code> folder. Furthermore, a Sagemaker Pytorch estimator object was trained using a 80%/20% train-test split. Thereafter, I deployed the model for testing purposes and generated the predictions on the test set. Additionally, all classification metrics were retrieved. All implementation steps for Pytorch were repeated for the Sklearn logistic classifier, excluding the <code>model.py</code> and <code>predict.py</code>scripts. For model comparison, the evaluation metrics of both models were merged. As a last step, Sagemaker&rsquo;s resources were cleaned up, deleting endpoints and data from the S3 bucket.</p>
 <p>This is how pytorch instantiated on Sagemaker in detail, specified with 512 hidden dimensions, 40 training epochs and the number of features (145).</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a2f;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sagemaker.pytorch</span> <span style="color:#a2f;font-weight:bold">import</span> PyTorch
-
-<span style="color:#080;font-style:italic"># select instance</span>
-instance <span style="color:#666">=</span>  <span style="color:#b44">&#39;ml.m4.xlarge&#39;</span> 
-
-<span style="color:#080;font-style:italic"># specify output path in S3</span>
-output_path <span style="color:#666">=</span> <span style="color:#b44">&#39;s3://{}/{}&#39;</span><span style="color:#666">.</span>format(bucket, prefix)
-<span style="color:#a2f;font-weight:bold">print</span>(<span style="color:#b44">&#34;S3 OUTPUT PATH:</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b44">{}&#34;</span><span style="color:#666">.</span>format(output_path))
-
-<span style="color:#080;font-style:italic"># instantiate a pytorch estimator</span>
-estimator <span style="color:#666">=</span> PyTorch(entry_point<span style="color:#666">=</span><span style="color:#b44">&#39;train.py&#39;</span>,
-                   source_dir<span style="color:#666">=</span><span style="color:#b44">&#39;source_pytorch&#39;</span>, 
-                   role<span style="color:#666">=</span>role,
-                   framework_version<span style="color:#666">=</span><span style="color:#b44">&#39;1.5.0&#39;</span>, <span style="color:#080;font-style:italic">#latest version </span>
-                   train_instance_count<span style="color:#666">=</span><span style="color:#666">1</span>, 
-                   train_instance_type<span style="color:#666">=</span>instance,
-                   output_path<span style="color:#666">=</span>output_path,
-                   sagemaker_session<span style="color:#666">=</span>sagemaker_session, 
-                   hyperparameters<span style="color:#666">=</span>{
-                       <span style="color:#b44">&#39;input_features&#39;</span>: <span style="color:#666">145</span>, 
-                       <span style="color:#b44">&#39;hidden_dim&#39;</span>: <span style="color:#666">512</span>,
-                       <span style="color:#b44">&#39;output_dim&#39;</span>: <span style="color:#666">1</span>,
-                       <span style="color:#b44">&#39;epochs&#39;</span>: <span style="color:#666">40</span>
-                   })
-
-<span style="color:#080;font-style:italic"># Train estimator on S3 training data</span>
-estimator<span style="color:#666">.</span>fit({<span style="color:#b44">&#39;train&#39;</span>: input_data})
-</code></pre></div><p>The logistic classifier was similarly instantiated using a Sklearn estimator object.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">from</span> <span style="color:#00f;font-weight:bold">sagemaker.pytorch</span> <span style="color:#a2f;font-weight:bold">import</span> PyTorch
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># select instance</span>
+</span></span><span style="display:flex;"><span>instance <span style="color:#666">=</span>  <span style="color:#b44">&#39;ml.m4.xlarge&#39;</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># specify output path in S3</span>
+</span></span><span style="display:flex;"><span>output_path <span style="color:#666">=</span> <span style="color:#b44">&#39;s3://</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44">/</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44">&#39;</span><span style="color:#666">.</span>format(bucket, prefix)
+</span></span><span style="display:flex;"><span><span style="color:#a2f">print</span>(<span style="color:#b44">&#34;S3 OUTPUT PATH:</span><span style="color:#b62;font-weight:bold">\n</span><span style="color:#b68;font-weight:bold">{}</span><span style="color:#b44">&#34;</span><span style="color:#666">.</span>format(output_path))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># instantiate a pytorch estimator</span>
+</span></span><span style="display:flex;"><span>estimator <span style="color:#666">=</span> PyTorch(entry_point<span style="color:#666">=</span><span style="color:#b44">&#39;train.py&#39;</span>,
+</span></span><span style="display:flex;"><span>                   source_dir<span style="color:#666">=</span><span style="color:#b44">&#39;source_pytorch&#39;</span>, 
+</span></span><span style="display:flex;"><span>                   role<span style="color:#666">=</span>role,
+</span></span><span style="display:flex;"><span>                   framework_version<span style="color:#666">=</span><span style="color:#b44">&#39;1.5.0&#39;</span>, <span style="color:#080;font-style:italic">#latest version </span>
+</span></span><span style="display:flex;"><span>                   train_instance_count<span style="color:#666">=</span><span style="color:#666">1</span>, 
+</span></span><span style="display:flex;"><span>                   train_instance_type<span style="color:#666">=</span>instance,
+</span></span><span style="display:flex;"><span>                   output_path<span style="color:#666">=</span>output_path,
+</span></span><span style="display:flex;"><span>                   sagemaker_session<span style="color:#666">=</span>sagemaker_session, 
+</span></span><span style="display:flex;"><span>                   hyperparameters<span style="color:#666">=</span>{
+</span></span><span style="display:flex;"><span>                       <span style="color:#b44">&#39;input_features&#39;</span>: <span style="color:#666">145</span>, 
+</span></span><span style="display:flex;"><span>                       <span style="color:#b44">&#39;hidden_dim&#39;</span>: <span style="color:#666">512</span>,
+</span></span><span style="display:flex;"><span>                       <span style="color:#b44">&#39;output_dim&#39;</span>: <span style="color:#666">1</span>,
+</span></span><span style="display:flex;"><span>                       <span style="color:#b44">&#39;epochs&#39;</span>: <span style="color:#666">40</span>
+</span></span><span style="display:flex;"><span>                   })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># Train estimator on S3 training data</span>
+</span></span><span style="display:flex;"><span>estimator<span style="color:#666">.</span>fit({<span style="color:#b44">&#39;train&#39;</span>: input_data})
+</span></span></code></pre></div><p>The logistic classifier was similarly instantiated using a Sklearn estimator object.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <h2 id="results">Results 
@@ -699,7 +723,7 @@ estimator<span style="color:#666">.</span>fit({<span style="color:#b44">&#39;tra
 
 </h2><!-- raw HTML omitted -->
 <p>To conclude, I conceptualized, developed and implemented a data analysis project from scratch which mainly deals with search frequency of keywords from Google. Major challenges were faced while collecting the data which compromised the extensiveness of the data and depth of model analysis.</p>
-<p>The main question: <em>&ldquo;Can Google trends and machine learning inform investors about a firm&rsquo;s ESG performance?&quot;</em> can be answered with a cautious &lsquo;yes&rsquo;. On the one hand, the data lacked observations from firms and additional keywords. On the other hand, there is great potential to re-use procedures to query Google for follow up and an extension of the project.</p>
+<p>The main question: <em>&ldquo;Can Google trends and machine learning inform investors about a firm&rsquo;s ESG performance?&rdquo;</em> can be answered with a cautious &lsquo;yes&rsquo;. On the one hand, the data lacked observations from firms and additional keywords. On the other hand, there is great potential to re-use procedures to query Google for follow up and an extension of the project.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
@@ -716,8 +740,28 @@ estimator<span style="color:#666">.</span>fit({<span style="color:#b44">&#39;tra
 <li>Python (3.6)</li>
 <li>Pytorch (1.4.0)</li>
 <li>Amazon Sagemaker</li>
-<li>Pytrends (4.7.3, <a href="https://pypi.org/project/pytrends/">https://pypi.org/project/pytrends/</a>)</li>
-<li>Yahooquery (2.2.6, <a href="https://pypi.org/project/yahooquery/">https://pypi.org/project/yahooquery/</a>)</li>
+<li>Pytrends (4.7.3, <a 
+    href="https://pypi.org/project/pytrends/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://pypi.org/project/pytrends/
+</a>)</li>
+<li>Yahooquery (2.2.6, <a 
+    href="https://pypi.org/project/yahooquery/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://pypi.org/project/yahooquery/
+</a>)</li>
 </ul>
 <p>The data collection script (<code>1_data_collection.ipynb</code>) takes approximately 17 hours due to Google&rsquo;s rate limit and a timeout function which avoids server errors. It is therefore recommended to load the provided csv data files for replication.</p>
 <h3 id="disclaimer">Disclaimer 
@@ -729,14 +773,42 @@ estimator<span style="color:#666">.</span>fit({<span style="color:#b44">&#39;tra
 <h3 id="references">References 
 
 </h3><p>Auer, B. R., &amp; Schuhmacher, F. (2016). Do socially (ir) responsible investments pay? New evidence from international ESG data. The Quarterly Review of Economics and Finance, 59, 51-62.
-Bank of America Research (2020). Accessed 28th July 2020,  <a href="https://www.merrilledge.com/article/why-esg-matters#:~:text=Why%20ESG%20matters%20%E2%80%94%20Now%20more%20than%20ever&amp;text=A%20new%20BofA%20Global%20Research,over%20companies%20that%20don't">https://www.merrilledge.com/article/why-esg-matters#:~:text=Why%20ESG%20matters%20%E2%80%94%20Now%20more%20than%20ever&amp;text=A%20new%20BofA%20Global%20Research,over%20companies%20that%20don't</a>.</p>
-<p>FTSE Russell (2018). Smart beta: 2018 global survey findings from asset owners. Accessed on 29th July 2020, <a href="https://investmentnews.co.nz/wp-content/uploads/Smartbeta18.pdf">https://investmentnews.co.nz/wp-content/uploads/Smartbeta18.pdf</a>.</p>
+Bank of America Research (2020). Accessed 28th July 2020,  <a 
+    href="https://www.merrilledge.com/article/why-esg-matters#:~:text=Why%20ESG%20matters%20%E2%80%94%20Now%20more%20than%20ever&amp;text=A%20new%20BofA%20Global%20Research,over%20companies%20that%20don%27t"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://www.merrilledge.com/article/why-esg-matters#:~:text=Why%20ESG%20matters%20%E2%80%94%20Now%20more%20than%20ever&text=A%20new%20BofA%20Global%20Research,over%20companies%20that%20don't
+</a>.</p>
+<p>FTSE Russell (2018). Smart beta: 2018 global survey findings from asset owners. Accessed on 29th July 2020, <a 
+    href="https://investmentnews.co.nz/wp-content/uploads/Smartbeta18.pdf"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://investmentnews.co.nz/wp-content/uploads/Smartbeta18.pdf
+</a>.</p>
 <p>Griggs, D., Stafford-Smith, M., Gaffney, O., Rockström, J., Öhman, M. C., Shyamsundar, P., &hellip; &amp; Noble, I. (2013). Sustainable development goals for people and planet. Nature, 495(7441), 305-307.</p>
-<p>International Finance Corporation, UN Global Compact, Federal Department of Foreign Affairs Switzerland (2005). Who Cares Wins 2005 Conference Report: Investing for Long-Term Value. Accessed 29th July 2020, <a href="https://www.ifc.org/wps/wcm/connect/topics_ext_content/ifc_external_corporate_site/sustainability-at-ifc/publications/publications_report_whocareswins2005__wci__1319576590784">https://www.ifc.org/wps/wcm/connect/topics_ext_content/ifc_external_corporate_site/sustainability-at-ifc/publications/publications_report_whocareswins2005__wci__1319576590784</a>.</p>
+<p>International Finance Corporation, UN Global Compact, Federal Department of Foreign Affairs Switzerland (2005). Who Cares Wins 2005 Conference Report: Investing for Long-Term Value. Accessed 29th July 2020, <a 
+    href="https://www.ifc.org/wps/wcm/connect/topics_ext_content/ifc_external_corporate_site/sustainability-at-ifc/publications/publications_report_whocareswins2005__wci__1319576590784"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    https://www.ifc.org/wps/wcm/connect/topics_ext_content/ifc_external_corporate_site/sustainability-at-ifc/publications/publications_report_whocareswins2005__wci__1319576590784
+</a>.</p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
-<blockquote>
-</blockquote>
 
     </div>
 
@@ -802,7 +874,7 @@ Bank of America Research (2020). Accessed 28th July 2020,  <a href="https://www.
     <p class="copyright">
     
        © Copyright 
-       2021 
+       2022 
        Philipp Schmalen
     
     </p>

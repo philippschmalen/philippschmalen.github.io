@@ -6,8 +6,8 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="with windows subsystem for Linux (WSL)">
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="description" content="Philipp Schmalen">
+<meta name="generator" content="Hugo 0.104.3" />
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -32,6 +32,11 @@ if (!doNotTrack) {
 
 
 
+
+  
+    <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Philipp Schmalen" />
+    <link href="/index.xml" rel="feed" type="application/rss+xml" title="Philipp Schmalen" />
+  
 
 
 
@@ -131,26 +136,26 @@ if (!doNotTrack) {
 </li>
 <li>
 <p>Install pip3 like this</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install software-properties-common
-sudo apt-add-repository universe
-sudo apt-get update
-sudo apt-get install python3-pip
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get install software-properties-common
+</span></span><span style="display:flex;"><span>sudo apt-add-repository universe
+</span></span><span style="display:flex;"><span>sudo apt-get update
+</span></span><span style="display:flex;"><span>sudo apt-get install python3-pip
+</span></span></code></pre></div></li>
 <li>
 <p>Install Airflow: <code>pip3 install apache-airflow</code></p>
 </li>
 <li>
 <p>Run <code>sudo nano /etc/wsl.conf</code>, insert the block below, save and exit with <code>ctrl+s</code> <code>ctrl+x</code></p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">  <span style="color:#666">[</span>automount<span style="color:#666">]</span>
-  <span style="color:#b8860b">root</span> <span style="color:#666">=</span> /
-  <span style="color:#b8860b">options</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;metadata&#34;</span>
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>  <span style="color:#666">[</span>automount<span style="color:#666">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">root</span> <span style="color:#666">=</span> /
+</span></span><span style="display:flex;"><span>  <span style="color:#b8860b">options</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;metadata&#34;</span>
+</span></span></code></pre></div></li>
 <li>
 <p>Run <code>nano ~/.bashrc</code>, insert the block below, save and exit with <code>ctrl+s</code> <code>ctrl+x</code></p>
 </li>
 </ol>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#a2f">export</span> <span style="color:#b8860b">AIRFLOW_HOME</span><span style="color:#666">=</span>/c/users/YOURNAME/airflowhome
-</code></pre></div><ol start="8">
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#a2f">export</span> <span style="color:#b8860b">AIRFLOW_HOME</span><span style="color:#666">=</span>/c/users/YOURNAME/airflowhome
+</span></span></code></pre></div><ol start="8">
 <li>Restart terminal, activate <code>wsl</code>, run <code>airflow info</code>
 <ol>
 <li>Everything is fine if you see something like <code>Apache Airflow [1.10.12]</code></li>
@@ -207,11 +212,11 @@ sudo apt-get install python3-pip
 </li>
 <li>
 <p>install <code>pip3</code> by running</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt-get install software-properties-common
-sudo apt-add-repository universe
-sudo apt-get update
-sudo apt-get install python3-pip  
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get install software-properties-common
+</span></span><span style="display:flex;"><span>sudo apt-add-repository universe
+</span></span><span style="display:flex;"><span>sudo apt-get update
+</span></span><span style="display:flex;"><span>sudo apt-get install python3-pip  
+</span></span></code></pre></div></li>
 <li>
 <p>Install Airflow: <code>pip3 install apache-airflow</code></p>
 </li>
@@ -220,17 +225,17 @@ sudo apt-get install python3-pip
 </li>
 <li>
 <p>To access directories like <code>/c/users/philipp</code> instead of <code>/mnt/c/users/philipp</code> insert the code block, save and exit with <code>ctrl+s</code> <code>ctrl+x</code></p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666">[</span>automount<span style="color:#666">]</span>
-<span style="color:#b8860b">root</span> <span style="color:#666">=</span> /
-<span style="color:#b8860b">options</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;metadata&#34;</span>
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#666">[</span>automount<span style="color:#666">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">root</span> <span style="color:#666">=</span> /
+</span></span><span style="display:flex;"><span><span style="color:#b8860b">options</span> <span style="color:#666">=</span> <span style="color:#b44">&#34;metadata&#34;</span>
+</span></span></code></pre></div></li>
 <li>
 <p>Type <code>nano ~/.bashrc</code></p>
 </li>
 <li>
 <p>Define the environment variable <code>AIRFLOW_HOME</code> by adding the code below, then save and exit with <code>ctrl+s</code>, <code>ctrl+x</code></p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#a2f">export</span> <span style="color:#b8860b">AIRFLOW_HOME</span><span style="color:#666">=</span>/c/Users/philipp/AirflowHome
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#a2f">export</span> <span style="color:#b8860b">AIRFLOW_HOME</span><span style="color:#666">=</span>/c/Users/philipp/AirflowHome
+</span></span></code></pre></div></li>
 <li>
 <p>Close terminal, open cmd again, type <code>wsl</code></p>
 </li>
@@ -279,19 +284,19 @@ sudo apt-get install python3-pip
 <h2 id="how-to-run-an-airflow-instance">How to run an Airflow instance 
 
 </h2><p>Now it is time to have a look at Airflow! Is <code>AIRFLOW_HOME</code> where you expect it to be? Open two cmd windows, activate <code>wsl</code>and run:</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#080;font-style:italic"># check whether AIRFLOW_HOME was set correctly</span>
-env | grep AIRFLOW_HOME
-
-<span style="color:#080;font-style:italic"># initialize database in AIRFLOW_HOME</span>
-airflow initdb 
-
-<span style="color:#080;font-style:italic"># initialize scheduler</span>
-airflow scheduler
-
-<span style="color:#080;font-style:italic"># use the second cmd window to run</span>
-airflow webserver
-<span style="color:#080;font-style:italic"># access the UI on localhost:8080 in your browser</span>
-</code></pre></div><p>Unfortunately, WSL does not support background tasks (<code>daemon</code>). This is why we have to open one terminal for <code>airflow webserver</code> and one for <code>airflow scheduler</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># check whether AIRFLOW_HOME was set correctly</span>
+</span></span><span style="display:flex;"><span>env | grep AIRFLOW_HOME
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># initialize database in AIRFLOW_HOME</span>
+</span></span><span style="display:flex;"><span>airflow initdb 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># initialize scheduler</span>
+</span></span><span style="display:flex;"><span>airflow scheduler
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># use the second cmd window to run</span>
+</span></span><span style="display:flex;"><span>airflow webserver
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># access the UI on localhost:8080 in your browser</span>
+</span></span></code></pre></div><p>Unfortunately, WSL does not support background tasks (<code>daemon</code>). This is why we have to open one terminal for <code>airflow webserver</code> and one for <code>airflow scheduler</code>.</p>
 <h2 id="setup-airflow-in-a-project-setting">Setup Airflow in a project setting 
 
 </h2><p>Copying your DAGs back and forth from a project folder to Airflow home directory is cumbersome. Fortunately, we can automate this with a bash script. For example, my project root directory is in <code>/c/users/philipp/projects/project_name/</code> and contains one folder with all scripts related to data collection and processing named <code>./src/data/</code>. I also have one folder for all Airflow-related files in <code>./src/airflow/</code>. In this folder 
@@ -374,7 +379,7 @@ Have a look at my project Run Spark EMR clusters with Airflow <a
     <p class="copyright">
     
        © Copyright 
-       2021 
+       2022 
        Philipp Schmalen
     
     </p>
