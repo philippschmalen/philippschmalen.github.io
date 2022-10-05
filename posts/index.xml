@@ -6,16 +6,7 @@
     <description>Recent content in Posts on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 05 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Connect MQTT broker `mosquitto` running on raspberry pi to AWS IOT</title>
-      <link>https://philippschmalen.github.io/posts/connect-mqtt-broker-mosquitto-running-on-raspberry-pi-to-aws-iot/</link>
-      <pubDate>Wed, 05 Oct 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://philippschmalen.github.io/posts/connect-mqtt-broker-mosquitto-running-on-raspberry-pi-to-aws-iot/</guid>
-      <description>Extend a local MQTT setup with AWS IoT cloud capabilites</description>
-    </item>
-    
+    <lastBuildDate>Sun, 16 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Python in Sublime Text 3 with Sublime REPL and Anaconda</title>
       <link>https://philippschmalen.github.io/posts/python-in-sublime-text-3-with-sublime-repl-and-anaconda/</link>
