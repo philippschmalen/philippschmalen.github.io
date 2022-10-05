@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Data science tools &amp; tips to improve your workflow 2021 | Philipp Schmalen</title>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="description" content="">
+<meta name="generator" content="Hugo 0.104.3" />
+
+
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+
+
+<link rel="stylesheet" href="/css/style.css">
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+
+ 
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-154596617-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+
+  </head>
+
+  <body>
+    <nav class="navigation">
+	
+		<a href="/"> <span class="arrow">←</span>Home</a>
+	
+	
+	
+
+	
+
+	<a href="/about">About</a>
+
+	
+
+	
+</nav>
+
+
+    <main class="main">
+      
+
+<section id="single">
+    <h1 class="title">Data science tools &amp; tips to improve your workflow 2021</h1>
+
+    <div class="tip">
+        <span>
+          May 27, 2021
+        </span>
+        <span class="split">
+          ·
+        </span>
+
+        <span>
+          6 minute read
+        </span>
+    </div>
+
+    <div class="content">
+      <h2 id="data-science-learning-agenda-2021--tips-to-improve-your-workflow">Data science learning agenda 2021 &amp; tips to improve your workflow 
+
+</h2><blockquote>
+<p>TODO: Learn about tools.</p>
+</blockquote>
+<p>Tips &amp; tricks, best practices and tools for a modern data science stack. Stuff that helped me to improve my data science workflow and hopefully empower you, too. You will learn shortcuts to iterate faster, tools to make your work more reproducible and best practices align yourself with the community. All is non-exhaustive</p>
+<h2 id="launch-jupyter-notebook-or-jupyter-lab-with-a-double-click">Launch Jupyter Notebook or Jupyter lab with a double click 
+
+</h2><blockquote>
+<p>Use a batch file to quickly open a Jupyter lab or notebook instance. 
+<em>Note:</em> The following assumes Win 10. Furthermore, if you have Anaconda installed, replace the <code>miniconda</code> with <code>anaconda</code> in the paths.</p>
+</blockquote>
+<ol>
+<li>Navigate to your Anaconda/Miniconda folder and open the <code>Scripts</code> directory. For example, in my case this is <code>C:\Users\yourname\miniconda3\Scripts</code>.</li>
+<li>Create a new file <code>activate_jupyterlab.bat</code>, open with a text editor and insert:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@set <span style="color:#b44">&#34;_args1=%1&#34;</span>
+</span></span><span style="display:flex;"><span>@set <span style="color:#b8860b">_args1_first</span><span style="color:#666">=</span>%_args1:~0,1%
+</span></span><span style="display:flex;"><span>@set <span style="color:#b8860b">_args1_last</span><span style="color:#666">=</span>%_args1:~-1%
+</span></span><span style="display:flex;"><span>@set <span style="color:#b8860b">_args1_first</span><span style="color:#666">=</span>%_args1_first:<span style="color:#b44">&#34;=+%
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">@set _args1_last=%_args1_last:&#34;</span><span style="color:#666">=</span>+%
+</span></span><span style="display:flex;"><span>@set <span style="color:#b8860b">_args1</span><span style="color:#666">=</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@if <span style="color:#b44">&#34;%_args1_first%&#34;</span><span style="color:#666">==</span><span style="color:#b44">&#34;+&#34;</span> <span style="color:#a2f;font-weight:bold">if</span> NOT <span style="color:#b44">&#34;%_args1_last%&#34;</span><span style="color:#666">==</span><span style="color:#b44">&#34;+&#34;</span> <span style="color:#666">(</span>
+</span></span><span style="display:flex;"><span>    @CALL <span style="color:#b44">&#34;%~dp0..\condabin\conda.bat&#34;</span> activate
+</span></span><span style="display:flex;"><span>    @GOTO :End
+</span></span><span style="display:flex;"><span><span style="color:#666">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@CALL <span style="color:#b44">&#34;%~dp0..\condabin\conda.bat&#34;</span> activate %*
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:End
+</span></span><span style="display:flex;"><span>@set <span style="color:#b8860b">_args1_first</span><span style="color:#666">=</span>
+</span></span><span style="display:flex;"><span>@set <span style="color:#b8860b">_args1_last</span><span style="color:#666">=</span>
+</span></span><span style="display:flex;"><span>@CALL jupyter lab
+</span></span></code></pre></div><p>If you prefer jupyter notebook, change <code>@CALL jupyter lab</code> to <code>@CALL jupyter notebook</code> and rename <code>activate_jupyternotebook.bat</code> accordingly.</p>
+<p>Go to the project directory and a folder where you want to open Jupyter. For example, I store all notebooks in <code>./notebooks</code> according to <a 
+    href="https://drivendata.github.io/cookiecutter-data-science/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    cookiecutter logic
+</a>. Then I create a new batch file like <code>start_jupyterlab.bat</code> and insert</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>%windir%<span style="color:#b62;font-weight:bold">\S</span>ystem32<span style="color:#b62;font-weight:bold">\c</span>md.exe <span style="color:#b44">&#34;/K&#34;</span> C:<span style="color:#b62;font-weight:bold">\U</span>sers<span style="color:#b62;font-weight:bold">\[</span>YOURNAME<span style="color:#666">]</span><span style="color:#b62;font-weight:bold">\m</span>iniconda3<span style="color:#b62;font-weight:bold">\S</span>cripts<span style="color:#b62;font-weight:bold">\a</span>ctivate_jupyterlab.bat project1_env
+</span></span></code></pre></div><p>This becomes your button to kick things off!</p>
+<h2 id="add-_open-anaconda-prompt-here_-on-right-click">Add <em>Open Anaconda prompt here</em> on right click 
+
+</h2><p>I used to open the Anaconda prompt from the start menu, copy-paste the path to my project directory, <code>cd [path to project]</code> to finally <code>conda activate </code>. It works. But there must be a convenient way.  After a while I stumbled upon <a 
+    href="https://gist.github.com/jiewpeng/8ba446acf329b1801bf91db767d179ea"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    add Anaconda to right click menu
+</a>. Now the Anaconda prompt is just a right click away!</p>
+<p><p class="markdown-image">
+  <img src="/figures/sublime_repl/conda_here.png" alt=""  />
+</p></p>
+<h2 id="clean-code">Clean code 
+
+</h2><p>With all the excitement about Jupyter Notebooks, do your future self a favor and move away from notebooks as soon as the project allows. Embrace <em>clean coding</em>. Find the clean coding cheat-sheet on <a 
+    href="https://github.com/davified/clean-code-ml/blob/master/docs/cheat-sheet.md"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    clean-code-ml
+</a>. Probably the most comprehensive overview for data scientists that do not have a background in computer science.</p>
+<h2 id="streamlithttpsdocsstreamlitioenstable-instead-of-jupyter"><a 
+    href="https://docs.streamlit.io/en/stable/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Streamlit
+</a> instead of Jupyter 
+
+</h2><p><p class="markdown-image">
+  <img src="/figures/sublime_repl/logo_streamlit.png" alt=""  />
+</p></p>
+<p>Working with data needs a response environment and quick feedback. We constantly look into the underlying data and pose questions like: Did the transformation work? Does the format look right? How valid is my engineered feature?</p>
+<p>Therefore we need an interactive setup to crunch data. Jupyter notebooks tend to be great for this. However, they can be a source of error and slow you down. The more code you write, the more you find yourself ignoring best practices of modularizing and writing clean code. Notebooks hinder you while refactoring and putting code into modules. Copy-pasting code back and forth lets you debug most of the time instead of actively working on solutions. Lastly, Joel Grus&rsquo; hilarious talk <a 
+    href="https://www.youtube.com/watch?v=7jiPeIFXb6U"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    why he does not like Jupyter Notebooks
+</a> got me thinking.</p>
+<p>Then I came across Streamlit. It tears the wall down between python scripting and interactivity. It embraces scripting without compromising on quick feedback. No weird behavior of cells executed in the wrong order. No issues when refactoring your code into modules. This lets you write cleaner code from the start.</p>
+<p>For a quick look, check out <a 
+    href="https://awesome-streamlit.org/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    awesome streamlit
+</a> and try it yourself. I hope you enjoy working with it as much as I do. A quick tip to boost performance in a data science setting: Use the <code>@st.cache</code> decorator for the functions that load your data. <a 
+    href="https://docs.streamlit.io/en/stable/caching.html"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    See &ldquo;improve app performance&rdquo;
+</a> for more tweaks. For new projects, I rely on Streamlit and replaced the <code>./notebooks</code> folder with <code>./streamlit</code>. That is where I start a project journey and explore data from there.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="find-your-way-and-organize-projects-with-cookiecutter">Find your way and organize projects with Cookiecutter 
+
+</h2><!-- raw HTML omitted -->
+<p><p class="markdown-image">
+  <img src="/figures/sublime_repl/logo_cookiecutter.png" alt=""  />
+</p></p>
+<p>Some argue that each data science project is unique and the project setup should reflect this. It might be no issue if you work on two or three projects where you know their directory structure by heart. You encounter this more often <em>within academia</em>. However, a more holistic approach is to build your project around proven guidelines that emerged from the data science community. It makes your projects easy to share, explain to others and enables cooperation. Think about <em>others</em> when you set up projects. They should have an easy time to find their way around and understand how you organized your  data science project. It can be summarized in one principle:</p>
+<blockquote>
+<p>Rely on existing and proven project structures. If you deviate from it, make the structure self-explanatory. Take the perspective of someone who has 30 seconds to grasp your awesome project on Github. Minimize the gap between what others expect of your project structure and your individual requirements.</p>
+</blockquote>
+<p>The easiest way to do this is with <a 
+    href="https://drivendata.github.io/cookiecutter-data-science/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Cookiecutter data science
+</a>. Simply install with <code>pip install cookiecutter</code> into your virtual env. Navigate to the directory where you want to start a project and run <code>cookiecutter https://github.com/drivendata/cookiecutter-data-science</code>. Start out with their folder template, then adjusting it to your needs. You will quickly get used to the structure and will look for it in other projects.</p>
+<p>You can browse other templates in a <a 
+    href="https://github.com/topics/cookiecutter-template"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    pantry of cookiecutters
+</a>. Further cookiecutters I love are <a 
+    href="https://github.com/crmne/cookiecutter-modern-datascience"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Cookiecutter modern data science
+</a> and Cookiecutter docker science)[https://github.com/docker-science/cookiecutter-docker-science]. Enjoy baking!</p>
+<h2 id="durable-data-pipelines-with-prefect">Durable data pipelines with Prefect 
+
+</h2><p>It is great to  <a 
+    href="https://docs.prefect.io/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Prefect
+</a></p>
+<p><p class="markdown-image">
+  <img src="/figures/sublime_repl/logo_prefect.jpg" alt=""  />
+</p></p>
+<p>For example, I used it for the <a 
+    href="https://github.com/philippschmalen/ESG-trending-topics-radar"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    ESG trending topics radar
+</a>. It gets Google Trends data on topics within sustainable finance and runs a daily <em>Prefect flow</em> on a Linux instance. The treemap is live on <a 
+    href="http://www.towardssustainablefinance.com/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    towardssustainablefinance.com
+</a>.</p>
+<h2 id="build-apps-that-run-anywhere-with-docker">Build apps that run anywhere with Docker 
+
+</h2><p><p class="markdown-image">
+  <img src="/figures/sublime_repl/logo_docker.png" alt=""  />
+</p></p>
+<p>A lot has been said already about Docker. It solves dependencies and &ldquo;works-on-my-machine&rdquo; issues. I found <a 
+    href="https://www.youtube.com/watch?v=oO8n3y23b6M"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    this talk
+</a> helpful to get you thinking how to interate Docker into your workflows.</p>
+<p>There is also a great <a 
+    href="https://www.youtube.com/watch?v=Vun1DL9zGuM&amp;list=PLO9pkowc_99ZhP2yuPU8WCfFNYEx2IkwR&amp;index=3"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    intro for data scientists
+</a> from the people behind clean-ml-code.</p>
+<h2 id="other-tools-to-learn">Other tools to learn 
+
+</h2><p>Further tools might be useful to consider. This is at least a list of stuff I check out in the upcoming time.</p>
+<ol>
+<li><a 
+    href="https://mlflow.org/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    ML flow
+</a> to manage models and log their metrics</li>
+<li><a 
+    href="https://www.mkdocs.org/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Mkdocs
+</a> and <a 
+    href="https://mkdocstrings.github.io/usage/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    mkdocstrings
+</a> to simplify and automate documentation</li>
+<li><a 
+    href="https://docs.greatexpectations.io/en/latest/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Great expectations
+</a> to validate and test your data against your expectations.</li>
+<li><a 
+    href="https://www.terraform.io/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Terraform
+</a> for infrastucture as code when working on AWS</li>
+<li><a 
+    href="https://www.drone.io/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    Drone CI
+</a> for automated testing and continuous development</li>
+<li><a 
+    href="https://docs.gitlab.com/ee/ci/pipelines/"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    CI/CD
+</a> pipelines with Gitlab</li>
+<li><a 
+    href="https://aws.amazon.com/step-functions/?step-functions.sort-by=item.additionalFields.postDateTime&amp;step-functions.sort-order=desc"
+    
+    
+     
+      target="_blank" 
+      rel="noopener"
+    
+>
+    AWS step functions
+</a> to process data after an API call</li>
+</ol>
+
+    </div>
+
+    
+        <div class="tags">
+            
+                <a href="https://philippschmalen.github.io/tags/jupyter-notebook">Jupyter notebook</a>
+            
+                <a href="https://philippschmalen.github.io/tags/miniconda">Miniconda</a>
+            
+                <a href="https://philippschmalen.github.io/tags/docker">Docker</a>
+            
+                <a href="https://philippschmalen.github.io/tags/streamlit">Streamlit</a>
+            
+                <a href="https://philippschmalen.github.io/tags/prefect">Prefect</a>
+            
+                <a href="https://philippschmalen.github.io/tags/cookiecutter">cookiecutter</a>
+            
+        </div>
+    
+    
+    
+
+</section>
+
+
+    </main>
+    
+    
+<footer id="footer">
+    
+        <div id="social">
+
+
+    <a class="inline-svg" href="mailto:philippschmalen@gmail.com" target="_blank" height="28" width="28">
+        
+        <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="envelope" class="svg-inline--fa fa-envelope fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"></path></svg>
+    </a>
+
+    <a class="inline-svg" href="https://github.com/philippschmalen" target="_blank" height="28" width="28">
+        
+        <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" class="svg-inline--fa fa-github fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+    </a>
+
+    <a class="inline-svg" href="https://www.linkedin.com/in/philippschmalen/" target="_blank" height="28" width="28">
+        
+        <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="linkedin-in" class="svg-inline--fa fa-linkedin-in fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"></path></svg>
+    </a>
+
+</div>
+
+
+
+
+    
+
+    <p class="copyright">
+    
+       © Copyright 
+       2022 
+       Philipp Schmalen
+    
+    </p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js" integrity="sha256-34ADEQM6cIZ7chSRA07lN4aD5JM9IQoeIr2VamKDcT0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/contrib/auto-render.min.js" integrity="sha256-HkMrKMLKQk4t1R2ofMAcLz72fWM2sshnx6215U+LgU0=" crossorigin="anonymous"></script>
+<script>
+  renderMathInElement(document.body,
+    {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false},
+        ]
+    }
+  );
+
+  var inlineMathArray = document.querySelectorAll("script[type='math/tex']");
+  for (var i = 0; i < inlineMathArray.length; i++) {
+    var inlineMath = inlineMathArray[i];
+    var tex = inlineMath.innerText || inlineMath.textContent;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex, {displayMode: false});
+    inlineMath.parentNode.replaceChild(replaced, inlineMath);
+  }
+
+  var displayMathArray = document.querySelectorAll("script[type='math/tex; mode=display']");
+  for (var i = 0; i < displayMathArray.length; i++) {
+    var displayMath = displayMathArray[i];
+    var tex = displayMath.innerHTML;
+    var replaced = document.createElement("span");
+    replaced.innerHTML = katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+    displayMath.parentNode.replaceChild(replaced, displayMath);
+  }
+</script>
+  </body>
+</html>

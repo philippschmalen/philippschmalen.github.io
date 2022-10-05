@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>pandas on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/pandas/</link>
+    <description>Recent content in pandas on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 01 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/pandas/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Missings, duplicates and descriptives - quickly inspect data with  pandas profiling</title>
+      <link>https://philippschmalen.github.io/posts/missings-duplicates-and-descriptives-quickly-inspect-data-with-pandas-profiling/</link>
+      <pubDate>Tue, 01 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/missings-duplicates-and-descriptives-quickly-inspect-data-with-pandas-profiling/</guid>
+      <description>Missings, duplicates and descriptives - quickly inspect data with Python pandas </description>
+    </item>
+    
+  </channel>
+</rss>

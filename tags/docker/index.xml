@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on Philipp Schmalen</title>
+    <link>https://philippschmalen.github.io/tags/docker/</link>
+    <description>Recent content in Docker on Philipp Schmalen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 27 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Data science tools &amp; tips to improve your workflow 2021</title>
+      <link>https://philippschmalen.github.io/posts/data-science-tools-tips-to-improve-your-workflow-2021/</link>
+      <pubDate>Thu, 27 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/data-science-tools-tips-to-improve-your-workflow-2021/</guid>
+      <description>A modern take on setting up your workspace</description>
+    </item>
+    
+  </channel>
+</rss>

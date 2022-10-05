@@ -2,22 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://philippschmalen.github.io/tags/aws-cli/</loc>
+    <lastmod>2022-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philippschmalen.github.io/tags/aws-iot/</loc>
+    <lastmod>2022-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philippschmalen.github.io/posts/connect-mqtt-broker-mosquitto-running-on-raspberry-pi-to-aws-iot/</loc>
+    <lastmod>2022-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philippschmalen.github.io/tags/mosquitto/</loc>
+    <lastmod>2022-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philippschmalen.github.io/tags/mqtt/</loc>
+    <lastmod>2022-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philippschmalen.github.io/</loc>
+    <lastmod>2022-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philippschmalen.github.io/posts/</loc>
+    <lastmod>2022-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philippschmalen.github.io/tags/raspberry-pi/</loc>
+    <lastmod>2022-10-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://philippschmalen.github.io/tags/</loc>
+    <lastmod>2022-10-05T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://philippschmalen.github.io/tags/about/</loc>
     <lastmod>2021-05-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philippschmalen.github.io/about/</loc>
     <lastmod>2021-05-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://philippschmalen.github.io/</loc>
-    <lastmod>2021-05-22T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://philippschmalen.github.io/tags/philippschmalen/</loc>
     <lastmod>2021-05-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philippschmalen.github.io/tags/projects/</loc>
-    <lastmod>2021-05-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://philippschmalen.github.io/tags/</loc>
     <lastmod>2021-05-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philippschmalen.github.io/tags/udpate/</loc>
@@ -33,9 +54,6 @@
     <lastmod>2021-05-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philippschmalen.github.io/tags/data-science-workflow/</loc>
-    <lastmod>2021-05-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://philippschmalen.github.io/posts/</loc>
     <lastmod>2021-05-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://philippschmalen.github.io/tags/project-manager/</loc>
