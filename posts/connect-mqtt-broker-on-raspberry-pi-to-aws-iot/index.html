@@ -118,7 +118,7 @@ Additionally, here is a great article on <a
 </blockquote>
 <h2 id="install--configure-mosquitto">Install &amp; configure mosquitto 
 
-</h2><p>We need to install and configure a MQTT broker, such as <code>mosquitto</code>. Install it with <code>apt</code> and configure it by creating a <code>mosquitto.conf</code> file located in <code>/etc/mosquitto/conf/mosquitto.conf</code>. Additionally, we create a user and store the password encrypted in a <code>passwd</code> file.</p>
+</h2><p>We need to install and configure a MQTT broker, such as <code>mosquitto</code>. Install it with <code>apt</code> and configure it by creating a <code>mosquitto.conf</code> file located in <code>/etc/mosquitto/mosquitto.conf</code>. Additionally, we create a user and store the password encrypted in a <code>passwd</code> file.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># installation</span>
 </span></span><span style="display:flex;"><span>sudo apt update <span style="color:#666">&amp;&amp;</span> sudo apt upgrade
 </span></span><span style="display:flex;"><span>sudo apt install -y mosquitto mosquitto-clients
@@ -154,6 +154,7 @@ Additionally, here is a great article on <a
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># check status of service</span>
 </span></span><span style="display:flex;"><span>sudo systemctl status mosquitto
+</span></span><span style="display:flex;"><span>&gt; ... active
 </span></span></code></pre></div><h2 id="install--configure-aws-cli-version-2-on-raspberry-pi">Install &amp; configure aws cli version 2 on raspberry pi 
 
 </h2><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/aws/aws-cli.git <span style="color:#666">&amp;&amp;</span> <span style="color:#a2f">cd</span> aws-cli <span style="color:#666">&amp;&amp;</span> git checkout v2
@@ -161,7 +162,7 @@ Additionally, here is a great article on <a
 </span></span><span style="display:flex;"><span>aws --version
 </span></span><span style="display:flex;"><span>&gt; aws-cli/2.8.0 Python/3.9.2 Linux/5.15.61-v7l+ source/armv7l.raspbian.11 prompt/off
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Configure the AWS CLI with your AWS region, leave access/private keys blank</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Configure the AWS CLI with your AWS region, such as eu-west-1, leave access/private keys blank</span>
 </span></span><span style="display:flex;"><span>aws configure
 </span></span></code></pre></div><h2 id="connect-mosquitto-to-aws-iot-core">Connect mosquitto to AWS IoT Core 
 
@@ -174,7 +175,7 @@ Additionally, here is a great article on <a
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Create certificates and keys. Make a note of the certificate ARN as it will be #needed to configure the IoT Policy.</span>
 </span></span><span style="display:flex;"><span>sudo aws iot create-keys-and-certificate --set-as-active --certificate-pem-outfile cert.crt --private-key-outfile private.key --public-key-outfile public.key --region eu-west-1
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># if this does not work, run aws iot create-keys-and-certificate </span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># NOTE: if this throws an exception, run `aws iot create-keys-and-certificate`, in `/etc/mosquitto/certs/` create cert.crt, private.key, public.key with the information from the console</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Copy the ARN of the certificate returned by the command line in the form of #arn:aws:iot:eu-west-1:0123456789:cert/xyzxyz and replace it in the following #command line in order to attach the IoT policy to your certificate</span>
 </span></span><span style="display:flex;"><span>aws iot attach-principal-policy --policy-name bridgeMQTT --principal &lt;certificate ARN&gt;
@@ -189,46 +190,46 @@ Additionally, here is a great article on <a
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Create the configuration file</span>
 </span></span><span style="display:flex;"><span>sudo nano /etc/mosquitto/conf.d/bridge.conf
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># ============================================================</span>
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># Bridge to AWS IOT</span>
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># ============================================================</span>
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; connection awsiot
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic">#&lt;Paste your AWS IoT Core ATS endpoint retrieved from the AWS CLI in the form of xxxxxxxxxxxxxxx-ats.iot.&lt;region&gt;.amazonaws.com:8883</span>
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; address xxxxxxxxxxxxxxx-ats.iot.&lt;region&gt;.amazonaws.com:8883
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># Specifying which topics are bridged and in what fashion</span>
-</span></span><span style="display:flex;"><span>&gt; topic awsiot_to_localgateway in <span style="color:#666">1</span>
-</span></span><span style="display:flex;"><span>&gt; topic localgateway_to_awsiot out <span style="color:#666">1</span>
-</span></span><span style="display:flex;"><span>&gt; topic both_directions both <span style="color:#666">1</span>
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># Setting protocol version explicitly</span>
-</span></span><span style="display:flex;"><span>&gt; bridge_protocol_version mqttv311
-</span></span><span style="display:flex;"><span>&gt; bridge_insecure <span style="color:#a2f">false</span>
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># Bridge connection name and MQTT client Id, enabling the connection automatically when the broker starts.</span>
-</span></span><span style="display:flex;"><span>&gt; cleansession <span style="color:#a2f">true</span>
-</span></span><span style="display:flex;"><span>&gt; clientid bridgeawsiot
-</span></span><span style="display:flex;"><span>&gt; start_type automatic
-</span></span><span style="display:flex;"><span>&gt; notifications <span style="color:#a2f">false</span>
-</span></span><span style="display:flex;"><span>&gt; log_type all
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># ============================================================</span>
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># Certificate based SSL/TLS support</span>
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># ============================================================</span>
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic">#Path to the rootCA</span>
-</span></span><span style="display:flex;"><span>&gt; bridge_cafile /etc/mosquitto/certs/rootCA.pem
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># Path to the PEM encoded client certificate</span>
-</span></span><span style="display:flex;"><span>&gt; bridge_certfile /etc/mosquitto/certs/cert.crt
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic"># Path to the PEM encoded client private key</span>
-</span></span><span style="display:flex;"><span>&gt; bridge_keyfile /etc/mosquitto/certs/private.key
-</span></span><span style="display:flex;"><span>&gt;
-</span></span><span style="display:flex;"><span>&gt; <span style="color:#080;font-style:italic">#END of bridge.conf</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Bridge to AWS IOT</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	connection awsiot
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic">#&lt;Paste your AWS IoT Core ATS endpoint retrieved from the AWS CLI in the form of xxxxxxxxxxxxxxx-ats.iot.&lt;region&gt;.amazonaws.com:8883</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	address xxxxxxxxxxxxxxx-ats.iot.&lt;region&gt;.amazonaws.com:8883
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Specifying which topics are bridged and in what fashion</span>
+</span></span><span style="display:flex;"><span>	topic awsiot_to_localgateway in <span style="color:#666">1</span>
+</span></span><span style="display:flex;"><span>	topic localgateway_to_awsiot out <span style="color:#666">1</span>
+</span></span><span style="display:flex;"><span>	topic both_directions both <span style="color:#666">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Setting protocol version explicitly</span>
+</span></span><span style="display:flex;"><span>	bridge_protocol_version mqttv311
+</span></span><span style="display:flex;"><span>	bridge_insecure <span style="color:#a2f">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Bridge connection name and MQTT client Id, enabling the connection automatically when the broker starts.</span>
+</span></span><span style="display:flex;"><span>	cleansession <span style="color:#a2f">true</span>
+</span></span><span style="display:flex;"><span>	clientid bridgeawsiot
+</span></span><span style="display:flex;"><span>	start_type automatic
+</span></span><span style="display:flex;"><span>	notifications <span style="color:#a2f">false</span>
+</span></span><span style="display:flex;"><span>	log_type all
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Certificate based SSL/TLS support</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic">#Path to the rootCA</span>
+</span></span><span style="display:flex;"><span>	bridge_cafile /etc/mosquitto/certs/rootCA.pem
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Path to the PEM encoded client certificate</span>
+</span></span><span style="display:flex;"><span>	bridge_certfile /etc/mosquitto/certs/cert.crt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Path to the PEM encoded client private key</span>
+</span></span><span style="display:flex;"><span>	bridge_keyfile /etc/mosquitto/certs/private.key
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic">#END of bridge.conf</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Restart the Mosquitto Mosquitto broker</span>
 </span></span><span style="display:flex;"><span>sudo service mosquitto restart
