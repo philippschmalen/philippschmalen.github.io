@@ -6,7 +6,7 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="Some thoughts on Nolet et al. (2020)">
+<meta name="description" content="Hello">
 <meta name="generator" content="Hugo 0.104.3" />
 
 
@@ -236,6 +236,7 @@ Additionally, here is a great article on <a
 </span></span></code></pre></div><h2 id="publish-message-to-aws-iot-mqtt-test-client">Publish message to AWS IoT MQTT test client 
 
 </h2><p>Sign in to AWS and navigate to AWS IoT &gt; MQTT test client. Enter the topic <code>localgateway_to_awsiot</code>, set quality of service to 1 under advanced configuration and hit <code>subscribe</code>.</p>
+<p>Important note: Make sure to select the same region as when you run <code>iot create-keys-and-certificate ... --region &lt;your-region&gt;</code>. In the example above, we used eu-west-1 (Ireland).</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Publish a local message to the Mosquitto broker running on the Amazon EC2 #instance from the terminal</span>
 </span></span><span style="display:flex;"><span>mosquitto_pub -h localhost -p <span style="color:#666">1883</span> -q <span style="color:#666">1</span> -d -t localgateway_to_awsiot  -i localClientID -m <span style="color:#b44">&#34;{\&#34;message\&#34;: \&#34;helloFromLocalGateway\&#34;}&#34;</span> -u YOUR_USERNAME -P YOUR_PASSWORD
 </span></span></code></pre></div><p><p class="markdown-image">

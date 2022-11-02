@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-    <title>Data science workflow | Philipp Schmalen</title>
+    <title>Signs that your code needs revision | Philipp Schmalen</title>
 
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
@@ -58,68 +58,85 @@ if (!doNotTrack) {
 
     <main class="main">
       
-<header class="profile">
-    
-        <a href="/about">
-          <img class="avatar" alt="avatar" src="/images/avatar.png" />
-        </a>
-    
 
-    <h1>Philipp Schmalen</h1>
-    
-    
-      <h2>Machine Learning, Data Science &amp; Empirics</h2>
-    
-</header>
+<section id="single">
+    <h1 class="title">Signs that your code needs revision</h1>
 
-<section id="archive">
-   
-    
-        <div class="group">
-            <h3 class="key">
-                2021
-            </h3>
+    <div class="tip">
+        <span>
+          Oct 18, 2022
+        </span>
+        <span class="split">
+          ·
+        </span>
 
+        <span>
+          2 minute read
+        </span>
+    </div>
+
+    <div class="content">
+      <p>Make it easy to find things later on. Design code that is self-explanatory and intuitive. The motivation behind that is</p>
+<blockquote>
+<p>Aim for clean code. Write code that makes easy for a future person (1) to understand what is going on, (2) to maintain the program and (3) to extend it if new requirements arise. Because that future person might be you.</p>
+</blockquote>
+<p>Last but not least, a picture says more than a thousand words. A complex codebase with abstractions benefits a lot from a diagram. It helps you and other developers to grasp what is going on. Additionally, if you draw it, you better understand it.</p>
+<h2 id="tldr">TLDR; 
+
+</h2><!-- raw HTML omitted -->
+<h2 id="design-principles">Design principles 
+
+</h2><p>Our code should center around three topics.</p>
+<ol>
+<li>clarity (or simplicity)</li>
+<li>flexbility (or modularity)</li>
+<li>testability (or reliability)</li>
+</ol>
+<p>Some of those go hand in hand like flexibility and testability. And yet others challenge each other like clarity and testability.</p>
+<h2 id="signs-to-improve-your-code">Signs to improve your code 
+
+</h2><ol>
+<li>number of class variables to initiate a class
+example: &gt; 500 lines of code</li>
+<li>number of lines
+example:</li>
+<li>number of imports (coupling)</li>
+<li>Nested if-else statements</li>
+</ol>
+<h2 id="make-it-easy-to-understand-what-is-going-on">Make it easy to understand what is going on 
+
+</h2><ul>
+<li>concise documentation and comments that explain the variable in different words.</li>
+<li>type annotations</li>
+</ul>
+<blockquote>
+<p>Remark on readibility: Not necessarily an argument for code changes when it is about personal taste. Design your code around patterns.</p>
+</blockquote>
+<h2 id="design-patterns">Design patterns 
+
+</h2><p>To revise your code, there are proven design patterns that you can rely on. Here is a list of reference which could be a starting point to learn more about each pattern, when to apply it and when your code benefits most.</p>
+<ul>
+<li>dependency inversion</li>
+<li>decoupling</li>
+<li>factory pattern</li>
+</ul>
+<!-- raw HTML omitted -->
+
+    </div>
+
+    
+        <div class="tags">
             
-                <div class="value">
-                  <div class="date">
-                      May 16
-                  </div>
-                  <div class="title">
-                      <a href="https://philippschmalen.github.io/posts/python-in-sublime-text-3-with-sublime-repl-and-anaconda/">
-                          Python in Sublime Text 3 with Sublime REPL and Anaconda
-                      </a>
-
-                      
-                          <div class="tags">
-                              
-                                  <a href="https://philippschmalen.github.io/tags/sublime-text-3">Sublime Text 3</a>
-                              
-                                  <a href="https://philippschmalen.github.io/tags/anaconda-miniconda">Anaconda, Miniconda</a>
-                              
-                                  <a href="https://philippschmalen.github.io/tags/sublime-repl">Sublime REPL</a>
-                              
-                                  <a href="https://philippschmalen.github.io/tags/data-science-project">Data science project</a>
-                              
-                                  <a href="https://philippschmalen.github.io/tags/data-science-workflow">Data science workflow</a>
-                              
-                                  <a href="https://philippschmalen.github.io/tags/project-manager">Project Manager</a>
-                              
-                                  <a href="https://philippschmalen.github.io/tags/build-system">Build system</a>
-                              
-                          </div>
-                      
-                  </div>
-                </div>
-                      
+                <a href="https://philippschmalen.github.io/tags/python">python</a>
+            
+                <a href="https://philippschmalen.github.io/tags/code-design">code design</a>
+            
         </div>
-
     
-
-
+    
+    
 
 </section>
-
 
 
     </main>

@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 06 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Signs that your code needs revision</title>
+      <link>https://philippschmalen.github.io/posts/signs-that-your-code-needs-revision/</link>
+      <pubDate>Tue, 18 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/signs-that-your-code-needs-revision/</guid>
+      <description>Hello</description>
+    </item>
+    
     <item>
       <title>Connect MQTT broker on Raspberry Pi to AWS IoT</title>
       <link>https://philippschmalen.github.io/posts/connect-mqtt-broker-on-raspberry-pi-to-aws-iot/</link>
