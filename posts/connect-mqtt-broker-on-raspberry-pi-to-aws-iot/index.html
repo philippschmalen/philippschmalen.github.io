@@ -6,7 +6,7 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="Hello">
+<meta name="description" content="Some thoughts on Nolet et al. (2020)">
 <meta name="generator" content="Hugo 0.104.3" />
 
 
@@ -76,12 +76,15 @@ if (!doNotTrack) {
     </div>
 
     <div class="content">
-      <p>You will learn how to connect mosquitto running on raspberry pi to AWS iot cloud services.
-We will connect a local setup with sensors that send data via MQTT to a message broker, hosted on a raspberyy pi, to the AWS cloud.</p>
+      <p>You will learn how to connect mosquitto running on raspberry pi to AWS iot cloud services. We will
+connect a local setup with sensors that send data via MQTT to a message broker, hosted on a
+raspberyy pi, to the AWS cloud.</p>
 <p><p class="markdown-image">
   <img src="/figures/awsiot_mqtt/Schema-How-to-bridge-Mosquitto-to-AWS-IoT-Core.png" alt=""  />
 </p></p>
-<p>The setup is a cost-effective way to tap into the potential of AWS IoT. For example, we could ingest messages into a data streaming service like Apache Kafka where <a 
+<p>The setup is a cost-effective way to tap into the potential of AWS IoT. For example, we could ingest
+messages into a data streaming service like Apache Kafka where [AWS MSK]
+(<a 
     href="https://aws.amazon.com/msk/"
     
     
@@ -90,11 +93,12 @@ We will connect a local setup with sensors that send data via MQTT to a message 
       rel="noopener"
     
 >
-    AWS MSK
-</a> is the fully managed solution on AWS.</p>
+    https://aws.amazon.com/msk/
+</a>) is the fully managed solution on AWS.</p>
 <blockquote>
-<p>This article builds on <a 
-    href="https://aws.amazon.com/blogs/iot/how-to-bridge-mosquitto-mqtt-broker-to-aws-iot/"
+<p>This article builds on [How to Bridge Mosquitto MQTT Broker to AWS IoT]
+(<a 
+    href="https://aws.amazon.com/blogs/iot/how-to-bridge-mosquitto-mqtt-broker-to-aws-iot/%29"
     
     
      
@@ -102,10 +106,12 @@ We will connect a local setup with sensors that send data via MQTT to a message 
       rel="noopener"
     
 >
-    How to Bridge Mosquitto MQTT Broker to AWS IoT
-</a>, fixes errata and slightly adapts it for a raspberry pi.
-Additionally, here is a great article on <a 
-    href="http://www.steves-internet-guide.com/mosquitto-bridge-configuration/"
+    https://aws.amazon.com/blogs/iot/how-to-bridge-mosquitto-mqtt-broker-to-aws-iot/)
+</a>, fixes errata
+and slightly adapts it for a raspberry pi.
+Additionally, here is a great article on [mosquitto MQTT Bridge]
+(<a 
+    href="http://www.steves-internet-guide.com/mosquitto-bridge-configuration/%29"
     
     
      
@@ -113,39 +119,37 @@ Additionally, here is a great article on <a
       rel="noopener"
     
 >
-    mosquitto MQTT Bridge
+    http://www.steves-internet-guide.com/mosquitto-bridge-configuration/)
 </a>, in general.</p>
 </blockquote>
 <h2 id="install--configure-mosquitto">Install &amp; configure mosquitto 
 
-</h2><p>We need to install and configure a MQTT broker, such as <code>mosquitto</code>. Install it with <code>apt</code> and configure it by creating a <code>mosquitto.conf</code> file located in <code>/etc/mosquitto/mosquitto.conf</code>. Additionally, we create a user and store the password encrypted in a <code>passwd</code> file.</p>
+</h2><p>We need to install and configure a MQTT broker, such as <code>mosquitto</code>. Install it with <code>apt</code> and
+configure it by creating a <code>mosquitto.conf</code> file located in <code>/etc/mosquitto/mosquitto.conf</code>.
+Additionally, we create a user and store the password encrypted in a <code>passwd</code> file.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic"># installation</span>
-</span></span><span style="display:flex;"><span>sudo apt update <span style="color:#666">&amp;&amp;</span> sudo apt upgrade
-</span></span><span style="display:flex;"><span>sudo apt install -y mosquitto mosquitto-clients
-</span></span><span style="display:flex;"><span>sudo systemctl <span style="color:#a2f">enable</span> mosquitto.service
+</span></span><span style="display:flex;"><span>sudo apt update <span style="color:#666">&amp;&amp;</span> sudo apt upgrade sudo apt install -y mosquitto mosquitto-clients sudo systemctl
+</span></span><span style="display:flex;"><span><span style="color:#a2f">enable</span> mosquitto.service
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># disable anonymous access for security</span>
 </span></span><span style="display:flex;"><span>sudo nano /etc/mosquitto/conf/mosquitto.conf
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Place your local configuration in /etc/mosquitto/conf.d/</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic">#</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># A full description of the configuration file is at</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># /usr/share/doc/mosquitto/examples/mosquitto.conf.example</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># A full description of the configuration file is</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># at /usr/share/doc/mosquitto/examples/mosquitto.conf.example</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	per_listener_settings <span style="color:#a2f">true</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	pid_file /run/mosquitto/mosquitto.pid
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	persistence <span style="color:#a2f">true</span>
-</span></span><span style="display:flex;"><span>	persistence_location /var/lib/mosquitto/
+</span></span><span style="display:flex;"><span>	persistence <span style="color:#a2f">true</span> persistence_location /var/lib/mosquitto/
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	log_dest file /var/log/mosquitto/mosquitto.log
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	include_dir /etc/mosquitto/conf.d
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	allow_anonymous <span style="color:#a2f">false</span>
-</span></span><span style="display:flex;"><span>	listener <span style="color:#666">1883</span>
-</span></span><span style="display:flex;"><span>	password_file /etc/mosquitto/passwd
+</span></span><span style="display:flex;"><span>	allow_anonymous <span style="color:#a2f">false</span> listener <span style="color:#666">1883</span> password_file /etc/mosquitto/passwd
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># create a user with password</span>
 </span></span><span style="display:flex;"><span>sudo mosquitto_passwd -c /etc/mosquitto/passwd YOUR_USERNAME
@@ -154,70 +158,73 @@ Additionally, here is a great article on <a
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># check status of service</span>
 </span></span><span style="display:flex;"><span>sudo systemctl status mosquitto
-</span></span><span style="display:flex;"><span>&gt; ... active
-</span></span></code></pre></div><h2 id="install--configure-aws-cli-version-2-on-raspberry-pi">Install &amp; configure aws cli version 2 on raspberry pi 
-
-</h2><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/aws/aws-cli.git <span style="color:#666">&amp;&amp;</span> <span style="color:#a2f">cd</span> aws-cli <span style="color:#666">&amp;&amp;</span> git checkout v2
-</span></span><span style="display:flex;"><span>pip3 install -r requirements.txt <span style="color:#666">&amp;&amp;</span> pip3 install .
-</span></span><span style="display:flex;"><span>aws --version
+</span></span><span style="display:flex;"><span>&gt; ... active <span style="color:#b44">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">## Install &amp; configure aws cli version 2 on raspberry pi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#b44">```</span>bash git clone https://github.com/aws/aws-cli.git <span style="color:#666">&amp;&amp;</span> <span style="color:#a2f">cd</span> aws-cli <span style="color:#666">&amp;&amp;</span> git checkout v2 pip3
+</span></span><span style="display:flex;"><span>install -r requirements.txt <span style="color:#666">&amp;&amp;</span> pip3 install . aws --version
 </span></span><span style="display:flex;"><span>&gt; aws-cli/2.8.0 Python/3.9.2 Linux/5.15.61-v7l+ source/armv7l.raspbian.11 prompt/off
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Configure the AWS CLI with your AWS region, such as eu-west-1, leave access/private keys blank</span>
-</span></span><span style="display:flex;"><span>aws configure
-</span></span></code></pre></div><h2 id="connect-mosquitto-to-aws-iot-core">Connect mosquitto to AWS IoT Core 
-
-</h2><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Create an IAM policy for the bridge</span>
-</span></span><span style="display:flex;"><span>aws iot create-policy --policy-name bridgeMQTT --policy-document <span style="color:#b44">&#39;{&#34;Version&#34;: &#34;2012-10-17&#34;,&#34;Statement&#34;: [{&#34;Effect&#34;: &#34;Allow&#34;,&#34;Action&#34;: &#34;iot:*&#34;,&#34;Resource&#34;: &#34;*&#34;}]}&#39;</span>
+</span></span><span style="display:flex;"><span>aws configure <span style="color:#b44">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">## Connect mosquitto to AWS IoT Core</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#b44">```</span>bash
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Create an IAM policy for the bridge</span>
+</span></span><span style="display:flex;"><span>aws iot create-policy --policy-name bridgeMQTT --policy-document <span style="color:#b44">&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">{&#34;Version&#34;: &#34;2012-10-17&#34;,&#34;Statement&#34;: [{&#34;Effect&#34;: &#34;Allow&#34;,&#34;Action&#34;: &#34;iot:*&#34;,&#34;Resource&#34;: &#34;*&#34;}]}&#39;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Place yourself in Mosquitto directory and download the Amazon Root CA #certificate</span>
-</span></span><span style="display:flex;"><span><span style="color:#a2f">cd</span> /etc/mosquitto/certs/
-</span></span><span style="display:flex;"><span>sudo wget https://www.amazontrust.com/repository/AmazonRootCA1.pem -O rootCA.pem
+</span></span><span style="display:flex;"><span><span style="color:#a2f">cd</span> /etc/mosquitto/certs/ sudo wget https://www.amazontrust.com/repository/AmazonRootCA1.pem -O
+</span></span><span style="display:flex;"><span>rootCA.pem
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Create certificates and keys. Make a note of the certificate ARN as it will be #needed to configure the IoT Policy.</span>
-</span></span><span style="display:flex;"><span>sudo aws iot create-keys-and-certificate --set-as-active --certificate-pem-outfile cert.crt --private-key-outfile private.key --public-key-outfile public.key --region eu-west-1
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># NOTE: if this throws an exception, run `aws iot create-keys-and-certificate`, in `/etc/mosquitto/certs/` create cert.crt, private.key, public.key with the information from the console</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Create certificates and keys. Make a note of the certificate ARN as it will be #needed to configure</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#the IoT Policy.</span>
+</span></span><span style="display:flex;"><span>sudo aws iot create-keys-and-certificate --set-as-active --certificate-pem-outfile
+</span></span><span style="display:flex;"><span>cert.crt --private-key-outfile private.key --public-key-outfile public.key --region eu-west-1
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># NOTE: if this throws an exception, run `aws iot create-keys-and-certificate`, in</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># `/etc/mosquitto/certs/` create cert.crt, private.key, public.key with the information from the</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic"># console</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Copy the ARN of the certificate returned by the command line in the form of #arn:aws:iot:eu-west-1:0123456789:cert/xyzxyz and replace it in the following #command line in order to attach the IoT policy to your certificate</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Copy the ARN of the certificate returned by the command line in the form</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#of #arn:aws:iot:eu-west-1:0123456789:cert/xyzxyz and replace it in the following #command line in</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#order to attach the IoT policy to your certificate</span>
 </span></span><span style="display:flex;"><span>aws iot attach-principal-policy --policy-name bridgeMQTT --principal &lt;certificate ARN&gt;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Add read permissions to the private key and the public certificate</span>
-</span></span><span style="display:flex;"><span>sudo chmod <span style="color:#666">644</span> private.key
-</span></span><span style="display:flex;"><span>sudo chmod <span style="color:#666">644</span> cert.crt
+</span></span><span style="display:flex;"><span>sudo chmod <span style="color:#666">644</span> private.key sudo chmod <span style="color:#666">644</span> cert.crt
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Retrieve the value of the AWS IoT Core ATS endpoint for your AWS Region using #the cli and make a note of it.</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Retrieve the value of the AWS IoT Core ATS endpoint for your AWS Region using #the cli and make a</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#note of it.</span>
 </span></span><span style="display:flex;"><span>aws iot describe-endpoint --endpoint-type iot:Data-ATS
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Create the configuration file</span>
 </span></span><span style="display:flex;"><span>sudo nano /etc/mosquitto/conf.d/bridge.conf
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Bridge to AWS IOT</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================ Bridge to AWS IOT</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	connection awsiot
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic">#&lt;Paste your AWS IoT Core ATS endpoint retrieved from the AWS CLI in the form of xxxxxxxxxxxxxxx-ats.iot.&lt;region&gt;.amazonaws.com:8883</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic">#&lt;Paste your AWS IoT Core ATS endpoint retrieved from the AWS CLI in the form of</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic">#xxxxxxxxxxxxxxx-ats.iot.&lt;region&gt;.amazonaws.com:8883</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	address xxxxxxxxxxxxxxx-ats.iot.&lt;region&gt;.amazonaws.com:8883
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Specifying which topics are bridged and in what fashion</span>
-</span></span><span style="display:flex;"><span>	topic awsiot_to_localgateway in <span style="color:#666">1</span>
-</span></span><span style="display:flex;"><span>	topic localgateway_to_awsiot out <span style="color:#666">1</span>
-</span></span><span style="display:flex;"><span>	topic both_directions both <span style="color:#666">1</span>
+</span></span><span style="display:flex;"><span>	topic awsiot_to_localgateway in <span style="color:#666">1</span> topic localgateway_to_awsiot out <span style="color:#666">1</span> topic both_directions both <span style="color:#666">1</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Setting protocol version explicitly</span>
-</span></span><span style="display:flex;"><span>	bridge_protocol_version mqttv311
-</span></span><span style="display:flex;"><span>	bridge_insecure <span style="color:#a2f">false</span>
+</span></span><span style="display:flex;"><span>	bridge_protocol_version mqttv311 bridge_insecure <span style="color:#a2f">false</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Bridge connection name and MQTT client Id, enabling the connection automatically when the broker starts.</span>
-</span></span><span style="display:flex;"><span>	cleansession <span style="color:#a2f">true</span>
-</span></span><span style="display:flex;"><span>	clientid bridgeawsiot
-</span></span><span style="display:flex;"><span>	start_type automatic
-</span></span><span style="display:flex;"><span>	notifications <span style="color:#a2f">false</span>
-</span></span><span style="display:flex;"><span>	log_type all
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Bridge connection name and MQTT client Id, enabling the connection automatically when the</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># broker starts.</span>
+</span></span><span style="display:flex;"><span>	cleansession <span style="color:#a2f">true</span> clientid bridgeawsiot start_type automatic notifications <span style="color:#a2f">false</span> log_type all
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># Certificate based SSL/TLS support</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================ Certificate based SSL/TLS support</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic"># ============================================================</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic">#Path to the rootCA</span>
@@ -232,17 +239,25 @@ Additionally, here is a great article on <a
 </span></span><span style="display:flex;"><span>	<span style="color:#080;font-style:italic">#END of bridge.conf</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Restart the Mosquitto Mosquitto broker</span>
-</span></span><span style="display:flex;"><span>sudo service mosquitto restart
-</span></span></code></pre></div><h2 id="publish-message-to-aws-iot-mqtt-test-client">Publish message to AWS IoT MQTT test client 
-
-</h2><p>Sign in to AWS and navigate to AWS IoT &gt; MQTT test client. Enter the topic <code>localgateway_to_awsiot</code>, set quality of service to 1 under advanced configuration and hit <code>subscribe</code>.</p>
-<p>Important note: Make sure to select the same region as when you run <code>iot create-keys-and-certificate ... --region &lt;your-region&gt;</code>. In the example above, we used eu-west-1 (Ireland).</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Publish a local message to the Mosquitto broker running on the Amazon EC2 #instance from the terminal</span>
-</span></span><span style="display:flex;"><span>mosquitto_pub -h localhost -p <span style="color:#666">1883</span> -q <span style="color:#666">1</span> -d -t localgateway_to_awsiot  -i localClientID -m <span style="color:#b44">&#34;{\&#34;message\&#34;: \&#34;helloFromLocalGateway\&#34;}&#34;</span> -u YOUR_USERNAME -P YOUR_PASSWORD
-</span></span></code></pre></div><p><p class="markdown-image">
-  <img src="/figures/awsiot_mqtt/aws-mqtt-test-client.png" alt=""  />
-</p></p>
-
+</span></span><span style="display:flex;"><span>sudo service mosquitto restart <span style="color:#b44">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">## Publish message to AWS IoT MQTT test client</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Sign in to AWS and navigate to AWS IoT &gt; MQTT <span style="color:#a2f">test</span> client. Enter the topic <span style="color:#b44">`</span>localgateway_to_awsiot<span style="color:#b44">`</span>,
+</span></span><span style="display:flex;"><span><span style="color:#a2f">set</span> quality of service to <span style="color:#666">1</span> under advanced configuration and hit <span style="color:#b44">`</span>subscribe<span style="color:#b44">`</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Important note: Make sure to <span style="color:#a2f;font-weight:bold">select</span> the same region as when you run <span style="color:#b44">`</span>iot
+</span></span><span style="display:flex;"><span>create-keys-and-certificate ... --region &lt;your-region&gt;<span style="color:#b44">`</span>. In the example above, we used eu-west-1
+</span></span><span style="display:flex;"><span><span style="color:#666">(</span>Ireland<span style="color:#666">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#b44">```</span>bash
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#Publish a local message to the Mosquitto broker running on the Amazon EC2 #instance from the</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;font-style:italic">#terminal</span>
+</span></span><span style="display:flex;"><span>mosquitto_pub -h localhost -p <span style="color:#666">1883</span> -q <span style="color:#666">1</span> -d -t localgateway_to_awsiot  -i localClientID -m <span style="color:#b44">&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#b44">{\&#34;message\&#34;: \&#34;helloFromLocalGateway\&#34;}&#34;</span> -u YOUR_USERNAME -P YOUR_PASSWORD <span style="color:#b44">```</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>!<span style="color:#666">[](</span>/figures/awsiot_mqtt/aws-mqtt-test-client.png<span style="color:#666">)</span>
+</span></span></code></pre></div>
     </div>
 
     
