@@ -6,8 +6,8 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="Some thoughts on Nolet et al. (2020)">
-<meta name="generator" content="Hugo 0.104.3" />
+<meta name="description" content="Extend a local MQTT setup with AWS IoT cloud capabilites">
+<meta name="generator" content="Hugo 0.111.3">
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -82,7 +82,7 @@ if (!doNotTrack) {
 <h1 id="disclaimer">Disclaimer 
 
 </h1><p><em>This guide aims to be a great resource for practitioners of causal forest and wants to empower researchers with this awesome method. Whether you are a researcher keen to throw your data on causal forest or just want to have a glance for the next study, this article is for you.<br>
-I found myself diving into its source code, published papers on its theory and referring to its algorithm reference. I want to combine all these resources in one articlefor you to save time. Still, you are welcome to do so and dig with references. 
+I found myself diving into its source code, published papers on its theory and referring to its algorithm reference. I want to combine all these resources in one articlefor you to save time. Still, you are welcome to do so and dig with references.
 But as of today 10th May 2021, this guide is in an early stage. I am grateful for any comments and appreciate your input! If you discover inconsistencies, or have questions, I am happy to discuss them with you and revise the tutorial.</em></p>
 <hr>
 <p>Causal forest gains attention as a powerful tool to add a machine learning perspective to empirical studies. The <code>grf</code> software library in <code>R</code> makes it straightforward and quick to apply. Nevertheless, practitioners that want to go beyond basic understanding and include it in their research face many questions and high upfront costs since it largely differs from traditionally used methods, such as ordinary least squares. This article combines insights on its algorithmic implementation, statistical properties and recommended practices to answer</p>
@@ -308,7 +308,7 @@ if variable <em>m</em> used for a split at level <em>l</em> in tree <em>t</em> a
 </table>
 <h4 id="data-preparation">Data Preparation 
 
-</h4><p>The quality and preparation of collected data determines the informative value of a study. With many missing entries, researchers have to drop substantial amounts of observations, if they rely on methods requiring data without gaps, such as ordinary least squares (OLS). Alan et al. deal with missings using the simple approach of replacing missings with the average across all other non-missings of each variable. 
+</h4><p>The quality and preparation of collected data determines the informative value of a study. With many missing entries, researchers have to drop substantial amounts of observations, if they rely on methods requiring data without gaps, such as ordinary least squares (OLS). Alan et al. deal with missings using the simple approach of replacing missings with the average across all other non-missings of each variable.
 For the analysis here, I focus on the outcome where pupils choose the difficult in all five rounds. The data preparation can be summarized with the following code. Note, that I drop all missings of the outcome $Y (alldiff)$ and replace all missings in $X$ with their average.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>df_nomiss <span style="color:#666">&lt;-</span> df <span style="color:#666">%&gt;%</span> 
 </span></span><span style="display:flex;"><span>	<span style="color:#00a000">drop_na</span>(alldiff) <span style="color:#666">%&gt;%</span>
@@ -670,7 +670,7 @@ To inspect the model&rsquo;s characteristics, <code>names(cf_default)</code> lis
 <p>Mean imputation often leads to more precise estimates and could remove selection issues, when missing values occur in patterns across individuals. Nevertheless, the above table indicates robust estimates in both dimensions with coefficients differing slightly. It looks as if the mean imputation neither changed standard errors nor treatment estimates. Additionally, the estimation method with OLS did not impact coefficients compared to logit as used in the study.</p>
 <h3 id="replicate-results-with-cf-alan-et-al-table-3">Replicate results with CF (Alan et al., Table 3) 
 
-</h3><p>Loop to train 5 causal forests on 5 outcomes (choicer1-5) in the following steps: 
+</h3><p>Loop to train 5 causal forests on 5 outcomes (choicer1-5) in the following steps:
 (i)	drop missings for each outcome Y (choicer1-5), (ii) Select and assign X, Y, W and cluster, (iii) train CF model on that data.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-r" data-lang="r"><span style="display:flex;"><span>	cf_choicer <span style="color:#666">&lt;-</span> <span style="color:#00a000">lapply</span>(<span style="color:#00a000">paste0</span>(<span style="color:#b44">&#34;choicer&#34;</span>, <span style="color:#666">1</span><span style="color:#666">:</span><span style="color:#666">5</span>), <span style="color:#00a000">function</span>(x){
 </span></span><span style="display:flex;"><span>
@@ -798,7 +798,7 @@ To inspect the model&rsquo;s characteristics, <code>names(cf_default)</code> lis
     <p class="copyright">
     
        © Copyright 
-       2022 
+       2023 
        Philipp Schmalen
     
     </p>

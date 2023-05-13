@@ -6,8 +6,8 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="Some thoughts on Nolet et al. (2020)">
-<meta name="generator" content="Hugo 0.104.3" />
+<meta name="description" content="Extend a local MQTT setup with AWS IoT cloud capabilites">
+<meta name="generator" content="Hugo 0.111.3">
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -266,7 +266,7 @@ if (!doNotTrack) {
 </p></p>
 <h2 id="preprocessing-and-feature-engineering">Preprocessing and feature engineering 
 
-</h2><p>For PCA to work, the data needs to be numeric, without missings, and standardized. I put all steps into one function (<code>clean_data()</code>) which returns a dataframe with standardized features. and conduct steps 1 to 3 of the project work flow (collecting, processing and engineering). 
+</h2><p>For PCA to work, the data needs to be numeric, without missings, and standardized. I put all steps into one function (<code>clean_data()</code>) which returns a dataframe with standardized features. and conduct steps 1 to 3 of the project work flow (collecting, processing and engineering).
 To begin with, import necessary modules and packages.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">pandas</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">pd</span>
 </span></span><span style="display:flex;"><span><span style="color:#a2f;font-weight:bold">import</span> <span style="color:#00f;font-weight:bold">numpy</span> <span style="color:#a2f;font-weight:bold">as</span> <span style="color:#00f;font-weight:bold">np</span>
@@ -648,7 +648,7 @@ To begin with, import necessary modules and packages.</p>
     <p class="copyright">
     
        © Copyright 
-       2022 
+       2023 
        Philipp Schmalen
     
     </p>

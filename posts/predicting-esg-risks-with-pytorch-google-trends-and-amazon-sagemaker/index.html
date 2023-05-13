@@ -6,8 +6,8 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="Some thoughts on Nolet et al. (2020)">
-<meta name="generator" content="Hugo 0.104.3" />
+<meta name="description" content="Extend a local MQTT setup with AWS IoT cloud capabilites">
+<meta name="generator" content="Hugo 0.111.3">
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -182,7 +182,7 @@ if (!doNotTrack) {
     
 >
     https://trends.google.com/trends/?geo=US
-</a>) shows search interest for a given keyword within a specified region. As a starting point, I deal with American firms and thus focus on the US using English keywords. 
+</a>) shows search interest for a given keyword within a specified region. As a starting point, I deal with American firms and thus focus on the US using English keywords.
 The Google trend indicator quantifies the relative search volume of searches between two or more terms.</p>
 <p>Relative search volume could be interpreted as search interest and ranges from 0 to 100. To be clear, it lacks a defined measurement unit such as an absolute search count, but relates to all other keywords that were part of the query to Google trends.</p>
 <p>A popular procedure to select ESG investments is by checking on whether a firm fulfills defined exclusion criteria, which is termed negative screening. For example, if a firm engages in  arms trade, it would be excluded from ESG portfolios. Some other examples are firms  linked to corruption, relying on fossil fuels or notorious for avoiding taxes. On the opposite, another ESG investment approach would be positive screening, where a person selects firms since they rely on renewables, promote gender equality or score high in transparency.</p>
@@ -210,8 +210,8 @@ The Google trend indicator quantifies the relative search volume of searches bet
 </code></pre>
 <h3 id="using-pytrends-at-scale-for-google-trends">Using Pytrends at scale for Google Trends 
 
-</h3><p>To access data from Google trends and establish a connection, the project relies on the Pytrends package. 
-Several issues arise from gathering data with Google trends. Firstly, Google trends allows a maximum of five keywords per query. Secondly, a rate limit exists which protects Google&rsquo;s servers from too many requests. Thirdly, the metric of search interest is scaled based on the search interest of the keyword with the most searches as compared to other keywords. 
+</h3><p>To access data from Google trends and establish a connection, the project relies on the Pytrends package.
+Several issues arise from gathering data with Google trends. Firstly, Google trends allows a maximum of five keywords per query. Secondly, a rate limit exists which protects Google&rsquo;s servers from too many requests. Thirdly, the metric of search interest is scaled based on the search interest of the keyword with the most searches as compared to other keywords.
 The query limit requires a simple workaround, where I need to batch keywords and subsequently pass each keyword batch to Google trends. With $500$ firms, $30$ keywords and a batch size of $5$, there are $500 \times 30\times \frac{1}{5}=3000$ queries.</p>
 <p>The rate limit calls for a timeout. Since Google does not publish information about their search backend due to secutiry reasons, the exact rate limit is unknown. But, query errors lead to missing data entries, which leads to fewer data points to train, validate or test the model. Therefore, I favor a conservative approach, setting the timeout to 20 seconds. The downside of this are runtimes of $3000 \times 20 $ seconds $= 60.000$ seconds $\approx 16.7$ hours. A distinct jupyter notebook that exectutes queries in the background and stores query responses in a csv in case of error response, frees up coding capacity for model setup and avoids data loss caused by rate limits.</p>
 <p>The last challenge with Google trends is the relative search metric. To exemplify this, a query of three words with [&lsquo;pizza&rsquo;, &lsquo;president&rsquo;, &lsquo;covid&rsquo;] scales the search interest to the keyword with the most number of searches. The images below illustrate this. It would be a cause of concern when keywords belong to distinct informational sets. Nevertheless, the constructed keywords have the firm name in common, which makes outliers in search interest across queries unlikely since they have the firm name in common. To be concice, I assume that the firm name sufficiently conncets keywords and thereby reduces outliers caused by the relative metric.</p>
@@ -336,7 +336,7 @@ The query limit requires a simple workaround, where I need to batch keywords and
 </tr>
 </tbody>
 </table>
-<p>Thus, the data needs to be re-shaped into a wide format as previously described. 
+<p>Thus, the data needs to be re-shaped into a wide format as previously described.
 Ideally, re-shaping does not imply information loss. Nevertheless, weekly data might be too granular for the prediction task and likely does not add valuable information as compared to year averages. Thus, taking yearly averages is assumed to have sufficient information about a topic. Peaks in search volume are mirrored by higher year averages instead of week-to-week differences.
 Averaging by year, adding the time dimension to keywords variables and thereby collapsing the time dimension, yields the wide format. The following table illustrates the desired wide format, which can be fed into the model:</p>
 <table>
@@ -869,7 +869,7 @@ Bank of America Research (2020). Accessed 28th July 2020,  <a
     <p class="copyright">
     
        © Copyright 
-       2022 
+       2023 
        Philipp Schmalen
     
     </p>

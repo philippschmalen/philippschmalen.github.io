@@ -6,8 +6,8 @@
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">    
 <meta name="viewport" content="width=device-width,minimum-scale=1">
-<meta name="description" content="Some thoughts on Nolet et al. (2020)">
-<meta name="generator" content="Hugo 0.104.3" />
+<meta name="description" content="Extend a local MQTT setup with AWS IoT cloud capabilites">
+<meta name="generator" content="Hugo 0.111.3">
 
 
   <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
@@ -294,7 +294,7 @@ if (!doNotTrack) {
 </span></span></code></pre></div><p>Unfortunately, WSL does not support background tasks (<code>daemon</code>). This is why we have to open one terminal for <code>airflow webserver</code> and one for <code>airflow scheduler</code>.</p>
 <h2 id="setup-airflow-in-a-project-setting">Setup Airflow in a project setting 
 
-</h2><p>Copying your DAGs back and forth from a project folder to Airflow home directory is cumbersome. Fortunately, we can automate this with a bash script. For example, my project root directory is in <code>/c/users/philipp/projects/project_name/</code> and contains one folder with all scripts related to data collection and processing named <code>./src/data/</code>. I also have one folder for all Airflow-related files in <code>./src/airflow/</code>. In this folder 
+</h2><p>Copying your DAGs back and forth from a project folder to Airflow home directory is cumbersome. Fortunately, we can automate this with a bash script. For example, my project root directory is in <code>/c/users/philipp/projects/project_name/</code> and contains one folder with all scripts related to data collection and processing named <code>./src/data/</code>. I also have one folder for all Airflow-related files in <code>./src/airflow/</code>. In this folder
 Have a look at my project Run Spark EMR clusters with Airflow <a 
     href="https://github.com/philippschmalen/etl_spark_airflow_emr"
     
@@ -374,7 +374,7 @@ Have a look at my project Run Spark EMR clusters with Airflow <a
     <p class="copyright">
     
        © Copyright 
-       2022 
+       2023 
        Philipp Schmalen
     
     </p>
