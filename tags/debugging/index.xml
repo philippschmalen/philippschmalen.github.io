@@ -5,11 +5,12 @@
     <link>https://philippschmalen.github.io/tags/debugging/</link>
     <description>Recent content in Debugging on Philipp Schmalen</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://philippschmalen.github.io/tags/debugging/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://philippschmalen.github.io/tags/debugging/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Debugging Python in VSCode in a Robust Way</title>
       <link>https://philippschmalen.github.io/posts/debugging-python-in-vscode-in-a-robust-way/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 29 May 2023 00:00:00 +0000</pubDate>
       
       <guid>https://philippschmalen.github.io/posts/debugging-python-in-vscode-in-a-robust-way/</guid>
       <description>Setting up a robust Python debugging process in VSCode using a Dev Container.</description>
