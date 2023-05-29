@@ -16,5 +16,14 @@
       <description>Some thoughts on Nolet et al. (2020)</description>
     </item>
     
+    <item>
+      <title>Debugging Python in VSCode in a Robust Way</title>
+      <link>https://philippschmalen.github.io/posts/debugging-python-in-vscode-in-a-robust-way/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://philippschmalen.github.io/posts/debugging-python-in-vscode-in-a-robust-way/</guid>
+      <description>Setting up a robust Python debugging process in VSCode using a Dev Container.</description>
+    </item>
+    
   </channel>
 </rss>

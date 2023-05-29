@@ -204,5 +204,13 @@
     <lastmod>2021-05-08T10:08:49+02:00</lastmod>
   </url><url>
     <loc>https://philippschmalen.github.io/categories/</loc>
+  </url><url>
+    <loc>https://philippschmalen.github.io/tags/debugging/</loc>
+  </url><url>
+    <loc>https://philippschmalen.github.io/posts/debugging-python-in-vscode-in-a-robust-way/</loc>
+  </url><url>
+    <loc>https://philippschmalen.github.io/tags/devcontainer/</loc>
+  </url><url>
+    <loc>https://philippschmalen.github.io/tags/vscode/</loc>
   </url>
 </urlset>
